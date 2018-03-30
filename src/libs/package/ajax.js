@@ -1,7 +1,7 @@
 import axios from 'axios';
 import utils from '../utils';
 
-const ajaxUrl = 'http://localhost:8080/metrosupervision';
+const ajaxUrl = 'http://localhost:8090/metrosupervision';
 
 function setContentTypeIfUnset(headers, value) {
     if (!utils.isUndefined(headers) && utils.isUndefined(headers['Content-Type'])) {

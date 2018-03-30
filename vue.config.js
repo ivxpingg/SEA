@@ -24,7 +24,16 @@ module.exports = {
     // 调整内部的 webpack 配置。
     // 查阅 https://github.com/vuejs/vue-doc-zh-cn/vue-cli/webpack.md
     chainWebpack: () => {},
-    configureWebpack: () => {},
+    // configureWebpack: () => {},
+    configureWebpack: config => {
+
+        if (process.env.NODE_ENV === 'production') {
+            // 为生产环境修改配置...
+
+        } else {
+            // 为开发环境修改配置...
+        }
+    },
 
     // vue-loader 选项
     // 查阅 https://vue-loader.vuejs.org/zh-cn/options.html
@@ -67,13 +76,14 @@ module.exports = {
     devServer: {
         open: true, //process.platform === 'darwin',
         host: '0.0.0.0',
-        port: 8080,
+        port: 8090,
         https: false,
         hotOnly: false,
         // 查阅 https://github.com/vuejs/vue-docs-zh-cn/blob/master/vue-cli/cli-service.md#configuring-proxy配置代理
         proxy:{   // string | Object
             '/metrosupervision': {
                 target: 'http://wechat.doudou360.com',
+                // target: 'http://192.168.1.194:8080',
                 ws: true,
                 changeOrigin: true
             }
