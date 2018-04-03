@@ -37,7 +37,7 @@ module.exports = (
       },
 
       remove: function remove(name) {
-        this.write(name, '', Date.now() - 86400000);
+        this.write(name, '', Date.now() - (86400000 * 7));
       }
     };
   })() :

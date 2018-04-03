@@ -13,7 +13,7 @@ export default {
   components: {
   },
     mounted() {
-
+        console.log('app');
       // this.$http({
       //     method: "post",
       //     url: '/xm/sys/login',
@@ -27,7 +27,7 @@ export default {
       // }).catch(function (error) {
       //     console.dir(error);
       // })
-        
+
     }
 }
 </script>

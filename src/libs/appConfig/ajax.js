@@ -1,3 +1,8 @@
+/**
+ * axios组件自己定义封装，增加基础配置、请求前、后拦截器处理。
+ * @return axios对象
+ * */
+
 import axios from 'axios';
 import utils from '../utils';
 
@@ -51,8 +56,6 @@ var Ajax = axios.create({
 
 //ajax请求前拦截器
 Ajax.interceptors.request.use(function (config) {
-    // config.headers.common['Authorization'] = Cookie.get('xmgd');
-    // config.url = config.url + ';JSESSIONID=' + Cookie.get('xmgd');
     return config;
 }, function (error) {
     return Promise.reject(error);
