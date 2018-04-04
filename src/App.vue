@@ -1,7 +1,7 @@
 <template>
   <div ref="app" class="app-container">
+    455655
     <router-view></router-view>
-
   </div>
 
 </template>
@@ -9,24 +9,28 @@
 <script>
 import Com from './libs/com';
 export default {
-  name: 'app',
-  components: {
-  },
+    name: 'app',
+    components: {
+    },
+    created(){
+        console.log('created');
+    },
     mounted() {
-        console.log('app');
-      // this.$http({
-      //     method: "post",
-      //     url: '/xm/sys/login',
-      //     data: {
-      //         username: 'admin',
-      //         password: '123456'
-      //     }
-      // }).then(function (response) {
-      //
-      //     console.dir(response);
-      // }).catch(function (error) {
-      //     console.dir(error);
-      // })
+
+
+      this.$http({
+          method: "post",
+          url: '/xm/sys/login',
+          data: {
+              username: 'admin',
+              password: '123456'
+          }
+      }).then(function (response) {
+          console.dir(response);
+
+      }).catch(function (error) {
+
+      })
 
     }
 }

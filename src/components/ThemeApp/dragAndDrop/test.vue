@@ -38,5 +38,19 @@
 <style lang="scss" scoped>
     .cll {
         color: red;
+
+        ul {
+            width: 670px;
+            height: 670px;
+
+            li {
+                margin: 20px;
+                width: 200px;
+                height: 200px;
+                float: left;
+                text-align: center;
+                border: 1px solid #;
+            }
+        }
     }
 </style>

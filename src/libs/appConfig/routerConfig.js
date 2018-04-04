@@ -21,36 +21,42 @@ const routerConfig = function () {
     };
     const router = new VueRouter(RouterConfig);
 
+    /**
+     * 拦截的内容
+     * 1. ajax请求返回的登陆信息失效
+     * 2. 路由配置需要登陆
+     */
     router.beforeEach((to, from, next) => {
-        console.log('routerBefore');
-        if (to.path === '/' || !to.meta.requireAuth) {
-            Title(to.meta.title);
-            next();
-            return;
-        }
+        console.dir('router');
+        Title(to.meta.title);
+        next();
 
+        // 目前没有拦截配置
 
-        if (to.meta.requireAuth) {
-
-            if (store.state.token) {  // 通过vuex state获取当前的token是否存在
-                iView.LoadingBar.start();
-                Title(to.meta.title);
-                next();
-            }
-            else {
-                Util.title(to.meta.title);
-                next({
-                    path: '/',
-                    query: {redirect: to.fullPath}  // 将跳转的路由path作为参数，登录成功后跳转到该路由
-                });
-            }
-        } else {
-            Title(to.meta.title);
-            next({
-                path: '/',
-                query: {redirect: to.fullPath}  // 将跳转的路由path作为参数，登录成功后跳转到该路由
-            });
-        }
+        // if (to.path === '/' || !to.meta.requireAuth) {
+        //     next();
+        //     return;
+        // }
+        //
+        //
+        // if (to.meta.requireAuth) {
+        //
+        //     if (store.state.token) {  // 通过vuex state获取当前的token是否存在
+        //         iView.LoadingBar.start();
+        //         next();
+        //     }
+        //     else {
+        //         next({
+        //             path: '/',
+        //             query: {redirect: to.fullPath}  // 将跳转的路由path作为参数，登录成功后跳转到该路由
+        //         });
+        //     }
+        // } else {
+        //     next({
+        //         path: '/',
+        //         query: {redirect: to.fullPath}  // 将跳转的路由path作为参数，登录成功后跳转到该路由
+        //     });
+        // }
 
 
     });

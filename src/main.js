@@ -22,10 +22,6 @@ new Vue({
     router: router,
     store: store,
     render: h => h(App),
-    created() {
-        console.log('created');
-    },
-    mounted() {
-        console.log('main');
-    }
+    created() {},
+    mounted() {}
 });

@@ -5,8 +5,12 @@
 
 import axios from 'axios';
 import utils from '../utils';
+import Config from './config';
 
-const ajaxUrl = 'http://localhost:8090/metrosupervision';
+const ajaxUrl = Config[Config.env].domain + ':'
+              + Config[Config.env].port
+              + Config[Config.env].baseUrl;
+//'http://localhost:8090/metrosupervision';
 
 function setContentTypeIfUnset(headers, value) {
     if (!utils.isUndefined(headers) && utils.isUndefined(headers['Content-Type'])) {
@@ -72,6 +76,7 @@ Ajax.interceptors.response.use(function (response) {
     //     router.push('/');
     //
     // }
+
     return response.data;
 }, function (error) {
     return Promise.reject(error);

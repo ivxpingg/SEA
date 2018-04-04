@@ -10,10 +10,7 @@ export default [
         meta: {
             title: '厦门海洋生物观测装备公共服务平台'
         },
-        component: (resolve) => require(['../../App.vue'], resolve),
-        children: [
-
-        ]
+        component: (resolve) => require(['../../App.vue'], resolve)
     },
     {
         path: '/ThemeApp',
