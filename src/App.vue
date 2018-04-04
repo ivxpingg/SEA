@@ -1,6 +1,6 @@
 <template>
   <div ref="app" class="app-container">
-    455655
+
     <router-view></router-view>
   </div>
 
