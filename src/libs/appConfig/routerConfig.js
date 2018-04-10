@@ -27,7 +27,7 @@ const routerConfig = function () {
      * 2. 路由配置需要登陆
      */
     router.beforeEach((to, from, next) => {
-        console.dir('router');
+        // console.dir('router');
         Title(to.meta.title);
         next();
 

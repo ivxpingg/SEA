@@ -8,6 +8,10 @@ import RouterConfig from './libs/appConfig/routerConfig';
 import Store from './libs/appConfig/vuex/vuexConfig';
 import 'iview/dist/styles/iview.css';
 
+import './style/app.scss';
+
+// console.log(process.env.BASE_URL);
+
 Vue.config.productionTip = false;
 Vue.prototype.$http = Ajax;
 

@@ -13,7 +13,7 @@ export default {
     components: {
     },
     created(){
-        console.log('created');
+        // console.log('created');
     },
     mounted() {
 
@@ -26,7 +26,7 @@ export default {
               password: '123456'
           }
       }).then(function (response) {
-          console.dir(response);
+          // console.dir(response);
 
       }).catch(function (error) {
 
@@ -39,5 +39,6 @@ export default {
 <style scoped>
   .app-container {
     height: 100%;
+    overflow: hidden;
   }
 </style>
