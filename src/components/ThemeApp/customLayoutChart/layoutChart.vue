@@ -9,13 +9,13 @@
         </div>
         <div class="right-panel">
             <div class="template-panel" id="template">
-                <div class="box"><div class="item"></div></div>
-                <div class="box"><div class="item"></div></div>
-                <div class="box"><div class="item"></div></div>
-                <div class="box"><div class="item"></div></div>
-                <div class="box"><div class="item"></div></div>
-                <div class="box"><div class="item"></div></div>
-                <div class="box"><div class="item"></div></div>
+                <div class="box 111"><div class="item item1"><span>1</span></div></div>
+                <div class="box 112"><div class="item item1"><span>2</span></div></div>
+                <div class="box 113"><div class="item item1"><span>3</span></div></div>
+                <div class="box 114"><div class="item item1"><span>4</span></div></div>
+                <div class="box 115"><div class="item item1"><span>5</span></div></div>
+                <div class="box 116"><div class="item item1"><span>6</span></div></div>
+                <div class="box 117"><div class="item item1"><span>7</span></div></div>
             </div>
         </div>
     </div>
@@ -48,11 +48,15 @@
                     ghostClass: 'replica-drag',
                     forceFallback: true,
                     onStart: function () {
-                        console.log('start');
+                        // console.log('start');
                     },
                     onEnd: function () {
-                        console.log('end');
+                        // console.log('end');
                     },
+                    onRemove: function () {
+                        // console.dir(arguments);
+                        // console.log('onRemove');
+                    }
 
                 });
             },
@@ -62,7 +66,15 @@
 
                 for (var i = 0; i < domList.length; i++) {
                     Sortable.create(domList[i], {
-
+                        group: {
+                            name: 'box-' + i,
+                            put: ['menu']
+                        },
+                        onChoose: function() {
+                        },
+                        onAdd: function () {
+                            this.el.removeChild(this.el.children[1]);
+                        }
                     });
                 }
             }
@@ -126,13 +138,15 @@
             .box {
                 display: inline-block;
                 margin: 5px;
-                width: 300px;
-                height: 300px;
+
                 border: 2px solid #42b983;
                 border-radius: 5px;
-
+                width: 300px;
+                height: 300px;
+                overflow: hidden;
                 .item {
                     background-color: #42b983;
+
                     height: 100%;
                 }
             }
