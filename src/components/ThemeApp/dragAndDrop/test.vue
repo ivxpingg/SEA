@@ -1,22 +1,40 @@
 <template>
     <div class="cll" >
-        <ul ref="ul1" id="items">
-            <li>a1</li>
-            <li>a2</li>
-            <li class="fei">a3</li>
-            <li>a4</li>
-            <li>a5</li>
-            <li>a6</li>
-            <li>a7</li>
-        </ul>
-        <ul ref="ul2">
+        <div class="box-parent" id="box-parent">
 
-            <li class="fei">b3</li>
-            <li>b4</li>
-            <li>b5</li>
-            <li>b6</li>
-            <li>b7</li>
-        </ul>
+            <div class="box-parent-itme box-parent-itme2">
+                <div class="box-son">
+                    <div class="box-son-itme"><div class="fill-div">2-1</div></div>
+                    <div class="box-son-itme"><div class="fill-div">2-2</div></div>
+                </div>
+                <div class="zezao"></div>
+            </div>
+            <div class="box-parent-itme box-parent-itme1">
+                <div class="fill-div">1</div>
+            </div>
+            <div class="box-parent-itme box-parent-itme3">
+                <div class="box-son">
+                    <div class="box-son-itme"><div class="fill-div">3-1</div></div>
+                    <div class="box-son-itme"><div class="fill-div">3-2</div></div>
+                </div>
+                <div class="zezao"></div>
+            </div>
+            <div class="box-parent-itme box-parent-itme4">
+                <div class="fill-div">4</div>
+            </div>
+            <div class="box-parent-itme box-parent-itme5">
+                <div class="fill-div">5</div>
+            </div>
+            <div class="box-parent-itme box-parent-itme6">
+                <div class="fill-div">6</div>
+            </div>
+            <div class="box-parent-itme box-parent-itme7">
+                <div class="fill-div">7</div>
+            </div>
+            <div class="box-parent-itme box-parent-itme8">
+                <div class="fill-div">8</div>
+            </div>
+        </div>
     </div>
 </template>
 <script>
@@ -27,88 +45,95 @@
         name: "test",
         data() {
             return {
-                d: 'ffgg'
             }
         },
         mounted() {
-            var el = document.getElementById('items');
+
+
+
+            var son = document.querySelectorAll('.box-son');
+
+            for(var i = 0; i < son.length; i++) {
+                Sortable.create(son[i], {
+                    group: {
+                        name: 'son' + i
+                    },
+                    animation: 150
+                });
+            }
+
+            var el = document.getElementById('box-parent');
             var sortable = Sortable.create(el, {
-                animation: 150
+                group: {
+                    name: 'parent',
+
+                },
+                animation: 150,
+                onStart: function (e) {
+                    e.from.className += ' selected';
+                },
+                onEnd: function (e) {
+                    e.from.className = e.from.className.replace(' selected', '');
+                }
             });
-            // Dragula([this.$refs.ul1,this.$refs.ul2], {
-            //     isContainer: function (el) {
-            //          // return !(el.className == 'fei');
-            //         return false; // only elements in drake.containers will be taken into account
-            //     },
-            //     moves: function (el, source, handle, sibling) {
-            //         return true; // elements are always draggable by default
-            //     },
-            //     accepts: function (el, target, source, sibling) {
-            //         return true; // elements can be dropped in any of the `containers` by default
-            //     },
-            //     invalid: function (el, handle) {
-            //         return false; // don't prevent any drags from initiating by default
-            //     },
-            //     direction: 'vertical',             // Y axis is considered when determining where an element would be dropped
-            //     copy: false,                       // elements are moved by default, not copied
-            //     copySortSource: false,             // elements in copy-source containers can be reordered
-            //     revertOnSpill: false,              // spilling will put the element back where it was dragged from, if this is true
-            //     removeOnSpill: false,              // spilling will `.remove` the element, if this is true
-            //     mirrorContainer: document.body,    // set the element that gets mirror elements appended
-            //     ignoreInputTextSelection: true     // allows users to select input text, see details below
-            // });
+
         }
     }
 </script>
 
 <style lang="scss" scoped>
     .cll {
-        color: red;
+        .box-parent {
+            height: 900px;
+            width: 700px;
 
-        ul {
-            display: inline-block;
-            margin-left: 20px;
-            width: 720px;
-            background: #42b983;
-            overflow: hidden;
-
-            li {
-                box-sizing: border-box;
-                display: inline-block;
-                margin: 20px;
-                width: 200px;
+            .box-parent-itme {
+                position: relative;
                 height: 200px;
+                display: inline-block;
+                float: left;
+                width: 200px;
 
-                text-align: center;
-                line-height: 200px;
-                font-size: 40px;
-                border: 2px solid #909090;
-                background: antiquewhite;
-
-                &.fei {
-                    /*width: 440px;*/
-                    /*height: 440px;*/
+                &.box-parent-itme1 {
+                    width: 200px;
                 }
+                &.box-parent-itme2 {
+                    width: 200px;
+                }
+                &.box-parent-itme3 {
+                    width: 150px;
+                }
+
+
+            }
+
+            &.selected .zezao {
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                z-index: 1;
+                background-color: greenyellow;
+                opacity: 0.4;
             }
         }
-    }
 
-    li {
-        box-sizing: border-box;
-        display: inline-block;
-        margin: 20px;
-        width: 200px;
-        height: 200px;
+        .box-son {
+            height: 100%;
+            width: 100%;
 
-        text-align: center;
-        line-height: 200px;
-        font-size: 40px;
-        border: 2px solid #909090;
-        background: antiquewhite;
+            .box-son-itme {
+                height: 100px;
+            }
+        }
 
-        &.fei {
-            /*width: 440px;*/
-            /*height: 440px;*/
+        .fill-div {
+            box-sizing: border-box;
+            height: 100%;
+            background-color: #42b983;
+            border: 4px solid #2baee9;
         }
     }
+
 </style>
