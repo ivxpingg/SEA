@@ -1,11 +1,7 @@
 <template>
     <div class="header-container">
         <div class="title">主题式多维界面组件</div>
-        <div class="btn-panel">
-            <router-link class="m-btn" active-class="m-active" to="/ThemeApp/appHome">首页</router-link>
-            <router-link class="m-btn" active-class="m-active" to="/ThemeApp/layoutChart">海洋产业定制分析</router-link>
-            <router-link class="m-btn" active-class="m-active" to="/ThemeApp/test">测试</router-link>
-        </div>
+        <router-link class="m-btn" active-class="m-active" to="/ThemeApp/layoutChart">海洋产业定制分析</router-link>
     </div>
 </template>
 
@@ -26,11 +22,11 @@
         background: #2b85e4;
         border-bottom: 1px solid #2d8cf0;
         .title {
-            padding-left: 20px;
             color: #FFF;
             font-size: 26px;
             font-weight: 700;
             line-height: 87px;
+            text-align: center;
         }
         .btn-panel {
             position: absolute;

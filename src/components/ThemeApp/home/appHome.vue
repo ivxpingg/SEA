@@ -1,5 +1,6 @@
 <template>
     <div class="appHome-container">
+        <vHeader></vHeader>
         <div class="subsystem-panel">
             <vNavLayout1></vNavLayout1>
         </div>
@@ -8,9 +9,9 @@
 
 <script>
     import Sortable from 'sortablejs';
-    import vHeader from '../Layout/header/header';
     import vLayout1 from './subsystemPanel/layout-1';
     import vNavLayout1 from './homeLayout/navLayout-1';
+    import vHeader from './header/header';
     export default {
         name: "appHome",
         data() {
