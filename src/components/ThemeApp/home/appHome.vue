@@ -29,6 +29,9 @@
     .appHome-container {
         height: 100%;
 
+        background: #070714 url('./images/home-bg.png') no-repeat top center;
+
+
         .subsystem-panel {
             margin: 0 auto;
             max-width: 1440px;

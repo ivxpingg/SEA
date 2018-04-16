@@ -1,7 +1,13 @@
 <template>
     <div class="header-container">
-        <div class="title">主题式多维界面组件</div>
-        <router-link class="m-btn" active-class="m-active" to="/ThemeApp/layoutChart">海洋产业定制分析</router-link>
+        <div class="header-inner">
+            <div class="btn-panel">
+                <div class="btn-layout" title="切换布局"></div>
+                <div class="btn-style" title="切换风格"></div>
+            </div>
+            <div class="title">主题式多维界面组件</div>
+            <router-link class="m-btn" active-class="m-active" to="/ThemeApp/layoutChart">海洋产业定制分析</router-link>
+        </div>
     </div>
 </template>
 
@@ -18,44 +24,70 @@
 <style lang="scss" scoped>
     .header-container {
         position: relative;
-        height: 87px;
-        background: #2b85e4;
-        border-bottom: 1px solid #2d8cf0;
-        .title {
-            color: #FFF;
-            font-size: 26px;
-            font-weight: 700;
-            line-height: 87px;
-            text-align: center;
-        }
-        .btn-panel {
-            position: absolute;
-            top: 26px;
-            right: 102px;
-            height: 35px;
-            overflow: hidden;
-            .m-btn {
-                display: inline-block;
-                margin-left: 23px;
-                width: 107px;
-                height: 35px;
-                text-align: center;
-                line-height: 35px;
-                color: #FFF;
-                background-color: transparent;
-                border: 1px solid #FFF;
-                border-radius: 19px;
-                cursor: pointer;
-                transition: background-color .2s linear;
+        height: 49px;
+        background: url("./images/home-header-bg.png") repeat-x top;
 
-                &:hover {
-                    background-color: rgba(243,153,80, 1);
+        .header-inner {
+            position: relative;
+            margin: 0 auto;
+            max-width: 1440px;
+            min-width: 1366px;
+
+            .btn-panel {
+                position: absolute;
+                left: 70px;
+                height: 49px;
+
+                .btn-layout {
+                    display: inline-block;
+                    width: 45px;
+                    height: 49px;
+                    background: url("./images/btn-bg-layout.png") no-repeat center;
+                    cursor: pointer;
+                    &:hover {
+                        background-size: 30px auto;
+                    }
                 }
 
-                &.m-active {
-                    background-color: #f39950;
+                .btn-style {
+                    display: inline-block;
+                    width: 45px;
+                    height: 49px;
+                    background: url("./images/btn-bg-style.png") no-repeat center;
+                    cursor: pointer;
+                    &:hover {
+                        background-size: 33px auto;
+                    }
+                }
+            }
+
+            .title {
+                color: rgba(122,160,212, 0.7);
+                letter-spacing: 6px;
+                font-size: 24px;
+                font-weight: 500;
+                line-height: 49px;
+                text-align: center;
+            }
+
+            .m-btn {
+                position: absolute;
+                padding: 0 50px;
+                top: 9px;
+                right: 110px;
+                height: 30px;
+                font-size: 13px;
+                line-height: 30px;
+                color: rgba(149,221,255, 0.37);
+                letter-spacing: 2px;
+                /*transition: background-color .2s linear;*/
+                background: linear-gradient(right, transparent 0% , rgba(149,193,241, 0.11) 50% , transparent 100%);
+                &:hover {
+                    color: rgba(149,221,255, 0.5);
+                    background: linear-gradient(right, transparent 0% , rgba(149,193,241, 0.33) 50% , transparent 100%);
                 }
             }
         }
+
     }
 </style>
