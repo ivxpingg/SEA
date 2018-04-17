@@ -118,35 +118,51 @@
                         onStart(e) {
                         },
                         onEnd(e) {
-
+                            debugger
                             if(e.to !== e.from) {
                                 if (this.pre_replaced_clone) {
+                                    that.insertAfter(this.pre_replaced, e.from.childNodes[this.pre_replaced_index - 1]);
                                     e.from.removeChild(this.pre_replaced_clone);
-                                    that.insertAfter(this.pre_replaced, e.from.childNodes[this.pre_replaced_index]);
                                     //e.from.insertBefore(this.pre_replaced, e.from.childNodes[this.pre_replaced_index]);
                                     this.pre_replaced.style.display = 'block';
                                     this.pre_replaced_clone = undefined;
                                 }
                                 else {}
                             }
+                            else {
+                                if (this.pre_replaced_clone) {
+                                    debugger
+                                    e.from.removeChild(this.pre_replaced_clone);
+                                    //e.from.insertBefore(this.pre_replaced, e.from.childNodes[this.pre_replaced_index]);
+                                    this.pre_replaced.style.display = 'block';
+                                    this.pre_replaced_clone = undefined;
+                                }
+                            }
                         },
                         onRemove(e) {
+                            console.dir(arguments);
+                            debugger
 
                         },
                         onMove(e, item){
-                            if (this.pre_replaced_clone) {
-                                e.from.removeChild(this.pre_replaced_clone);
-                                this.pre_replaced.style.display = 'block';
-                                this.pre_replaced_clone = undefined;
-                            }
+                            console.log(item.target);
 
                             if(e.to !== e.from) {
+                                if (this.pre_replaced_clone) {
+                                    e.from.removeChild(this.pre_replaced_clone);
+                                    this.pre_replaced.style.display = 'block';
+                                    this.pre_replaced_clone = undefined;
+                                }
+
                                 this.pre_replaced = e.related;
                                 this.pre_replaced_clone = e.related.cloneNode(true);
+                                this.pre_replaced_clone.className += ' ggg5';
 
-                                this.pre_replaced_index = 0;
+                                this.pre_replaced_index = 1;
 
                                 this.pre_replaced.style.display = 'none';
+
+                                console.dir(e.from.childNodes);
                                 for(var i = 0; i < e.from.childNodes.length; i ++) {
                                     if (e.from.childNodes[i] === e.dragged) {
 
@@ -160,6 +176,13 @@
                             }
                             else {
 
+                                if (this.pre_replaced_clone) {
+                                    e.from.removeChild(this.pre_replaced_clone);
+                                    this.pre_replaced.style.display = 'block';
+                                    this.pre_replaced_clone = undefined;
+                                }
+
+                                if (item.target.className.indexOf('ggg5') > 0) { return false;}
                             }
 
                         }
@@ -169,7 +192,11 @@
             insertAfter(newNode, existingNode) {
                 var parentNode = existingNode.parentNode;
 
-                if (existingNode.nextSibling) {
+                if(parentNode == undefined) {
+                    debugger
+                }
+
+                if (existingNode.nextSibling != null) {
                     parentNode.insertBefore(newNode, existingNode.nextSibling);
                 }
                 else {
