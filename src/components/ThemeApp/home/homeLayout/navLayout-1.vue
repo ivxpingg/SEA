@@ -6,14 +6,14 @@
             </div>
             <div class="nav-item">
                 <div class="nav-panel nav-panel-edit nav-panel-lv2">
-                    <div class="nav-item"><vNavItem2></vNavItem2></div>
-                    <div class="nav-item"><vNavItem3></vNavItem3></div>
+                    <div class="nav-item nav-item2"><vNavItem2></vNavItem2></div>
+                    <div class="nav-item nav-item3"><vNavItem3></vNavItem3></div>
                 </div>
             </div>
             <div class="nav-item">
                 <div class="nav-panel nav-panel-edit nav-panel-lv2">
-                    <div class="nav-item"><vNavItem4></vNavItem4></div>
-                    <div class="nav-item"><vNavItem5></vNavItem5></div>
+                    <div class="nav-item nav-item4"><vNavItem4></vNavItem4></div>
+                    <div class="nav-item nav-item5"><vNavItem5></vNavItem5></div>
                 </div>
             </div>
         </div>
@@ -39,6 +39,8 @@
         },
         methods: {
             initSortable() {
+                var that = this;
+
                 var dom_to,
                     dom_from,
                     dom_dragged,
@@ -64,36 +66,114 @@
                             name: 'lv2-' + i,
                             pull: true,
                             put: ['lv2-0', 'lv2-1']
+                            //function (to, from,target , e) { //['lv2-0', 'lv2-1']
+
+
+                                // if (to.el === from.el) {
+                                //     return true;
+                                // }
+                                // else {
+                                //
+                                //     if (this.preReplaced || this.preReplaced == e.toElement) {
+                                //         console.log(2);
+                                //          return false;
+                                //     }
+                                //
+                                //     console.log(1);
+                                //
+                                //     this.preTarget = target;
+                                //     this.preTargetClone = target.cloneNode(true);
+                                //     this.preTargetIndex = 0;
+                                //
+                                //     this.preReplaced = e.toElement;
+                                //     this.preReplacedClone = e.toElement.cloneNode(true);
+                                //     this.preReplacedIndex = 0;
+                                //
+                                //     for (var i = 0; i < from.el.childNodes.length; i++) {
+                                //         if (target === from.el.childNodes[i]) {
+                                //             this.preTargetIndex = i;
+                                //         }
+                                //     }
+                                //
+                                //     for (var i = 0; i < to.el.childNodes.length; i++) {
+                                //         if (e.toElement === to.el.childNodes[i]) {
+                                //             this.preReplacedIndex = i;
+                                //         }
+                                //     }
+                                //
+                                //     target.style.display = 'none';
+                                //     e.toElement.style.display = 'none';
+                                //
+                                //     that.insertAfter(this.preReplacedClone, from.el.childNodes[this.preTargetIndex]);
+                                //     that.insertAfter(this.preTargetClone, to.el.childNodes[this.preReplacedIndex]);
+                                //
+                                //     return false;
+                                // }
+
+                            //}
                         },
+                        // fallbackClass: true,
+                        forceFallback: true,
                         animation: 150,
                         onStart(e) {
                         },
                         onEnd(e) {
-                            if (dom_replaced_clone) {
-                                e.from.removeChild(dom_replaced_clone);
-                                dom_replaced_clone = undefined;
-                                dom_replaced = undefined;
+
+                            if(e.to !== e.from) {
+                                if (this.pre_replaced_clone) {
+                                    e.from.removeChild(this.pre_replaced_clone);
+                                    that.insertAfter(this.pre_replaced, e.from.childNodes[this.pre_replaced_index]);
+                                    //e.from.insertBefore(this.pre_replaced, e.from.childNodes[this.pre_replaced_index]);
+                                    this.pre_replaced.style.display = 'block';
+                                    this.pre_replaced_clone = undefined;
+                                }
+                                else {}
                             }
                         },
                         onRemove(e) {
-                            if(e.to !== e.from) {
-                                e.from.insertBefore(dom_replaced, e.from.childNodes[e.oldIndex]);
-                            }
+
                         },
                         onMove(e, item){
+                            if (this.pre_replaced_clone) {
+                                e.from.removeChild(this.pre_replaced_clone);
+                                this.pre_replaced.style.display = 'block';
+                                this.pre_replaced_clone = undefined;
+                            }
+
                             if(e.to !== e.from) {
-                                dom_replaced_clone = e.related.cloneNode();
-                                dom_replaced = e.related;
-                                e.from.insertBefore(dom_replaced_clone, e.from.childNodes[e.oldIndex]);
+                                this.pre_replaced = e.related;
+                                this.pre_replaced_clone = e.related.cloneNode(true);
+
+                                this.pre_replaced_index = 0;
+
+                                this.pre_replaced.style.display = 'none';
+                                for(var i = 0; i < e.from.childNodes.length; i ++) {
+                                    if (e.from.childNodes[i] === e.dragged) {
+
+                                        this.pre_replaced_index = i;
+                                    }
+                                }
+
+                                that.insertAfter(this.pre_replaced_clone, e.from.childNodes[this.pre_replaced_index]);
+                                // e.from.insertBefore(this.pre_replaced_clone, e.from.childNodes[this.pre_replaced_index]);
+
                             }
                             else {
-                                if (dom_replaced_clone) {
-                                    e.from.removeChild(dom_replaced_clone);
-                                }
+
                             }
 
                         }
                     });
+                }
+            },
+            insertAfter(newNode, existingNode) {
+                var parentNode = existingNode.parentNode;
+
+                if (existingNode.nextSibling) {
+                    parentNode.insertBefore(newNode, existingNode.nextSibling);
+                }
+                else {
+                    parentNode.appendChild(newNode);
                 }
             }
         }
