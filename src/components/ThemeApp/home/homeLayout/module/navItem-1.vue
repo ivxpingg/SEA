@@ -1,6 +1,8 @@
 <template>
     <div class="navItem-1-container">
-        navItem-1
+        <div class="item-title">
+            <span class="text">大型科研仪器共享服务组件</span>
+        </div>
     </div>
 </template>
 
@@ -13,9 +15,11 @@
     }
 </script>
 
+<style lang="scss" src="../style/navItem.scss" scoped></style>
 <style lang="scss" scoped>
     .navItem-1-container {
+        position: relative;
         height: 100%;
-        background-color: rgb(50, 51, 79);
+        background-color: rgba(255,255,255,0.06);
     }
 </style>

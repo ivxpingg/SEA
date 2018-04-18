@@ -5,13 +5,13 @@
                 <vNavItem1></vNavItem1>
             </div>
             <div class="nav-item">
-                <div class="nav-panel nav-panel-edit nav-panel-lv2">
+                <div class="nav-panel nav-panel-edit nav-panel-lv2 11">
                     <div class="nav-item nav-item2"><vNavItem2></vNavItem2></div>
                     <div class="nav-item nav-item3"><vNavItem3></vNavItem3></div>
                 </div>
             </div>
             <div class="nav-item">
-                <div class="nav-panel nav-panel-edit nav-panel-lv2">
+                <div class="nav-panel nav-panel-edit nav-panel-lv2 22">
                     <div class="nav-item nav-item4"><vNavItem4></vNavItem4></div>
                     <div class="nav-item nav-item5"><vNavItem5></vNavItem5></div>
                 </div>
@@ -118,10 +118,10 @@
                         onStart(e) {
                         },
                         onEnd(e) {
-                            debugger
+
                             if(e.to !== e.from) {
                                 if (this.pre_replaced_clone) {
-                                    that.insertAfter(this.pre_replaced, e.from.childNodes[this.pre_replaced_index - 1]);
+                                    that.insertAfter(this.pre_replaced, e.from.childNodes[this.pre_replaced_index]);
                                     e.from.removeChild(this.pre_replaced_clone);
                                     //e.from.insertBefore(this.pre_replaced, e.from.childNodes[this.pre_replaced_index]);
                                     this.pre_replaced.style.display = 'block';
@@ -131,7 +131,7 @@
                             }
                             else {
                                 if (this.pre_replaced_clone) {
-                                    debugger
+
                                     e.from.removeChild(this.pre_replaced_clone);
                                     //e.from.insertBefore(this.pre_replaced, e.from.childNodes[this.pre_replaced_index]);
                                     this.pre_replaced.style.display = 'block';
@@ -140,12 +140,10 @@
                             }
                         },
                         onRemove(e) {
-                            console.dir(arguments);
-                            debugger
 
                         },
                         onMove(e, item){
-                            console.log(item.target);
+
 
                             if(e.to !== e.from) {
                                 if (this.pre_replaced_clone) {
@@ -158,16 +156,18 @@
                                 this.pre_replaced_clone = e.related.cloneNode(true);
                                 this.pre_replaced_clone.className += ' ggg5';
 
-                                this.pre_replaced_index = 1;
+                                this.pre_replaced_index = 0;
 
                                 this.pre_replaced.style.display = 'none';
 
-                                console.dir(e.from.childNodes);
                                 for(var i = 0; i < e.from.childNodes.length; i ++) {
                                     if (e.from.childNodes[i] === e.dragged) {
-
                                         this.pre_replaced_index = i;
                                     }
+                                }
+
+                                if (e.dragged.parentNode == e.from && this.pre_replaced_index > 0) {
+                                    this.pre_replaced_index -= 1;
                                 }
 
                                 that.insertAfter(this.pre_replaced_clone, e.from.childNodes[this.pre_replaced_index]);
@@ -208,10 +208,21 @@
 </script>
 <style lang="scss" src="./style/navLyout.scss"></style>
 <style lang="scss" scoped>
-    @import './style/navLyout';
+    /*@import './style/navLyout';*/
+
+    $lv1_padding_top: 12px;
+    $lv1_padding_left: 10px;
+    $lv1_padding_right: 10px;
+    $lv1_padding_bottom: 12px;
+
+    $lv2_padding_top: 7px;
+    $lv2_padding_bottom: 7px;
+
+    $lv1_nav_item_height: 684px;
+    $lv2_nav_item_height: $lv1_nav_item_height / 2;
+
     .navLayout-1-container {
         height: 100%;
-        background: $color-bg;
     }
 
     .nav-panel {
@@ -246,15 +257,19 @@
             display: flex;
             > .nav-item {
                 flex: 1;
-                padding: 10px 10px;
-                height: 500px;
+                padding-top: $lv1_padding_top;
+                padding-left: $lv1_padding_left;
+                padding-right: $lv1_padding_right;
+                padding-bottom: $lv1_padding_bottom;
+                height: $lv1_nav_item_height + $lv1_padding_top + $lv1_padding_bottom;
             }
         }
 
         &.nav-panel-lv2 {
             > .nav-item {
-                padding: 5px 0;
-                height: 240px;
+                padding-top: $lv2_padding_top;
+                padding-bottom: $lv2_padding_bottom;
+                height: $lv2_nav_item_height;
 
                 &:first-child {
                     padding-top: 0;
