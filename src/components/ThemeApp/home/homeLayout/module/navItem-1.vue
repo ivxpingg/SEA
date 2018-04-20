@@ -3,6 +3,9 @@
         <div class="item-title">
             <span class="text">大型科研仪器共享服务组件</span>
         </div>
+        <div class="level-panel level-panel-1"> </div>
+
+        <div class="level-panel level-panel-2"></div>
     </div>
 </template>
 
@@ -21,5 +24,20 @@
         position: relative;
         height: 100%;
         background-color: rgba(255,255,255,0.06);
+
+
+        .level-panel {
+            position: relative;
+            height: 100%;
+
+            &.level-panel-1 {
+                background: rgba(255, 255, 255, 0.12) url("./images/phone-line.png") no-repeat center;
+            }
+
+            &.level-panel-1 {
+
+            }
+        }
+
     }
 </style>

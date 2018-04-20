@@ -46,7 +46,27 @@ export default [
                 meta: {
                     title: '海洋产业定制分析'
                 },
-                component: (resolve) => require(['../../components/ThemeApp/customLayoutChart/layoutChart.vue'], resolve)
+                component: (resolve) => require(['../../components/ThemeApp/customLayoutChart/layoutChart.vue'], resolve),
+                children: [
+                    {
+                        path: 'showFace',
+                        name: 'showFace',
+                        requireAuth: false,
+                        meta: {
+                            title: '海洋产业定制分析'
+                        },
+                        component: (resolve) => require(['../../components/ThemeApp/customLayoutChart/module/showFace.vue'], resolve)
+                    },
+                    {
+                        path: 'addOrEdit',
+                        name: 'addOrEdit',
+                        requireAuth: false,
+                        meta: {
+                            title: '海洋产业定制分析'
+                        },
+                        component: (resolve) => require(['../../components/ThemeApp/customLayoutChart/module/addOrEdit.vue'], resolve)
+                    }
+                ]
             }
         ]
     },

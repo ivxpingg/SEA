@@ -9,7 +9,6 @@
 
 <script>
     import Sortable from 'sortablejs';
-    import vLayout1 from './subsystemPanel/layout-1';
     import vNavLayout1 from './homeLayout/navLayout-1';
     import vHeader from './header/header';
     export default {
@@ -17,7 +16,7 @@
         data() {
             return {};
         },
-        components: {vHeader, vLayout1, vNavLayout1},
+        components: {vHeader, vNavLayout1},
         mounted() {
 
         },
@@ -31,11 +30,10 @@
 
         background: #070714 url('./images/home-bg.png') no-repeat top center;
 
-
         .subsystem-panel {
             margin: 0 auto;
             max-width: 1440px;
-            min-width: 1366px;
+            min-width: 1340px;
             height: auto;
         }
     }

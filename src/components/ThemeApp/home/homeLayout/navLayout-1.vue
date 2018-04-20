@@ -1,17 +1,17 @@
 <template>
     <div class="navLayout-1-container">
-        <div class="nav-panel nav-panel-lv1 cursor-move" ref="nav-panel-lv1">
+        <div class="nav-panel nav-panel-lv1 cursor-move" :class="{'nav-panel-edit':isDrayNavPanelLv1}" ref="nav-panel-lv1">
             <div class="nav-item">
                 <vNavItem1></vNavItem1>
             </div>
             <div class="nav-item">
-                <div class="nav-panel nav-panel-edit nav-panel-lv2 11">
+                <div class="nav-panel nav-panel-lv2 11">
                     <div class="nav-item nav-item2"><vNavItem2></vNavItem2></div>
                     <div class="nav-item nav-item3"><vNavItem3></vNavItem3></div>
                 </div>
             </div>
             <div class="nav-item">
-                <div class="nav-panel nav-panel-edit nav-panel-lv2 22">
+                <div class="nav-panel nav-panel-lv2 22">
                     <div class="nav-item nav-item4"><vNavItem4></vNavItem4></div>
                     <div class="nav-item nav-item5"><vNavItem5></vNavItem5></div>
                 </div>
@@ -30,7 +30,9 @@
     export default {
         name: "navLayout-1",
         data() {
-            return {};
+            return {
+                isDrayNavPanelLv1: false
+            };
         },
         components: {vNavItem1, vNavItem2, vNavItem3, vNavItem4, vNavItem5},
         mounted() {
@@ -41,13 +43,6 @@
             initSortable() {
                 var that = this;
 
-                var dom_to,
-                    dom_from,
-                    dom_dragged,
-                    dom_replaced,
-                    dom_replaced_clone,
-                    oldIndex;
-
                 var navSort_lv1 = Sortable.create(this.$refs['nav-panel-lv1'], {
                     group: {
                         name: 'lv1',
@@ -55,8 +50,11 @@
                     animation: 150,
                     forceFallback: true,
                     onStart(e) {
+                        that.isDrayNavPanelLv1 = true;
                     },
-                    onEnd(e) {}
+                    onEnd(e) {
+                        that.isDrayNavPanelLv1 = false;
+                    }
                 });
 
                 var dom_navPanelLv2 = document.querySelectorAll('.nav-panel-lv2');
@@ -66,51 +64,6 @@
                             name: 'lv2-' + i,
                             pull: true,
                             put: ['lv2-0', 'lv2-1']
-                            //function (to, from,target , e) { //['lv2-0', 'lv2-1']
-
-
-                                // if (to.el === from.el) {
-                                //     return true;
-                                // }
-                                // else {
-                                //
-                                //     if (this.preReplaced || this.preReplaced == e.toElement) {
-                                //         console.log(2);
-                                //          return false;
-                                //     }
-                                //
-                                //     console.log(1);
-                                //
-                                //     this.preTarget = target;
-                                //     this.preTargetClone = target.cloneNode(true);
-                                //     this.preTargetIndex = 0;
-                                //
-                                //     this.preReplaced = e.toElement;
-                                //     this.preReplacedClone = e.toElement.cloneNode(true);
-                                //     this.preReplacedIndex = 0;
-                                //
-                                //     for (var i = 0; i < from.el.childNodes.length; i++) {
-                                //         if (target === from.el.childNodes[i]) {
-                                //             this.preTargetIndex = i;
-                                //         }
-                                //     }
-                                //
-                                //     for (var i = 0; i < to.el.childNodes.length; i++) {
-                                //         if (e.toElement === to.el.childNodes[i]) {
-                                //             this.preReplacedIndex = i;
-                                //         }
-                                //     }
-                                //
-                                //     target.style.display = 'none';
-                                //     e.toElement.style.display = 'none';
-                                //
-                                //     that.insertAfter(this.preReplacedClone, from.el.childNodes[this.preTargetIndex]);
-                                //     that.insertAfter(this.preTargetClone, to.el.childNodes[this.preReplacedIndex]);
-                                //
-                                //     return false;
-                                // }
-
-                            //}
                         },
                         // fallbackClass: true,
                         forceFallback: true,
@@ -228,6 +181,7 @@
     .nav-panel {
         box-sizing: border-box;
         .nav-item {
+            position: relative;
             color: #FFF;
             font-size: 26px;
             text-align: center;
@@ -237,8 +191,6 @@
 
         &.nav-panel-edit {
             > .nav-item{
-                position: relative;
-
                 &:after {
                     position: absolute;
                     content: " ";

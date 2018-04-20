@@ -1,10 +1,11 @@
 <template>
-    <div class="layout-2-container"></div>
+    <div class="addOrEdit-container">
+    </div>
 </template>
 
 <script>
     export default {
-        name: "layout-2",
+        name: "addOrEdit",
         data() {
             return {};
         }
@@ -12,6 +13,6 @@
 </script>
 
 <style lang="scss" scoped>
-    .layout-2-container {
+    .addOrEdit-container {
     }
 </style>
