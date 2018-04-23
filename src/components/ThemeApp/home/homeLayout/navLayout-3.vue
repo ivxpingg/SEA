@@ -1,34 +1,10 @@
 <template>
     <div class="navLayout-1-container">
         <div class="nav-panel nav-panel-lv1 cursor-move" :class="{'nav-panel-edit':isDrayNavPanelLv1}" ref="nav-panel-lv1">
-            <div class="nav-item" v-for="item_lv1 in lv1" :name="item_lv1.navItemType" :class="item_lv1.className">
-                <template v-if="!!item_lv1.lv2">
-                    <div class="nav-panel nav-panel-lv2">
-                        <div class="nav-item" v-for="item_lv2 in item_lv1.lv2" :name="item_lv2.navItemType">
-                            <vNavItemParent :keyId="item_lv2.navItemType"></vNavItemParent>
-                        </div>
-                    </div>
-                </template>
-                <template v-else>
-                    <vNavItemParent :keyId="item_lv1.navItemType"></vNavItemParent>
-                </template>
+            <div class="nav-item" v-for="item in lv1"  :name="item.navItemType" :class="item.className">
+                <vNavItemParent :keyId="item.navItemType"></vNavItemParent>
             </div>
 
-            <!--<div class="nav-item">-->
-                <!--<vNavItem1></vNavItem1>-->
-            <!--</div>-->
-            <!--<div class="nav-item">-->
-                <!--<div class="nav-panel nav-panel-lv2 11">-->
-                    <!--<div class="nav-item nav-item2"><vNavItem2></vNavItem2></div>-->
-                    <!--<div class="nav-item nav-item3"><vNavItem3></vNavItem3></div>-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--<div class="nav-item">-->
-                <!--<div class="nav-panel nav-panel-lv2 22">-->
-                    <!--<div class="nav-item nav-item4"><vNavItem4></vNavItem4></div>-->
-                    <!--<div class="nav-item nav-item5"><vNavItem5></vNavItem5></div>-->
-                <!--</div>-->
-            <!--</div>-->
         </div>
     </div>
 </template>
@@ -44,35 +20,27 @@
                 lv1: [
                     {
                         className: '',
-                        navItemType: '1'
+                        navItemType: '1',
+                    },
+                    {
+                        className: 'double-w',
+                        navItemType: '2',
                     },
                     {
                         className: '',
-                        navItemType: '',
-                        lv2: [
-                            {
-                                className: '',
-                                navItemType: '2'
-                            },
-                            {
-                                className: '',
-                                navItemType: '3'
-                            }
-                        ]
+                        navItemType: '3',
                     },
                     {
                         className: '',
-                        navItemType: '',
-                        lv2: [
-                            {
-                                className: '',
-                                navItemType: '4'
-                            },
-                            {
-                                className: '',
-                                navItemType: '5'
-                            }
-                        ]
+                        navItemType: '4',
+                    },
+                    {
+                        className: 'double-w',
+                        navItemType: '5',
+                    },
+                    {
+                        className: '',
+                        navItemType: '5',
                     }
                 ]
             };
@@ -206,19 +174,21 @@
 <style lang="scss" scoped>
     /*@import './style/navLyout';*/
 
-    $lv1_padding_top: 12px;
+    $lv1_padding_top: 7px;
     $lv1_padding_left: 10px;
     $lv1_padding_right: 10px;
-    $lv1_padding_bottom: 12px;
+    $lv1_padding_bottom: 7px;
 
     $lv2_padding_top: 7px;
     $lv2_padding_bottom: 7px;
 
-    $lv1_nav_item_height: 684px;
+    $lv1_nav_item_height: 335px;
     $lv2_nav_item_height: $lv1_nav_item_height / 2;
 
     .navLayout-1-container {
-        height: 100%;
+        height: 710px;
+        padding: 5px 0;
+        overflow: hidden;
     }
 
     .nav-panel {
@@ -249,28 +219,17 @@
         }
 
         &.nav-panel-lv1 {
-            display: flex;
             > .nav-item {
-                flex: 1;
+                float: left;
+                width: 25%;
                 padding-top: $lv1_padding_top;
                 padding-left: $lv1_padding_left;
                 padding-right: $lv1_padding_right;
                 padding-bottom: $lv1_padding_bottom;
                 height: $lv1_nav_item_height + $lv1_padding_top + $lv1_padding_bottom;
-            }
-        }
 
-        &.nav-panel-lv2 {
-            > .nav-item {
-                padding-top: $lv2_padding_top;
-                padding-bottom: $lv2_padding_bottom;
-                height: $lv2_nav_item_height;
-
-                &:first-child {
-                    padding-top: 0;
-                }
-                &:last-child {
-                    padding-bottom: 0;
+                &.double-w {
+                    width: 50%;
                 }
             }
         }

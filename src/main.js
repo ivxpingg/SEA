@@ -7,6 +7,7 @@ import Ajax from './libs/appConfig/ajax';
 import RouterConfig from './libs/appConfig/routerConfig';
 import Store from './libs/appConfig/vuex/vuexConfig';
 import 'iview/dist/styles/iview.css';
+import './libs/iconfont/iconfont.css';
 
 import './style/app.scss';
 

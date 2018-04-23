@@ -2,8 +2,15 @@
     <div class="header-container">
         <div class="header-inner">
             <div class="btn-panel">
-                <div class="btn-layout" title="切换布局"></div>
-                <div class="btn-style" title="切换风格"></div>
+                <div class="btn-b btn-layout" @click="onSwitchLayout" title="切换布局">
+                    <i class="iconfont icon-ai212"></i>
+                </div>
+                <div class="btn-b btn-style" title="切换风格">
+                    <i class="iconfont icon-beijingtupian"></i>
+                </div>
+                <div class="btn-b btn-setting" title="拖放布局">
+                    <i class="iconfont icon-shezhi"></i>
+                </div>
             </div>
             <div class="title">主题式多维界面组件</div>
             <router-link class="m-btn" active-class="m-active" to="/ThemeApp/layoutChart">海洋产业定制分析</router-link>
@@ -16,6 +23,11 @@
         name: "themeHeader",
         data() {
             return {};
+        },
+        methods: {
+            onSwitchLayout() {
+                this.$emit('sub_onSwitchLayout');
+            }
         }
 
     }
@@ -37,28 +49,26 @@
                 position: absolute;
                 left: 70px;
                 height: 49px;
-
-                .btn-layout {
-                    display: inline-block;
+                .btn-b {
                     width: 45px;
                     height: 49px;
-                    background: url("./images/btn-bg-layout.png") no-repeat center;
-                    cursor: pointer;
-                    &:hover {
-                        background-size: 30px auto;
-                    }
-                }
-
-                .btn-style {
                     display: inline-block;
-                    width: 45px;
-                    height: 49px;
-                    background: url("./images/btn-bg-style.png") no-repeat center;
                     cursor: pointer;
-                    &:hover {
-                        background-size: 33px auto;
+                    .iconfont {
+                        color: rgba(122, 160, 212, 0.5);
+                        line-height: 48px;
+                        font-size: 20px;
+                        &:hover {
+                            color: rgba(122, 160, 212, 0.9);
+                        }
+                        &:active {
+                            text-shadow: 0px 0px 5px rgba(122, 160, 212, 0.5);
+                        }
                     }
                 }
+                .btn-layout {}
+                .btn-style {}
+                .btn-setting {}
             }
 
             .title {
