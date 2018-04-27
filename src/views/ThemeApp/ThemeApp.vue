@@ -30,4 +30,8 @@
         transform: translateX(10px);
         opacity: 0;
     }
+
+    .app-container {
+
+    }
 </style>

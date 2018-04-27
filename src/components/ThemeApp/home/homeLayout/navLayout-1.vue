@@ -1,6 +1,6 @@
 <template>
     <div class="navLayout-1-container">
-        <div class="nav-panel nav-panel-lv1 cursor-move" :class="{'nav-panel-edit':isDrayNavPanelLv1}" ref="nav-panel-lv1">
+        <div class="nav-panel nav-panel-lv1" :class="{'nav-panel-edit':isDrayNavPanelLv1, 'cursor-move': editLayout}" ref="nav-panel-lv1">
             <div class="nav-item" v-for="item_lv1 in lv1" :name="item_lv1.navItemType" :class="item_lv1.className">
                 <template v-if="!!item_lv1.lv2">
                     <div class="nav-panel nav-panel-lv2">
@@ -14,21 +14,6 @@
                 </template>
             </div>
 
-            <!--<div class="nav-item">-->
-                <!--<vNavItem1></vNavItem1>-->
-            <!--</div>-->
-            <!--<div class="nav-item">-->
-                <!--<div class="nav-panel nav-panel-lv2 11">-->
-                    <!--<div class="nav-item nav-item2"><vNavItem2></vNavItem2></div>-->
-                    <!--<div class="nav-item nav-item3"><vNavItem3></vNavItem3></div>-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--<div class="nav-item">-->
-                <!--<div class="nav-panel nav-panel-lv2 22">-->
-                    <!--<div class="nav-item nav-item4"><vNavItem4></vNavItem4></div>-->
-                    <!--<div class="nav-item nav-item5"><vNavItem5></vNavItem5></div>-->
-                <!--</div>-->
-            <!--</div>-->
         </div>
     </div>
 </template>
@@ -41,6 +26,9 @@
         data() {
             return {
                 isDrayNavPanelLv1: false,
+                sortable_lv1: null,
+                sortable_lv2_0: null,
+                sortable_lv2_1: null,
                 lv1: [
                     {
                         className: '',
@@ -77,16 +65,36 @@
                 ]
             };
         },
+        props: {
+            editLayout: {
+                type: Boolean,
+                default() {
+                    return false;
+                }
+            }
+        },
         components: {vNavItemParent},
         mounted() {
 
-            this.initSortable();
+            // this.initSortable();
+        },
+        watch: {
+            editLayout(val, oldVal) {
+                if (val) {
+                    this.initSortable();
+                }
+                else {
+                    this.sortable_lv1.destroy();
+                    this.sortable_lv2_0.destroy();
+                    this.sortable_lv2_1.destroy();
+                }
+            }
         },
         methods: {
             initSortable() {
                 var that = this;
 
-                var navSort_lv1 = Sortable.create(this.$refs['nav-panel-lv1'], {
+                this.sortable_lv1 = Sortable.create(this.$refs['nav-panel-lv1'], {
                     group: {
                         name: 'lv1',
                     },
@@ -102,7 +110,8 @@
 
                 var dom_navPanelLv2 = document.querySelectorAll('.nav-panel-lv2');
                 for (var i = 0; i < dom_navPanelLv2.length; i++) {
-                    Sortable.create(dom_navPanelLv2[i], {
+
+                    this['sortable_lv2_' + i] = Sortable.create(dom_navPanelLv2[i], {
                         group: {
                             name: 'lv2-' + i,
                             pull: true,

@@ -1,12 +1,17 @@
 <template>
-    <div class="appHome-container">
-        <vHeader @sub_onSwitchLayout="sub_onSwitchLayout"></vHeader>
+    <div class="appHome-container" :class="'home_bg_' + skinType">
+        <vHeader @sub_onSwitchLayout="sub_onSwitchLayout" @sub_onEditLayout="sub_onEditLayout" @sub_onSwitchSpin="sub_onSwitchSpin" :editLayout="editLayout" :skinType="skinType"></vHeader>
         <div ref="subsystemPanel" class="subsystem-panel">
-            <vNavLayout1 v-if="navLayoutType === '1'"></vNavLayout1>
-            <vNavLayout2 v-if="navLayoutType === '2'"></vNavLayout2>
-            <vNavLayout3 v-if="navLayoutType === '3'"></vNavLayout3>
+            <vNavLayout1 v-if="navLayoutType === '1'" :editLayout="editLayout"></vNavLayout1>
+            <vNavLayout2 v-if="navLayoutType === '2'" :editLayout="editLayout"></vNavLayout2>
+            <vNavLayout3 v-if="navLayoutType === '3'" :editLayout="editLayout"></vNavLayout3>
         </div>
-        <div @click="getData">获取数据</div>
+
+        <img src="./images/home-bg1.png" alt="" style="opacity: 0">
+        <img src="./images/home-bg2.png" alt="" style="opacity: 0">
+        <img src="./images/home-bg3.png" alt="" style="opacity: 0">
+        <img src="./images/home-bg4.png" alt="" style="opacity: 0">
+
     </div>
 </template>
 
@@ -21,6 +26,8 @@
         data() {
             return {
                 navLayoutType: '1', // 布局类型['1'|'2'|'3']， 目前只有3个类型切换
+                skinType: '1',
+                editLayout: false
             };
         },
         components: {vHeader, vNavLayout1, vNavLayout2, vNavLayout3},
@@ -72,6 +79,27 @@
                 else if (this.navLayoutType === '3') {
                     this.navLayoutType = '1';
                 }
+
+                this.editLayout = false;
+            },
+            sub_onEditLayout() {
+                this.editLayout = !this.editLayout;
+            },
+            sub_onSwitchSpin() {
+                if (this.skinType === '1') {
+                    this.skinType = '2';
+                }
+                else if (this.skinType === '2') {
+                    this.skinType = '3';
+                }
+                else if (this.skinType === '3') {
+                    this.skinType = '4';
+                }
+                else if (this.skinType === '4') {
+                    this.skinType = '1';
+                }
+
+                this.editLayout = false;
             }
         }
     }
@@ -80,7 +108,21 @@
     .appHome-container {
         height: 100%;
 
-        background: url('./images/home-bg.png') no-repeat top center;
+        /*background: url('./images/home-bg.png') no-repeat top center;*/
+
+        &.home_bg_1 {
+            background: url('./images/home-bg1.png') no-repeat top center;
+        }
+        &.home_bg_2 {
+            background: url('./images/home-bg2.png') no-repeat top center;
+        }
+        &.home_bg_3 {
+            background: url('./images/home-bg3.png') no-repeat top center;
+        }
+        &.home_bg_4 {
+            background: url('./images/home-bg4.png') no-repeat top center;
+        }
+
 
         .subsystem-panel {
             margin: 0 auto;

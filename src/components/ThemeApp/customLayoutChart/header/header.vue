@@ -2,7 +2,7 @@
     <div class="header-container">
         <div class="header-inner">
             <div class="title">海洋产业定制分析</div>
-            <router-link class="m-btn" active-class="m-active" to="/ThemeApp/layoutChart">主题式多维界面组件</router-link>
+            <router-link class="m-btn" active-class="m-active" to="/ThemeApp/appHome">导航界面</router-link>
         </div>
     </div>
 </template>
@@ -18,40 +18,50 @@
 <style lang="scss" scoped>
     .header-container {
         position: relative;
-        height: 49px;
-        background: url("./images/home-header-bg.png") repeat-x top;
+        height: 91px;
+        background: linear-gradient(to bottom, #142066 79px,#FFF 80px, #FFF 91px);
+        border-bottom: 1px solid #142066;
+
+        &:after {
+            position: absolute;
+            display: block;
+            bottom: 0px;
+            left: 0;
+            right: 0;
+            content: " ";
+            height: 1px;
+            background: #a7abc5;
+            z-index: 1;
+        }
 
         .header-inner {
             position: relative;
-            margin: 0 auto;
-            max-width: 1440px;
-            min-width: 1366px;
-
 
             .title {
-                color: rgba(122,160,212, 0.7);
+                margin-left: 60px;
+                color: #FFF;
                 letter-spacing: 6px;
-                font-size: 24px;
+                font-size: 32px;
                 font-weight: 500;
-                line-height: 49px;
-                text-align: center;
+                line-height: 79px;
+                text-align: left;
             }
 
             .m-btn {
                 position: absolute;
                 padding: 0 50px;
-                top: 9px;
+                top: 25px;
                 right: 110px;
                 height: 30px;
-                font-size: 13px;
+                font-size: 14px;
                 line-height: 30px;
-                color: rgba(149,221,255, 0.37);
-                letter-spacing: 2px;
+                color: rgba(255,255,255, 0.8);
+                letter-spacing: 4px;
                 /*transition: background-color .2s linear;*/
-                background: linear-gradient(right, transparent 0% , rgba(149,193,241, 0.11) 50% , transparent 100%);
+                background: linear-gradient(right, transparent 0% , rgba(255,255,255, 0.33) 50% , transparent 100%);
                 &:hover {
-                    color: rgba(149,221,255, 0.5);
-                    background: linear-gradient(right, transparent 0% , rgba(149,193,241, 0.33) 50% , transparent 100%);
+                    color: rgba(255,255,255, 1);
+                    background: linear-gradient(right, transparent 0% , rgba(255,255,255, 0.44) 50% , transparent 100%);
                 }
             }
         }

@@ -5,15 +5,15 @@
                 <div class="btn-b btn-layout" @click="onSwitchLayout" title="切换布局">
                     <i class="iconfont icon-ai212"></i>
                 </div>
-                <div class="btn-b btn-style" title="切换风格">
+                <div class="btn-b btn-style" @click="onSwitchSpin" title="切换风格">
                     <i class="iconfont icon-beijingtupian"></i>
                 </div>
-                <div class="btn-b btn-setting" title="拖放布局">
+                <div class="btn-b btn-setting" @click="onEditLayout" title="拖放布局">
                     <i class="iconfont icon-shezhi"></i>
                 </div>
             </div>
             <div class="title">主题式多维界面组件</div>
-            <router-link class="m-btn" active-class="m-active" to="/ThemeApp/layoutChart">海洋产业定制分析</router-link>
+            <router-link class="m-btn" active-class="m-active" to="/ThemeApp/layoutChart/showFace">海洋产业定制分析</router-link>
         </div>
     </div>
 </template>
@@ -24,9 +24,29 @@
         data() {
             return {};
         },
+        props: {
+            editLayout: {
+                type: Boolean,
+                default() {
+                    return false;
+                }
+            },
+            skinType: {
+                type: String,
+                default() {
+                    return '1';
+                }
+            }
+        },
         methods: {
             onSwitchLayout() {
                 this.$emit('sub_onSwitchLayout');
+            },
+            onEditLayout() {
+                this.$emit('sub_onEditLayout');
+            },
+            onSwitchSpin() {
+                this.$emit('sub_onSwitchSpin');
             }
         }
 

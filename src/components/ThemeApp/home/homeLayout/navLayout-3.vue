@@ -1,6 +1,6 @@
 <template>
     <div class="navLayout-1-container">
-        <div class="nav-panel nav-panel-lv1 cursor-move" :class="{'nav-panel-edit':isDrayNavPanelLv1}" ref="nav-panel-lv1">
+        <div class="nav-panel nav-panel-lv1" :class="{'nav-panel-edit':isDrayNavPanelLv1, 'cursor-move': editLayout}" ref="nav-panel-lv1">
             <div class="nav-item" v-for="item in lv1"  :name="item.navItemType" :class="item.className">
                 <vNavItemParent :keyId="item.navItemType"></vNavItemParent>
             </div>
@@ -17,6 +17,7 @@
         data() {
             return {
                 isDrayNavPanelLv1: false,
+                sortable_lv1: null,
                 lv1: [
                     {
                         className: '',
@@ -45,113 +46,59 @@
                 ]
             };
         },
+        props: {
+            editLayout: {
+                type: Boolean,
+                default() {
+                    return false;
+                }
+            }
+        },
         components: {vNavItemParent},
         mounted() {
 
-            this.initSortable();
+            // this.initSortable();
+        },
+        watch: {
+            editLayout(val, oldVal) {
+                if (val) {
+                    this.initSortable();
+                }
+                else {
+                    this.sortable_lv1.destroy();
+                }
+            }
         },
         methods: {
             initSortable() {
                 var that = this;
 
-                var navSort_lv1 = Sortable.create(this.$refs['nav-panel-lv1'], {
+                this.sortable_lv1 = Sortable.create(this.$refs['nav-panel-lv1'], {
                     group: {
                         name: 'lv1',
                     },
                     animation: 150,
                     forceFallback: true,
+                    scroll: false,
                     onStart(e) {
                         that.isDrayNavPanelLv1 = true;
                     },
                     onEnd(e) {
                         that.isDrayNavPanelLv1 = false;
+                        var dom_item = that.$refs['nav-panel-lv1'].querySelectorAll('.nav-item');
+
+                        if (dom_item[1].className.indexOf('double-w') >= 0 && dom_item[2].className.indexOf('double-w') >= 0) {
+                            that.$refs['nav-panel-lv1'].insertBefore(dom_item[2], dom_item[4]);
+                        }
+                        else if (dom_item[3].className.indexOf('double-w') >= 0 && dom_item[5].className.indexOf('double-w') >= 0) {
+                            that.$refs['nav-panel-lv1'].insertBefore(dom_item[3], dom_item[5]);
+                        }
+                        else if (dom_item[3].className.indexOf('double-w') >= 0 && dom_item[4].className.indexOf('double-w') >= 0) {
+                            that.$refs['nav-panel-lv1'].insertBefore(dom_item[5], dom_item[3]);
+                        }
                     }
                 });
 
-                var dom_navPanelLv2 = document.querySelectorAll('.nav-panel-lv2');
-                for (var i = 0; i < dom_navPanelLv2.length; i++) {
-                    Sortable.create(dom_navPanelLv2[i], {
-                        group: {
-                            name: 'lv2-' + i,
-                            pull: true,
-                            put: ['lv2-0', 'lv2-1']
-                        },
-                        // fallbackClass: true,
-                        forceFallback: true,
-                        animation: 150,
-                        onStart(e) {
-                        },
-                        onEnd(e) {
-
-                            if(e.to !== e.from) {
-                                if (this.pre_replaced_clone) {
-                                    that.insertAfter(this.pre_replaced, e.from.childNodes[this.pre_replaced_index]);
-                                    e.from.removeChild(this.pre_replaced_clone);
-                                    //e.from.insertBefore(this.pre_replaced, e.from.childNodes[this.pre_replaced_index]);
-                                    this.pre_replaced.style.display = 'block';
-                                    this.pre_replaced_clone = undefined;
-                                }
-                                else {}
-                            }
-                            else {
-                                if (this.pre_replaced_clone) {
-
-                                    e.from.removeChild(this.pre_replaced_clone);
-                                    //e.from.insertBefore(this.pre_replaced, e.from.childNodes[this.pre_replaced_index]);
-                                    this.pre_replaced.style.display = 'block';
-                                    this.pre_replaced_clone = undefined;
-                                }
-                            }
-                        },
-                        onRemove(e) {
-
-                        },
-                        onMove(e, item){
-
-
-                            if(e.to !== e.from) {
-                                if (this.pre_replaced_clone) {
-                                    e.from.removeChild(this.pre_replaced_clone);
-                                    this.pre_replaced.style.display = 'block';
-                                    this.pre_replaced_clone = undefined;
-                                }
-
-                                this.pre_replaced = e.related;
-                                this.pre_replaced_clone = e.related.cloneNode(true);
-                                this.pre_replaced_clone.className += ' ggg5';
-
-                                this.pre_replaced_index = 0;
-
-                                this.pre_replaced.style.display = 'none';
-
-                                for(var i = 0; i < e.from.childNodes.length; i ++) {
-                                    if (e.from.childNodes[i] === e.dragged) {
-                                        this.pre_replaced_index = i;
-                                    }
-                                }
-
-                                if (e.dragged.parentNode == e.from && this.pre_replaced_index > 0) {
-                                    this.pre_replaced_index -= 1;
-                                }
-
-                                that.insertAfter(this.pre_replaced_clone, e.from.childNodes[this.pre_replaced_index]);
-                                // e.from.insertBefore(this.pre_replaced_clone, e.from.childNodes[this.pre_replaced_index]);
-
-                            }
-                            else {
-
-                                if (this.pre_replaced_clone) {
-                                    e.from.removeChild(this.pre_replaced_clone);
-                                    this.pre_replaced.style.display = 'block';
-                                    this.pre_replaced_clone = undefined;
-                                }
-
-                                if (item.target.className.indexOf('ggg5') > 0) { return false;}
-                            }
-
-                        }
-                    });
-                }
             },
             insertAfter(newNode, existingNode) {
                 var parentNode = existingNode.parentNode;

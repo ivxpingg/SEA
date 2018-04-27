@@ -1,6 +1,6 @@
 <template>
     <div class="navLayout-1-container">
-        <div class="nav-panel nav-panel-lv1 cursor-move" :class="{'nav-panel-edit':isDrayNavPanelLv1}" ref="nav-panel-lv1">
+        <div class="nav-panel nav-panel-lv1" :class="{'nav-panel-edit':isDrayNavPanelLv1, 'cursor-move': editLayout}" ref="nav-panel-lv1">
             <div class="nav-item" v-for="item in lv1" :name="item.navItemType" :class="item.className">
                 <vNavItemParent :keyId="item.navItemType"></vNavItemParent>
             </div>
@@ -16,6 +16,7 @@
         data() {
             return {
                 isDrayNavPanelLv1: false,
+                sortable_lv1: null,
                 lv1: [
                     {
                         className: 'double-w',
@@ -40,25 +41,59 @@
                 ]
             };
         },
+        props: {
+            editLayout: {
+                type: Boolean,
+                default() {
+                    return false;
+                }
+            }
+        },
         components: {vNavItemParent},
         mounted() {
-            this.initSortable();
+            // this.initSortable();
+        },
+        watch: {
+            editLayout(val, oldVal) {
+                if (val) {
+                    this.initSortable();
+                }
+                else {
+                    this.sortable_lv1.destroy();
+                }
+            }
         },
         methods: {
             initSortable() {
                 var that = this;
 
-                var navSort_lv1 = Sortable.create(this.$refs['nav-panel-lv1'], {
+                this.sortable_lv1 = Sortable.create(this.$refs['nav-panel-lv1'], {
                     group: {
-                        name: 'lv1',
+                        name: 'lv1'
                     },
                     animation: 150,
                     forceFallback: true,
+                    scroll: false,
                     onStart(e) {
                         that.isDrayNavPanelLv1 = true;
                     },
-                    onEnd(e) {
+                    onEnd() {
                         that.isDrayNavPanelLv1 = false;
+                        var dom_d_w = that.$refs['nav-panel-lv1'].querySelector('.double-w');
+                        var dom_item = that.$refs['nav-panel-lv1'].querySelectorAll('.nav-item');
+
+                        for (var i = 0; i < dom_item.length; i++) {
+                            if (i === 2 && dom_d_w === dom_item[i]) {
+                                that.$refs['nav-panel-lv1'].insertBefore(dom_d_w, dom_item[4]);
+                                break;
+                            }
+                        }
+
+                    },
+                    onMove() {
+                       //console.dir(arguments);
+                    },
+                    onFilter(){
                     }
                 });
             },
