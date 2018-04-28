@@ -95,12 +95,14 @@
             vLayout4
         },
         props: {
+            // 布局类型
             keyId: {
                 type: String,
                 default() {
                     return '1';
                 }
             },
+
             isEdit: {
                 type: Boolean,
                 default() {
@@ -116,7 +118,6 @@
         },
         watch: {
             keyId(val, oldVal) {
-
                 this.layoutData = this.defaultLayoutData['layoutData_' + val];
             }
         },
@@ -128,11 +129,38 @@
             else {
                 this.layoutData = this.pdata;
             }
+        },
+        methods: {
+            setEchart(id, attributeName) {
+                var ls = this.layoutData;
+
+                for (var i = 0; i < ls.length; i++) {
+
+                    if (ls[i].lv2 && ls[i].lv2.length > 0) {
+
+                        debugger
+                        for(var j = 0; j < ls[i].lv2.length; j++) {
+                            if (ls[i].lv2[j].className === attributeName) {
+                                ls[i].lv2[j].navItemType = id;
+                                return;
+                            }
+                        }
+
+                    }
+                    else {
+                        if (ls[i].className === attributeName) {
+                            ls[i].navItemType = id;
+                            return;
+                        }
+                    }
+                }
+            },
+            save() {}
         }
     }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
     .layoutParentBox-container {
         height: 100%;
     }

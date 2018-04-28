@@ -1,16 +1,24 @@
 <template>
     <div class="layout-1-container">
         <div class="sortable-panel sortable-lv1" :class="{'sortable-panel-edit':isDrayNavPanelLv1, 'cursor-move': isEdit}" ref="sortable-panel-lv1">
-            <div class="sortable-item" v-for="item_lv1 in layoutData" :name="item_lv1.navItemType" :class="item_lv1.className">
+            <div class="sortable-item" v-for="(item_lv1, idx) in layoutData" :name="item_lv1.navItemType" :class="item_lv1.className" :key="idx">
                 <template v-if="!!item_lv1.lv2">
                     <div class="sortable-panel sortable-lv2" ref="sortable-panel-lv2">
-                        <div class="sortable-item" v-for="item_lv2 in item_lv1.lv2" :name="item_lv2.navItemType" :class="item_lv2.className">
-                            <vEcharts :id="item_lv1.navItemType"></vEcharts>
+                        <div class="sortable-item" v-for="(item_lv2, idx) in item_lv1.lv2" :name="item_lv2.navItemType" :class="item_lv2.className" :key="idx">
+                            <div class="theme-sortable-panel">
+                                <div class="theme-item">
+                                    <vEcharts :id="item_lv1.navItemType"></vEcharts>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </template>
                 <template v-else>
-                    <vEcharts :id="item_lv1.navItemType"></vEcharts>
+                    <div class="theme-sortable-panel">
+                        <div class="theme-item">
+                            <vEcharts :id="item_lv1.navItemType"></vEcharts>
+                        </div>
+                    </div>
                 </template>
             </div>
         </div>
@@ -66,6 +74,14 @@
                     this.sortable_lv1.destroy();
                     this.sortable_lv2.destroy();
                 }
+            },
+
+            layoutData:{
+                deep: true,
+                handler(val, oldVal) {
+                    console.dir(val);
+                    this.$forceUpdate();
+                }
             }
         },
         mounted() {
@@ -104,12 +120,28 @@
                     onMove() { },
                     onFilter(){}
                 });
+
+
+                var themeSortableDom = this.$el.querySelectorAll('.theme-sortable-panel');
+                for(var i = 0; i < themeSortableDom.length; i++) {
+                    Sortable.create(themeSortableDom[i], {
+                        group: {
+                            name: 'theme_' + i,
+                            put: ['theme']
+                        },
+                        animation: 150,
+                        forceFallback: true,
+                        onEnd() {
+                            console.log('onEnd');
+                        }
+                    });
+                }
             },
         }
     }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
     .layout-1-container {
         box-sizing: border-box;
         height: 100%;
@@ -168,6 +200,50 @@
                         border-width: 15px 0 0 0;
                         border-style: solid;
                         border-color: transparent;
+                    }
+                }
+            }
+        }
+
+        .theme-sortable-panel {
+            position: relative;
+            height: 100%;
+            overflow: hidden;
+            .theme-item {
+                height: 100%;
+
+                .bg-img {
+                    display: none;
+                    height: 100%;
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    background-size: 100% auto;
+                }
+
+                &.theme-model {
+                    position: relative;
+
+                    .item-title {
+                        position: absolute;
+                        top: 24px;
+                        left: 26px;
+                        z-index: 1;
+                    }
+
+                    &.line .bg-img {
+                        display: block;
+                        background-image: url("../images/line.png");
+
+                    }
+                    &.bar .bg-img {
+                        display: block;
+                        background-image: url("../images/bar.png");
+
+                    }
+                    &.pie .bg-img {
+                        display: block;
+                        background-image: url("../images/pie.png");
+
                     }
                 }
             }

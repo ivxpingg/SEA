@@ -5,18 +5,11 @@
                 <div class="list-panel">
                     <div class="title">微分析模块工具栏</div>
                     <div class="list" id="list">
-                        <div class="list-inner">
-                            <div class="item">
-                                <div class="item-title">产业现状综合分析1</div>
-                            </div>
-                            <div class="item">
-                                <div class="item-title">产业现状综合分析2</div>
-                            </div>
-                            <div class="item active">
-                                <div class="item-title">产业现状综合分析3</div>
-                            </div>
-                            <div class="item">
-                                <div class="item-title">产业现状综合分析4</div>
+                        <div class="list-inner" ref="list-inner-sortable">
+
+                            <div class="item theme-item" v-for="item in themeData" :class="item.echartsType" :name="item.id">
+                                <div class="item-title">{{item.title}}</div>
+                                <div class="bg-img"></div>
                             </div>
                         </div>
                     </div>
@@ -26,13 +19,13 @@
         </div>
         <div class="center-panel">
             <div class="echarts-area">
-                <vLayoutParentBox :keyId="keyId" :isEdit="isEdit" :pdata="pdata"></vLayoutParentBox>
+                <vLayoutParentBox :keyId="keyId" :isEdit="isEdit_layout" :pdata="pdata" ref="vLayoutParentBox"></vLayoutParentBox>
                 <div class="btn-switch-layout" @click="onSwitchLayout">布局切换</div>
             </div>
         </div>
         <div class="right-panel">
             <div class="btn-panel" :class="{ 'btn-panel-close': !rightGripOpen }">
-                <div class="btn-icon" title="保存">
+                <div class="btn-icon" title="保存" @click="onSave">
                     <i class="iconfont icon-iconset0237"></i>
                 </div>
                 <div class="btn-icon" title="" @click="onRightPanelClose">
@@ -45,6 +38,7 @@
 
 <script>
     import Iscroll from 'iscroll';
+    import Sortable from 'sortablejs';
     import vLayoutParentBox from './layout/layoutParentBox';
     export default {
         name: "addOrEdit",
@@ -52,29 +46,49 @@
             return {
                 gripOpen: true,
                 rightGripOpen: true,
-                // 布局类型
-                keyId: '1',
+                // 布局
+                keyId: '1',           // 布局类型 当前有4种布局类型。 ['1'|'2'|'3'|'4']
+                isEdit_layout: true,  // 布局是否是可拖放状态
+                pdata: [],            // 布局数据信息
 
-                isEdit: true,
-                pdata: []
+                // 指标列表数据
+                themeData: [{
+                    id: '001',
+                    title: '仪器使用年限曲线图',
+                    echartsType: 'line'
+                },{
+                    id: '002',
+                    title: '海产品价格走势图',
+                    echartsType: 'bar'
+                },{
+                    id: '003',
+                    title: '仪器分布饼图',
+                    echartsType: 'pie'
+                },{
+                    id: '004',
+                    title: '海产品消费分布柱形图',
+                    echartsType: 'bar'
+                }],
+                layoutData: []
             };
         },
         components: { vLayoutParentBox },
         mounted() {
-            var scroll = new Iscroll('#list',{
-                mouseWheel: true,
-                scrollbars: true,
-                // scrollbars: 'custom',
-                mouseWheelSpeed: 10,
-                fadeScrollbars: true,
+            // var scroll = new Iscroll('#list',{
+            //     mouseWheel: true,
+            //     scrollbars: true,
+            //     // scrollbars: 'custom',
+            //     mouseWheelSpeed: 10,
+            //     fadeScrollbars: true,
+            //
+            // });
 
-            });
+            this.setThemeSortable();
         },
         methods: {
             onLeftPanelGrip() {
                 this.gripOpen = !this.gripOpen;
             },
-
             onRightPanelClose() {
                 this.$router.push({
                     name: 'showFace'
@@ -86,12 +100,58 @@
                 else if (this.keyId === '2') { this.keyId = '3'; }
                 else if (this.keyId === '3') { this.keyId = '4'; }
                 else if (this.keyId === '4') { this.keyId = '1'; }
+            },
+            
+            // ajax获取主题指标
+            getThemeData() {
+                this.$http({
+                    url: '',
+                    type: 'get'
+                }).then(function (response) {
+                    if (response.state === '1') {
+                        this.themeData = response.result.themeData;
+                    }
+                    
+                }).catch(function (e) {
+
+                });
+            },
+            // 设置指标拖放
+            setThemeSortable() {
+                var that = this;
+                new Sortable(this.$refs['list-inner-sortable'], {
+                    group: {
+                        name: 'theme',
+                        pull: 'clone',
+                        put: false
+                    },
+                    sort: false,
+                    animation: 150,
+                    forceFallback: true,
+                    // ghostClass: 'theme-model',
+                    chosenClass: 'theme-model',
+                    onStart(e) {
+
+                    },
+                    onEnd(e) {
+                        if (e.from !== e.to) {
+                            var id = e.item.getAttribute('name');
+                            var attribute_name = e.to.parentNode.className.replace('sortable-item ', '');
+                            e.to.removeChild(e.item);
+                            that.$refs.vLayoutParentBox.setEchart(id, attribute_name);
+                        }
+                    }
+                });
+            },
+
+            onSave() {
+                this.$refs.vLayoutParentBox.save();
             }
         }
     }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
     .addOrEdit-container {
         display: flex;
         padding-top: 15px;
@@ -132,6 +192,7 @@
                         width: 180px;
                         overflow: hidden;
                         .list-inner {
+                            min-height: 550px;
                             padding-bottom: 45px;
                         }
 
