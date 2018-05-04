@@ -9,6 +9,11 @@
         <div class="echart-image">
             <img :src="imgSrc" alt="">
         </div>
+
+        <div class="custom-style-panel" v-if="isEdit">
+            <div class="btn-icon btn-chart-type" @click="onChangeChartType"><i class="icon iconfont icon-tubiaoqiehuan"></i></div>
+            <div class="btn-icon btn-style"><i class="icon iconfont icon-fengge"></i></div>
+        </div>
     </div>
 </template>
 
@@ -25,6 +30,12 @@
                     name: '',
                     picType: ''
                 },
+
+                typeList: [],
+
+                // 当前选中的图表类型
+                currentChartType: '',
+
                 option: {}
             };
         },
@@ -35,7 +46,22 @@
                 default() {
                     return '';
                 }
+            },
+
+            isEdit: {
+                type: Boolean,
+                default(){
+                    return false;
+                }
+            },
+            // 图表的具体信息
+            itemInfo: {
+                type: Object,
+                default() {
+                    return {};
+                }
             }
+
         },
         watch: {
             id(val, oldVal) {
@@ -43,6 +69,34 @@
                 if (val !== "") {
                     this.getChartInfo();
                 }
+            },
+            chartInfo: {
+                deep: true,
+                handler(val, oldVal) {
+
+                    this.typeList = this.chartInfo.picType.split(',');
+
+                    if (!this.itemInfo.chartType) {
+                        this.parentChartType(this.typeList[0]);
+                    }
+                }
+            },
+            itemInfo: {
+                deep: true,
+                handler(val, oldVal) {
+                    this.currentChartType = val.chartType || '';
+                }
+            },
+
+            currentChartType(val, oldVal) {
+                if (val !== '') {
+                    this.getChartData();
+                }
+            }
+        },
+        created() {
+            if (this.itemInfo.chartType) {
+                this.currentChartType = this.itemInfo.chartType;
             }
         },
         mounted() {
@@ -93,7 +147,9 @@
             },
             setEchart(data) {
                 var that = this;
-                console.dir(data);
+
+                var chartType = this.currentChartType;
+
                 if (this.myChart) {
                     this.myChart.clear();
                 }
@@ -101,7 +157,7 @@
                     this.myChart = Echarts.init(this.$refs.echart, 'shine');
                 }
 
-                data = this.chartInfo.picType === 'pie'? [{
+                data = chartType === 'pie'? [{
                     name: '海洋百科',
                     value: 12
                 },{
@@ -112,42 +168,36 @@
                     value: 12
                 }] : data;
 
-                var option = ChartOption.getOption(this.chartInfo.picType, data);
+                var option = ChartOption.getOption(chartType, data);
 
                 option.title.text = this.chartInfo.name;
 
-                console.dir(option);
-                // var option = {
-                //     xAxis: {
-                //         type: 'category',
-                //         data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-                //     },
-                //     yAxis: {
-                //         type: 'value'
-                //     },
-                //     series: [{
-                //         data: [120, 200, 150, 80, 70, 110, 130],
-                //         type: that.chartInfo.picType
-                //     },{
-                //         data: [120, 200, 150, 80, 70, 110, 130],
-                //         type: that.chartInfo.picType
-                //     },{
-                //         data: [120, 200, 150, 80, 70, 110, 130],
-                //         type: that.chartInfo.picType
-                //     },{
-                //         data: [120, 200, 150, 80, 70, 110, 130],
-                //         type: that.chartInfo.picType
-                //     },{
-                //         data: [120, 200, 150, 80, 70, 110, 130],
-                //         type: that.chartInfo.picType
-                //     }]
-                // };
 
                 this.myChart.setOption(option);
 
                 setTimeout(function() {
                     that.imgSrc = that.myChart.getDataURL();
                 }, 100);
+            },
+
+
+            // 更改图表类型
+            onChangeChartType() {
+                var idx = this.typeList.indexOf(this.currentChartType);
+
+                if (idx === (this.typeList.length - 1)) {
+                    this.parentChartType(this.typeList[0]);
+                }
+                else {
+                    this.parentChartType(this.typeList[idx + 1]);
+                }
+
+            },
+
+            // 通知父组件更改图表类型
+            parentChartType(type) {
+                this.currentChartType = type;
+                this.$emit('sub_chartType', type, this.itemInfo);
             }
         }
     }
@@ -175,6 +225,35 @@
                 margin-top: -75px;
                 margin-left: -50px;
                 font-size: 100px;
+            }
+        }
+
+        .custom-style-panel {
+            position: absolute;
+            height: 45px;
+            bottom: 0px;
+            left: 0px;
+            text-align: left;
+            background-color: #55a532;
+
+            overflow: hidden;
+
+            z-index: 10;
+
+            .btn-icon {
+                display: inline-block;
+                width: 60px;
+                text-align: center;
+                cursor: pointer;
+                .icon {
+                    color: rgba(51,51,51, 0.7);
+                    font-size: 30px;
+                    line-height: 45px;
+
+                    &:hover {
+                        color: rgba(51,51,51, 1);
+                    }
+                }
             }
         }
     }

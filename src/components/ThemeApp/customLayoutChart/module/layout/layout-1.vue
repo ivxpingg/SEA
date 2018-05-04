@@ -12,7 +12,7 @@
                             <div class="lv1-handle" v-if="isEdit"><Icon type="drag"></Icon></div>
                             <div class="theme-sortable-panel">
                                 <div class="theme-item">
-                                    <vEcharts :id="item_lv2.navItemType"></vEcharts>
+                                    <vEcharts :id="item_lv2.navItemType" :isEdit="isEdit" :itemInfo="item_lv2"></vEcharts>
                                 </div>
                             </div>
                         </div>
@@ -23,7 +23,7 @@
                     <div class="lv1-handle"  v-if="isEdit"><Icon type="drag"></Icon></div>
                     <div class="theme-sortable-panel">
                         <div class="theme-item">
-                            <vEcharts :id="item_lv1.navItemType"></vEcharts>
+                            <vEcharts :id="item_lv1.navItemType" :isEdit="isEdit" :itemInfo="item_lv1" @sub_chartType="sub_chartType"></vEcharts>
                         </div>
                     </div>
                 </template>
@@ -183,11 +183,13 @@
                 var data = [];
                 var dom, idx1, idx2;
 
+
                 this.m_layoutData.forEach(function(val1) {
                    dom = that.$el.querySelector('.' + val1.className);
                    idx1 = Com.dom.getNodeIdx(dom);
 
                    data[idx1] = {
+                       chartType: val1.chartType || '',
                        className: val1.className,
                        navItemType: val1.navItemType
                    };
@@ -200,6 +202,7 @@
                            idx2 = Com.dom.getNodeIdx(dom);
 
                            data[idx1].lv2[idx2] = {
+                               chartType: val2.chartType || '',
                                className: val2.className,
                                navItemType: val2.navItemType
                            };
@@ -211,6 +214,30 @@
                 });
 
                 return data;
+            },
+
+
+            sub_chartType(type, itemInfo) {
+
+                for(let i = 0; i < this.m_layoutData.length; i++) {
+
+                    if (this.m_layoutData[i].className === itemInfo.className) {
+                        this.m_layoutData[i].chartType = type;
+                        return;
+                    }
+
+                    if(this.m_layoutData.lv2 && this.m_layoutData.lv2.length > 0) {
+
+                        for (let j = 0; j < this.m_layoutData[i].lv2.length; j++) {
+                            if (this.m_layoutData[i].lv2[j].className === itemInfo.className) {
+                                this.m_layoutData[i].lv2[j].chartType = type;
+                                return;
+                            }
+                        }
+                    }
+
+                }
+
             }
         }
     }
