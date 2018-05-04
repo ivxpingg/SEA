@@ -5,13 +5,13 @@ let config = {
     development: {
         // domain: 'http://localhost',
         // port: '8090',
-        baseUrl: '/metrosupervision',
+        baseUrl: '/oceanobservation',
         staticUrl: '/'
     },
     production: {
         // domain: 'http://localhost',
         // port: '8090',
-        baseUrl: '/metrosupervision',
+        baseUrl: '/oceanobservation',
         staticUrl: '/'
     }
 };

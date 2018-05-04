@@ -6,56 +6,8 @@
                     <div class="title">定制分析列表</div>
                     <div class="list" id="list">
                         <div class="list-inner">
-                            <div class="item">
-                                <div class="item-title">产业现状综合分析</div>
-                            </div>
-                            <div class="item">
-                                <div class="item-title">产业现状综合分析</div>
-                            </div>
-                            <div class="item active">
-                                <div class="item-title">产业现状综合分析</div>
-                            </div>
-                            <div class="item">
-                                <div class="item-title">产业现状综合分析</div>
-                            </div>
-                            <div class="item">
-                                <div class="item-title">产业现状综合分析</div>
-                            </div>
-                            <div class="item">
-                                <div class="item-title">产业现状综合分析</div>
-                            </div>
-                            <div class="item">
-                                <div class="item-title">产业现状综合分析</div>
-                            </div>
-                            <div class="item">
-                                <div class="item-title">产业现状综合分析</div>
-                            </div>
-                            <div class="item">
-                                <div class="item-title">产业现状综合分析</div>
-                            </div>
-                            <div class="item">
-                                <div class="item-title">产业现状综合分析</div>
-                            </div>
-                            <div class="item">
-                                <div class="item-title">产业现状综合分析</div>
-                            </div>
-                            <div class="item">
-                                <div class="item-title">产业现状综合分析</div>
-                            </div>
-                            <div class="item">
-                                <div class="item-title">产业现状综合分析</div>
-                            </div>
-                            <div class="item">
-                                <div class="item-title">产业现状综合分析</div>
-                            </div>
-                            <div class="item">
-                                <div class="item-title">产业现状综合分析</div>
-                            </div>
-                            <div class="item">
-                                <div class="item-title">产业现状综合分析</div>
-                            </div>
-                            <div class="item">
-                                <div class="item-title">产业现状综合分析</div>
+                            <div class="item theme-item" v-for="(item, idx) in themeData" :name="item.customAnalysisId" :class="{active: item.customAnalysisId === currentCustomId}">
+                                <div class="item-title"  :key="idx" @click="onClickTheme(item.customAnalysisId, item.themeName)">{{item.themeName}}</div>
                             </div>
                         </div>
                     </div>
@@ -65,18 +17,18 @@
         </div>
         <div class="center-panel">
             <div class="echarts-area">
-
+                <vLayoutParentBox :keyId="keyId" :pdata="pdata" ref="vLayoutParentBox"></vLayoutParentBox>
             </div>
         </div>
         <div class="right-panel">
             <div class="btn-panel" :class="{ 'btn-panel-close': !rightGripOpen }">
-                <div class="btn-icon" title="添加" @click="addList">
+                <div class="btn-icon" title="添加" @click="onAddList">
                     <i class="iconfont icon-tianjia"></i>
                 </div>
-                <div class="btn-icon" title="编辑">
+                <div class="btn-icon" title="编辑" @click="onEditList">
                     <i class="iconfont icon-bianji"></i>
                 </div>
-                <div class="btn-icon" title="删除">
+                <div class="btn-icon" title="删除" @click="onDelList">
                     <i class="iconfont icon-cha"></i>
                 </div>
                 <div class="btn-icon" title="" @click="onRightPanelClose">
@@ -90,23 +42,58 @@
 
 <script>
     import Iscroll from 'iscroll';
+    import vLayoutParentBox from './layout/layoutParentBox';
     export default {
         name: "showFace",
+        components: {vLayoutParentBox},
         data() {
             return {
                 gripOpen: true,
-                rightGripOpen: true
+                rightGripOpen: true,
+                themeData: [],
+
+                currentCustomId: '',
+                currentThemeName: '',
+                keyId: '',
+                pdata: []
             };
         },
+        watch: {
+            currentCustomId(val, valOld) {
+                var that = this;
+                if (val !== '') {
+                    this.$http({
+                        url: '/ocean/theme/customAnalysis/detail',
+                        methods: 'get',
+                        params: {
+                            customAnalysisId: that.currentCustomId
+                        }
+                    }).then(function (response) {
+                        console.dir(response);
+                        if (response.status === 1) {
+                            var layoutContent = response.result.layoutContent;
+                            layoutContent = eval(layoutContent)[0];
 
+                            that.keyId = layoutContent.keyId;
+                            that.pdata = layoutContent.json;
+
+                            that.themeForm.theme_name = response.result.themeName;
+                        }
+
+                    }).catch(function (e) {
+
+                    });
+                }
+            }
+        },
         mounted() {
+            this.getListData();
             var scroll = new Iscroll('#list',{
                 mouseWheel: true,
                 scrollbars: true,
                 // scrollbars: 'custom',
                 mouseWheelSpeed: 10,
                 fadeScrollbars: true,
-
             });
         },
         methods: {
@@ -119,10 +106,83 @@
             onRightPanelOpen() {
                 this.rightGripOpen = true;
             },
+
+            onClickTheme(id, name) {
+                this.currentCustomId = id;
+                this.currentThemeName = name;
+            },
+
             // 添加微分析
-            addList() {
+            onAddList() {
                 this.$router.push({
                     name: 'addOrEdit'
+                });
+            },
+            onEditList() {
+                var that = this;
+                this.$router.push({
+                    path: './addOrEdit/' + that.currentCustomId
+                });
+            },
+            onDelList() {
+                var that = this;
+                if (this.currentCustomId === '') {
+                    this.$Modal.error({
+                        title: '删除',
+                        content: '请选择要删除的定制分析'
+                    })
+                }
+                else {
+
+                    that.$Modal.confirm({
+                        title: '删除',
+                        content: '确定要删除<' + that.currentThemeName + '>定制分析主题?',
+                        onOk() {
+                            that.$http({
+                                url: '/ocean/theme/customAnalysis/delete',
+                                methods: 'get',
+                                params: {
+                                    customAnalysisId: that.currentCustomId
+                                }
+                            }).then(function (response) {
+                                if (response.status === 1) {
+                                    that.$Modal.success({
+                                        title: '删除',
+                                        content: '删除成功！'
+                                    });
+                                    that.currentCustomId = '';
+                                    that.getListData();
+                                }
+
+                            }).catch(function (e) {
+
+                            });
+                        },
+                        onCancel() {}
+                    });
+
+
+                }
+            },
+
+            getListData() {
+                var that = this;
+                this.$http({
+                    url: '/ocean/theme/customAnalysis/list',
+                    methods: 'get'
+                }).then(function (response) {
+                    console.dir(response);
+                    if (response.status === 1) {
+                        that.themeData = response.result;
+
+                        if(that.currentCustomId === '' && that.themeData.length > 0) {
+                            that.currentCustomId = that.themeData[0].customAnalysisId;
+                            that.currentThemeName = that.themeData[0].themeName;
+                        }
+                    }
+
+                }).catch(function (e) {
+
                 });
             }
 

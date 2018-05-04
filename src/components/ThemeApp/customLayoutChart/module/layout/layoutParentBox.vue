@@ -1,9 +1,9 @@
 <template>
     <div class="layoutParentBox-container">
-        <vLayout1 v-if="keyId === '1'" :isEdit="isEdit" :layoutData="layoutData"></vLayout1>
-        <vLayout2 v-if="keyId === '2'" :isEdit="isEdit" :layoutData="layoutData"></vLayout2>
-        <vLayout3 v-if="keyId === '3'" :isEdit="isEdit" :layoutData="layoutData"></vLayout3>
-        <vLayout4 v-if="keyId === '4'" :isEdit="isEdit" :layoutData="layoutData"></vLayout4>
+        <vLayout1 v-if="keyId === '1'" :isEdit="isEdit" :layoutData="layoutData" @sub_callBack_data="sub_callBack_data" ref="vLayout1"></vLayout1>
+        <vLayout2 v-if="keyId === '2'" :isEdit="isEdit" :layoutData="layoutData" @sub_callBack_data="sub_callBack_data" ref="vLayout2"></vLayout2>
+        <vLayout3 v-if="keyId === '3'" :isEdit="isEdit" :layoutData="layoutData" @sub_callBack_data="sub_callBack_data" ref="vLayout3"></vLayout3>
+        <vLayout4 v-if="keyId === '4'" :isEdit="isEdit" :layoutData="layoutData" @sub_callBack_data="sub_callBack_data" ref="vLayout4"></vLayout4>
     </div>
 </template>
 
@@ -12,6 +12,7 @@
     import vLayout2 from './layout-2';
     import vLayout3 from './layout-3';
     import vLayout4 from './layout-4';
+    import Com from '../../../../../libs/com';
     export default {
         name: "layoutParentBox",
         data() {
@@ -118,11 +119,20 @@
         },
         watch: {
             keyId(val, oldVal) {
-                this.layoutData = this.defaultLayoutData['layoutData_' + val];
+
+                if (this.pdata.length === 0) {
+                    this.layoutData = this.defaultLayoutData['layoutData_' + val];
+                }
+                else {
+                    this.layoutData = this.pdata;
+                }
+            },
+
+            pdata(val, oldVal) {
+                this.layoutData = this.pdata;
             }
         },
         created() {
-
             if (this.pdata.length == 0) {
                 this.layoutData = this.defaultLayoutData['layoutData_' + this.keyId];
             }
@@ -130,6 +140,7 @@
                 this.layoutData = this.pdata;
             }
         },
+        mounted() {},
         methods: {
             setEchart(id, attributeName) {
                 var ls = this.layoutData;
@@ -138,7 +149,6 @@
 
                     if (ls[i].lv2 && ls[i].lv2.length > 0) {
 
-                        debugger
                         for(var j = 0; j < ls[i].lv2.length; j++) {
                             if (ls[i].lv2[j].className === attributeName) {
                                 ls[i].lv2[j].navItemType = id;
@@ -155,7 +165,11 @@
                     }
                 }
             },
-            save() {}
+            save() {
+                return this.$refs['vLayout' + this.keyId].save();
+            },
+
+            sub_callBack_data() {}
         }
     }
 </script>

@@ -1,19 +1,26 @@
 <template>
     <div class="layout-1-container">
+
         <div class="sortable-panel sortable-lv1" :class="{'sortable-panel-edit':isDrayNavPanelLv1, 'cursor-move': isEdit}" ref="sortable-panel-lv1">
-            <div class="sortable-item" v-for="(item_lv1, idx) in layoutData" :name="item_lv1.navItemType" :class="item_lv1.className" :key="idx">
+
+            <div class="sortable-item" v-for="item_lv1 in m_layoutData" :name="item_lv1.navItemType" :class="item_lv1.className">
                 <template v-if="!!item_lv1.lv2">
-                    <div class="sortable-panel sortable-lv2" ref="sortable-panel-lv2">
-                        <div class="sortable-item" v-for="(item_lv2, idx) in item_lv1.lv2" :name="item_lv2.navItemType" :class="item_lv2.className" :key="idx">
+
+                    <div class="sortable-panel sortable-lv2" :class="{'sortable-panel-edit':isDrayNavPanelLv2, 'cursor-move': isEdit}" ref="sortable-panel-lv2">
+
+                        <div class="sortable-item" v-for="item_lv2 in item_lv1.lv2" :name="item_lv2.navItemType" :class="item_lv2.className">
+                            <div class="lv1-handle" v-if="isEdit"><Icon type="drag"></Icon></div>
                             <div class="theme-sortable-panel">
                                 <div class="theme-item">
-                                    <vEcharts :id="item_lv1.navItemType"></vEcharts>
+                                    <vEcharts :id="item_lv2.navItemType"></vEcharts>
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </template>
                 <template v-else>
+                    <div class="lv1-handle"  v-if="isEdit"><Icon type="drag"></Icon></div>
                     <div class="theme-sortable-panel">
                         <div class="theme-item">
                             <vEcharts :id="item_lv1.navItemType"></vEcharts>
@@ -21,20 +28,28 @@
                     </div>
                 </template>
             </div>
+
         </div>
+
+
     </div>
 </template>
 
 <script>
     import vEcharts from './module/echarts';
     import Sortable from 'sortablejs';
+    import Com from '../../../../../libs/com';
     export default {
         name: "layout-1",
         data() {
             return {
                 isDrayNavPanelLv1: false,
+                isDrayNavPanelLv2: false,
+
                 sortable_lv1: null,
-                sortable_lv2: null
+                sortable_lv2: null,
+
+                m_layoutData: []
             };
         },
         components: {vEcharts},
@@ -65,6 +80,9 @@
                 }
             }
         },
+        created() {
+            this.set_m_layoutData();
+        },
         watch: {
             isEdit(val, oldVal) {
                 if (val) {
@@ -79,25 +97,44 @@
             layoutData:{
                 deep: true,
                 handler(val, oldVal) {
-                    console.dir(val);
-                    this.$forceUpdate();
+                    this.set_m_layoutData();
                 }
             }
         },
         mounted() {
-            if (this.isEdit && this.layoutData.length > 0) {this.initSortable();}
+            if (this.isEdit) {this.initSortable();}
         },
         methods: {
+            set_m_layoutData() {
+                var that = this;
+                that.layoutData.forEach(function(val1, idx1){
+                   that.$set(that.m_layoutData, idx1, val1);
+                });
+
+                if (this.sortable_lv1) {
+                    this.sortable_lv1.destroy();
+                }
+                if (this.sortable_lv2) {
+                    this.sortable_lv2.destroy();
+                }
+
+                setTimeout(function() {
+                    that.initSortable();
+                },0)
+            },
             initSortable() {
                 var that = this;
 
                 this.sortable_lv1 = Sortable.create(this.$refs['sortable-panel-lv1'], {
                     group: {
-                        name: 'lv1'
+                        name: 'lv1',
+                        pull: true
                     },
+                    handle: '.lv1-handle',
                     animation: 150,
                     forceFallback: true,
-                    scroll: false,
+                    fallbackClass: 'ghostClass',
+                    // scroll: false,
                     onStart(e) {
                         that.isDrayNavPanelLv1 = true;
                     },
@@ -115,12 +152,15 @@
                     animation: 150,
                     forceFallback: true,
                     scroll: false,
-                    onStart(e) {},
-                    onEnd() {},
+                    onStart(e) {
+                        that.isDrayNavPanelLv2 = true;
+                    },
+                    onEnd() {
+                        that.isDrayNavPanelLv2 = false;
+                    },
                     onMove() { },
                     onFilter(){}
                 });
-
 
                 var themeSortableDom = this.$el.querySelectorAll('.theme-sortable-panel');
                 for(var i = 0; i < themeSortableDom.length; i++) {
@@ -132,11 +172,46 @@
                         animation: 150,
                         forceFallback: true,
                         onEnd() {
-                            console.log('onEnd');
+                            // console.log('onEnd');
                         }
                     });
                 }
             },
+
+            save() {
+                var that = this;
+                var data = [];
+                var dom, idx1, idx2;
+
+                this.m_layoutData.forEach(function(val1) {
+                   dom = that.$el.querySelector('.' + val1.className);
+                   idx1 = Com.dom.getNodeIdx(dom);
+
+                   data[idx1] = {
+                       className: val1.className,
+                       navItemType: val1.navItemType
+                   };
+
+                   if (!!val1.lv2) {
+                       data[idx1].lv2 = [];
+
+                       val1.lv2.forEach(function(val2) {
+                           dom = that.$el.querySelector('.' + val2.className);
+                           idx2 = Com.dom.getNodeIdx(dom);
+
+                           data[idx1].lv2[idx2] = {
+                               className: val2.className,
+                               navItemType: val2.navItemType
+                           };
+                       });
+                   }
+                   else {
+
+                   }
+                });
+
+                return data;
+            }
         }
     }
 </script>
@@ -147,7 +222,9 @@
         height: 100%;
         .sortable-panel {
 
-            .sortable-item {}
+            .sortable-item {
+                position: relative;
+            }
 
             &.sortable-lv1 {
                 padding: 0 13px;
@@ -202,6 +279,40 @@
                         border-color: transparent;
                     }
                 }
+
+                &.sortable-panel-edit {
+                    > .sortable-item{
+                        &:after {
+                            position: absolute;
+                            content: " ";
+                            top: 0;
+                            left: 0;
+                            right: 0;
+                            bottom: 0;
+                            z-index: 1000;
+                            cursor: move;
+                        }
+                    }
+                }
+            }
+
+            &.cursor-move {
+
+                .lv1-handle{
+                    position: absolute;
+                    top: 20px;
+                    right: 20px;
+                    width: 20px;
+                    height: 20px;
+                    /*background-color: #FFF;*/
+                    z-index: 10;
+                    cursor: move;
+
+                    > i {
+                        font-size: 20px;
+                        font-weight: 700;
+                    }
+                }
             }
         }
 
@@ -246,6 +357,13 @@
 
                     }
                 }
+            }
+        }
+
+
+        .ghostClass {
+            .echart-image {
+                display: block;
             }
         }
     }

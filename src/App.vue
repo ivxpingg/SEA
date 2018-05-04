@@ -18,19 +18,19 @@ export default {
     mounted() {
 
 
-      this.$http({
-          method: "post",
-          url: '/xm/sys/login',
-          data: {
-              username: 'admin',
-              password: '123456'
-          }
-      }).then(function (response) {
-          // console.dir(response);
-
-      }).catch(function (error) {
-
-      })
+      // this.$http({
+      //     method: "post",
+      //     url: '/metrosupervision/xm/sys/login',
+      //     data: {
+      //         username: 'admin',
+      //         password: '123456'
+      //     }
+      // }).then(function (response) {
+      //     // console.dir(response);
+      //
+      // }).catch(function (error) {
+      //
+      // })
 
     }
 }

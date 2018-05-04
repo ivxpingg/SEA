@@ -4,11 +4,12 @@
             <div class="left-panel-inner">
                 <div class="list-panel">
                     <div class="title">微分析模块工具栏</div>
+
                     <div class="list" id="list">
                         <div class="list-inner" ref="list-inner-sortable">
 
-                            <div class="item theme-item" v-for="item in themeData" :class="item.echartsType" :name="item.id">
-                                <div class="item-title">{{item.title}}</div>
+                            <div class="item theme-item" v-for="item in themeData" :class="item.picType" :name="item.id">
+                                <div class="item-title">{{item.name}}</div>
                                 <div class="bg-img"></div>
                             </div>
                         </div>
@@ -18,14 +19,14 @@
             <div class="grip" @click="onLeftPanelGrip"></div>
         </div>
         <div class="center-panel">
-            <div class="echarts-area">
-                <vLayoutParentBox :keyId="keyId" :isEdit="isEdit_layout" :pdata="pdata" ref="vLayoutParentBox"></vLayoutParentBox>
-                <div class="btn-switch-layout" @click="onSwitchLayout">布局切换</div>
+            <div class="echarts-area" :class="{'echarts-area-add': saveState === 'add'}">
+                    <vLayoutParentBox :keyId="keyId" :isEdit="isEdit_layout" :pdata="pdata" ref="vLayoutParentBox"></vLayoutParentBox>
+                <div class="btn-switch-layout" @click="onSwitchLayout" v-if="saveState === 'add'">布局切换</div>
             </div>
         </div>
         <div class="right-panel">
             <div class="btn-panel" :class="{ 'btn-panel-close': !rightGripOpen }">
-                <div class="btn-icon" title="保存" @click="onSave">
+                <div class="btn-icon" title="保存" @click="onSave_name">
                     <i class="iconfont icon-iconset0237"></i>
                 </div>
                 <div class="btn-icon" title="" @click="onRightPanelClose">
@@ -33,17 +34,45 @@
                 </div>
             </div>
         </div>
+
+        <Modal v-model="modal_theme" class-name="addOrEdit-container-modal" width="360" transfer>
+            <p slot="header" style="color:#333;text-align:left;">
+                <span>{{saveState ==='add'? '新增主题分析':'更新主题分析'}}</span>
+            </p>
+            <div>
+                <Form ref="ref_theme" :model="themeForm" :label-width="80" :rules="ruleValidate">
+                    <FormItem label="主题名称:" prop="theme_name">
+                        <Input v-model="themeForm.theme_name" placeholder="请输入主题名称"></Input>
+                    </FormItem>
+                </Form>
+            </div>
+            <div slot="footer">
+
+                <Button type="primary" size="large" long @click="onSave">保存</Button>
+            </div>
+        </Modal>
     </div>
+
 </template>
 
 <script>
     import Iscroll from 'iscroll';
     import Sortable from 'sortablejs';
     import vLayoutParentBox from './layout/layoutParentBox';
+    import Utils from '../../../../libs/utils';
     export default {
         name: "addOrEdit",
         data() {
             return {
+                // 自定义主题分析标识
+                customId: '',
+                saveState: 'add',   // 当前状态 'add': 新增； 'saveState': 更新
+
+                modal_theme: false,
+                themeForm: {
+                    theme_name: ''
+                },
+
                 gripOpen: true,
                 rightGripOpen: true,
                 // 布局
@@ -52,27 +81,35 @@
                 pdata: [],            // 布局数据信息
 
                 // 指标列表数据
-                themeData: [{
-                    id: '001',
-                    title: '仪器使用年限曲线图',
-                    echartsType: 'line'
-                },{
-                    id: '002',
-                    title: '海产品价格走势图',
-                    echartsType: 'bar'
-                },{
-                    id: '003',
-                    title: '仪器分布饼图',
-                    echartsType: 'pie'
-                },{
-                    id: '004',
-                    title: '海产品消费分布柱形图',
-                    echartsType: 'bar'
-                }],
-                layoutData: []
+                themeData: [],
+                layoutData: [],
+
+                ruleValidate: {
+                    theme_name: {
+                        required: true,
+                        message: '主题名称不能为空！',
+                        trigger: 'blur'
+                    }
+                }
             };
         },
+        created() {
+            if(this.$route.params.customId) {
+                this.customId = this.$route.params.customId;
+                this.saveState = 'update';
+            }
+            else {
+                this.saveState = 'add';
+            }
+        },
         components: { vLayoutParentBox },
+        watch: {
+            customId(val, oldVal) {
+                if (val !== '') {
+                    this.getThemeLayoutByCustomId();
+                }
+            }
+        },
         mounted() {
             // var scroll = new Iscroll('#list',{
             //     mouseWheel: true,
@@ -84,6 +121,7 @@
             // });
 
             this.setThemeSortable();
+            this.getThemeData();
         },
         methods: {
             onLeftPanelGrip() {
@@ -104,18 +142,45 @@
             
             // ajax获取主题指标
             getThemeData() {
+                var that = this;
                 this.$http({
-                    url: '',
-                    type: 'get'
+                    url: '/ocean/theme/microanalysis/list',
+                    methods: 'get'
                 }).then(function (response) {
-                    if (response.state === '1') {
-                        this.themeData = response.result.themeData;
+                    if (response.status === 1) {
+                        that.themeData = response.result;
                     }
                     
                 }).catch(function (e) {
 
                 });
             },
+
+            getThemeLayoutByCustomId() {
+                var that = this;
+                this.$http({
+                    url: '/ocean/theme/customAnalysis/detail',
+                    methods: 'get',
+                    params: {
+                        customAnalysisId: that.customId
+                    }
+                }).then(function (response) {
+                    console.dir(response);
+                    if (response.status === 1) {
+                        var layoutContent = response.result.layoutContent;
+                        layoutContent = eval(layoutContent)[0];
+
+                        that.keyId = layoutContent.keyId;
+                        that.pdata = layoutContent.json;
+
+                        that.themeForm.theme_name = response.result.themeName;
+                    }
+
+                }).catch(function (e) {
+
+                });
+            },
+
             // 设置指标拖放
             setThemeSortable() {
                 var that = this;
@@ -135,6 +200,7 @@
                     },
                     onEnd(e) {
                         if (e.from !== e.to) {
+
                             var id = e.item.getAttribute('name');
                             var attribute_name = e.to.parentNode.className.replace('sortable-item ', '');
                             e.to.removeChild(e.item);
@@ -144,8 +210,72 @@
                 });
             },
 
+            onSave_name() {
+                this.modal_theme = true;
+            },
             onSave() {
-                this.$refs.vLayoutParentBox.save();
+                var that = this;
+
+                this.$refs['ref_theme'].validate((valid) => {
+                    if (valid) {
+                        var url;
+                        var json = this.$refs.vLayoutParentBox.save();
+                        var ajax_data = {
+                                themeName: that.themeForm.theme_name,
+                                layoutContent: JSON.stringify([{
+                                    keyId: that.keyId,
+                                    json: json
+                                }])
+                            };
+
+                        if (this.customId !== '') {
+                            ajax_data.customAnalysisId = this.customId;
+                            url = '/ocean/theme/customAnalysis/update';
+                        }
+                        else {
+                            url = '/ocean/theme/customAnalysis/add';
+                        }
+
+                        this.$http({
+                            url: url,
+                            method: 'post',
+                            headers: {
+                                'Content-Type': 'application/json;charset=utf-8'
+                            },
+                            data: JSON.stringify(ajax_data)
+                        }).then(function(response) {
+                            if (response.status === 1) {
+
+                                if (that.saveState === 'add') {
+                                    that.customId = response.result;
+                                    that.saveState = 'edit';
+                                }
+
+                                that.$Modal.success({
+                                    title: that.saveState ==='add'? '新增':'更新',
+                                    content: that.saveState ==='add'? '新增成功！':'更新成功！'
+                                });
+
+                                setTimeout(function () {
+
+
+                                }, 2000)
+                            }
+                            else {
+                                that.$Modal.error({
+                                    title: that.saveState ==='add'? '新增':'更新',
+                                    content: response.errMsg
+                                });
+                            }
+
+                        }).catch(function (e) {
+
+                        });
+                    } else {
+
+                    }
+                });
+
             }
         }
     }
@@ -300,8 +430,12 @@
                 width: 1100px;
                 height: 666px;
                 border: 1px solid #142066;
-                border-radius: 35px 35px 0 35px;
+                border-radius: 35px 35px 35px 35px;
                 background-color: #f9f9f9;
+
+                &.echarts-area-add {
+                    border-radius: 35px 35px 0 35px;
+                }
 
                 .btn-switch-layout {
                     position: absolute;
@@ -390,6 +524,13 @@
                     border-radius: 3px;
                 }
             }
+        }
+    }
+
+    .addOrEdit-container-modal {
+        .ivu-modal {
+            top: 50%;
+            margin-top: -100px;
         }
     }
 </style>

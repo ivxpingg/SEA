@@ -5,8 +5,10 @@
 
 import Script from './package/script';
 import BrowserType from './package/browser-type';
+import Dom from './package/dom';
 
 export default {
     scriptElement: Script,
-    browserType: BrowserType
+    browserType: BrowserType,
+    dom: Dom
 }

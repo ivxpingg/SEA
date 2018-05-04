@@ -65,6 +65,15 @@ export default [
                             title: '海洋产业定制分析'
                         },
                         component: (resolve) => require(['../../components/ThemeApp/customLayoutChart/module/addOrEdit.vue'], resolve)
+                    },
+                    {
+                        path: 'addOrEdit/:customId',
+                        name: 'addOrEdit_param',
+                        requireAuth: false,
+                        meta: {
+                            title: '海洋产业定制分析'
+                        },
+                        component: (resolve) => require(['../../components/ThemeApp/customLayoutChart/module/addOrEdit.vue'], resolve)
                     }
                 ]
             }

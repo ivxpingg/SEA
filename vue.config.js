@@ -81,12 +81,19 @@ module.exports = {
         hotOnly: false,
         // 查阅 https://github.com/vuejs/vue-docs-zh-cn/blob/master/vue-cli/cli-service.md#configuring-proxy配置代理
         proxy:{   // string | Object
-            '/metrosupervision': {
-                target: 'http://wechat.doudou360.com',
-                // target: 'http://192.168.1.194:8080',
+
+            '/oceanobservation': {
+                target: 'http://110.86.21.246:8088',
+
                 ws: true,
                 changeOrigin: true
             }
+            // '/oceanobservation': {
+            //     target: 'http://192.168.0.122:8080',
+            //
+            //     ws: true,
+            //     changeOrigin: true
+            // }
         },
         before: app => {}
     },
