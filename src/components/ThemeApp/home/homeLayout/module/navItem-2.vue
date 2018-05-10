@@ -3,111 +3,441 @@
         <div class="item-title">
             <span class="text">海洋生物科普公共服务组件</span>
         </div>
+
+
+        <div class="swiper-container" ref="swiper">
+            <div class="swiper-wrapper">
+
+                <div class="swiper-slide">
+                    <div class="level-panel level-panel-1">
+                        <div class="top">
+                            <div class="title" :class="'images-' + activePoint">{{currentPointInfo.name}}</div>
+                            <div class="content" :class="'po-' + activePoint" v-html="currentPointInfo.classify">
+
+                            </div>
+                        </div>
+
+                        <div class="point point1" :class="{'point-active': activePoint === '1'}"></div>
+                        <div class="point point2" :class="{'point-active': activePoint === '2'}"></div>
+                        <div class="point point3" :class="{'point-active': activePoint === '3'}"></div>
+                        <div class="point point4" :class="{'point-active': activePoint === '4'}"></div>
+                        <div class="point point5" :class="{'point-active': activePoint === '5'}"></div>
+                    </div>
+                </div>
+
+                <div class="swiper-slide">
+                    <div class="level-panel level-panel-2">
+                        <div class="xm-bg-panel">
+                            <div class="dsd-bg-panel">
+                                <div class="point point1" :class="{'point-active': activePoint === '1'}">宝珠岛</div>
+                                <div class="point point2" :class="{'point-active': activePoint === '2'}">鼓浪屿</div>
+                                <div class="point point3" :class="{'point-active': activePoint === '3'}">浯屿岛</div>
+                                <div class="point point4" :class="{'point-active': activePoint === '4'}">小嶝岛</div>
+                                <div class="point point5" :class="{'point-active': activePoint === '5'}">东山岛</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="swiper-slide">Slide 3</div>
+
+            </div>
+            <!-- 如果需要分页器 -->
+            <div class="swiper-pagination">
+                <!--<div class="list-item">海洋生物百科图鉴</div>-->
+                <!--<div class="list-item">海洋科普馆</div>-->
+                <!--<div class="list-item">海岛游</div>-->
+            </div>
+
+            <!-- 如果需要导航按钮 -->
+
+            <!-- 如果需要滚动条 -->
+
+
+            <!--<div class="list-panel">-->
+                <!--<div class="list-item">海洋生物百科图鉴</div>-->
+                <!--<div class="list-item">海洋科普馆</div>-->
+                <!--<div class="list-item">海岛游</div>-->
+            <!--</div>-->
+        </div>
     </div>
 </template>
 
 <script>
-    import echarts from 'echarts';
+    import Swiper from 'swiper';
+
     export default {
         name: "navItem-2",
         data() {
-            return {};
+            return {
+                mySwiper: null,
+                list: {
+                    dm_sby: {
+                        name: '玳瑁石斑鱼',
+                        name_en: 'Longfin grouper,Rockfish grouper',
+                        alias: '花鲙、花龟斑、格仔鱼 、花狗斑',
+                        classify: '<span class="po"></span>鲈形目<br/><span class="po"></span>鮨科<br/><span class="po"></span>石斑鱼属',
+                        feature: '体长椭圆形，侧扁而粗壮。头较大。眼中大，上侧位，眼间隔狭窄，前方中央稍凹。吻短。口中大，稍倾斜。上下颌约等长。上下颌前端各具2枚圆锥牙，两侧牙细尖；犁骨和腭骨均具绒毛状牙，舌面无牙。前鳃盖骨后缘具3条扁棘。背鳍1个，鳍棘部与鳍条部相连，无缺刻，具11条鳍棘，16~18条鳍条；臀鳍Ⅲ-8；腹鳍腹位，末端伸达肛门；胸鳍宽大，后端圆形，胸鳍长大于眼后的头长；尾鳍圆形。体被细小栉鳞；侧线鳞80~96枚。头部、体侧及背鳍、尾鳍有许多近六角形暗褐色大斑。',
+                        habit: '暖水性中下层鱼类，栖息在内湾、岩礁海区。性情凶猛，以鱼类、虾类为食。具性转变，为先雌后雄。',
+                        distribution: '分布于西太平洋区,由日本至澳大利亚。中国产于南海和台湾海峡。',
+                        economics: '肉较嫩，味鲜美，为上等食用鱼类。一般以流刺网、延绳网及一支钓捕获。'
+                    },
+                    md_sby: {
+                        name: '密点石斑鱼',
+                        name_en: 'Brown spotted grouper,Brownspotted rockcod，Grouper',
+                        alias: '乌背斑、乌带斑、石斑、过仔鱼、珠鲙',
+                        classify: '<span class="po"></span>鲈形目<br/><span class="po"></span>鮨科<br/><span class="po"></span>石斑鱼属',
+                        feature: '体长椭圆形，稍侧扁，背、腹缘弧形，被细栉鳞，侧线埋于皮下， 不明显。口大，上颌骨后端扩大，不为眶前骨遮盖。下颌略突，上颌外行牙较大，内列牙绒毛状，前端有一大犬牙和能倒向后方的牙丛，下颌为排列不规则的小牙，犁骨和腭骨牙绒毛状，舌面无牙。鳃耙粗大，排列稀松。背鳍具11条鳍棘，鳍棘与鳍条部无明显缺刻；臀鳍与背鳍鳍条部相对：尾鳍后缘弧形。体棕褐色，除吻部和胸部外，头侧和体侧布满近六角形网状斑，幼鱼时各鳍无网状斑纹，体侧具6条横带，体长35cm以上个体的横带渐消失。',
+                        habit: '暖水性中下层鱼类，生活在多岩礁海区。以小鱼虾为主食。体长35~45cm时具性逆转，先雌后雄。体长多为20~30cm 。',
+                        distribution: '分布于印度洋一西太平洋海域。中国见于东海、台湾海峡和南海。',
+                        economics: '低脂肪、高蛋白、富含多种氨基酸、无机盐和铁、钙、磷及各种维生素的上等食用鱼，肉细嫩厚实、无肌间刺，味鲜美。常用烧、爆、清蒸、 炖汤等方法成菜，也可制鱼丸、鱼馅等，以清蒸食用最佳。'
+                    },
+                    qx_jql: {
+                        name: '青星九棘鲈',
+                        name_en: 'Coral hind,Vermilion grouper,Blue dpotted rock-cod',
+                        alias: '青星九刺鮨、红鲙，红格仔、过鱼、红条、东星斑、蓝点红鲈',
+                        classify: '<span class="po"></span>鲈形目<br/><span class="po"></span>鮨科<br/><span class="po"></span>九棘鲈属',
+                        feature: '体长椭圆形，侧扁，被细小栉鳞，侧线完全，与背缘平行。眼小，口大，上颌向前伸出，末端伸达眼后缘下方。两颌前端具小犬牙，下颌内侧牙尖锐，可向内倒状，犁骨和腭骨牙绒毛状。前鳃盖骨后缘的细锯齿状不甚明显，鳃盖骨具3条扁平棘。背鳍具9条鳍棘，鳍棘部与鳍条部连续；臀鳍具3条鳍棘；腹鳍末端不伸达肛门；胸鳍中央鳍条较长；尾鳍后缘圆弧形。体橘红色至橙黄色，头部、体侧及奇鳍散布着带暗色边缘的蓝灰色小斑点，胸鳍橘黄色，腹鳍具蓝灰色边缘。',
+                        habit: '暖水性中下层鱼类、栖息于岩礁底质、水质清澈的海域。常独游，但亦有以小群出现。以小鱼及甲壳类为主食、喜在清晨和午后觅食。体长25~35cm。',
+                        distribution: '分布于印度-太平洋区海域。中国见于台湾海峡和南海。',
+                        economics: '优质食用鱼类与观赏鱼类，经济价值高。肉质佳，味鲜美，清蒸、红烧或煮汤皆宜。多以一支钓、鱼枪或鱼笼捕获。'
+                    },
+                    rb_ldx: {
+                        name: '日本囊对虾',
+                        name_en: '',
+                        alias: '斑竹虾、话虾、竹节虾、斑节虾',
+                        classify: '<span class="po"></span>十足目<br/><span class="po"></span>对虾科<br/><span class="po"></span>囊对虾属',
+                        feature: '体表光滑，体色由蓝色和棕色相间横斑排列。额角齿式（8~10）/（1~2）。头胸甲具明显中央沟，额角侧沟很深。第一触角鞭特短，短于其柄部。尾节有3对侧刺。',
+                        habit: '暖水性种类，主要分布在水深100M以浅海域，栖息于泥质和泥沙海底，春夏季从外侧深水海区进入沿岸、港湾、河口的浅水区产卵，秋冬季移向深水海区生活。繁殖期在2~5月，以双壳类、虾类、多毛类等底栖生物为食。属大型虾类，成虾体长15~20cm。',
+                        distribution: '分布于印度、马来西亚、菲律宾、泰国等，中国的南黄海、东海、台湾海峡和南海均有分布。',
+                        economics: '日本囊对虾个体较大，经济价值高，为人们喜食的商品虾类。在自然海区，由于过度捕捞，现已不行程渔汛。为福建及台湾等地的主要养殖对象。'
+                    },
+                    sqy: {
+                        name: '松球鱼',
+                        name_en: 'pinecone fish',
+                        alias: '凤梨鱼',
+                        classify: '<span class="po"></span>金眼鲷目<br/><span class="po"></span>松球鱼科<br/><span class="po"></span>松球鱼属',
+                        feature: '体高，侧扁，椭圆形。头大，前端圆形，被薄膜的黏液腔发达。口大，下位；上颌较长，下颌具卵圆形发光器。上下颌和腭骨均具绒毛状牙群，犁骨无牙。背鳍2个，鳍棘部与鳍条部不相连，具4~6条鳍棘，11~ 12条鳍条，以第二鳍棘最长，鳍条部后缘圆形；臀鳍与背鳍鳍条部同形；胸鳍短小，下侧位；腹鳍具l条鳍棘，3条鳍条，腹鳍棘强大，具活动关节，可伸达臀鳍起点；尾鳍凹形。体被骨板状大鳞，鳞片连成体甲，中央有棱突。侧线中侧位。体橙黄色。第二背鳍、臀鳍、腹鳍及尾鳍红色而微黄。各鳍边缘黑色。',
+                        habit: '为暖水性底层鱼类。肉食性，主要以甲壳及小型鱼类为食。一般体长为8~10cm。',
+                        distribution: '分布于印度-西太平区海域。中国的黄海、东海、台湾海峡、南海均有分布。',
+                        economics: '福建沿海较为常见，为底拖网、张网等所捕获。鱼体可食部分不多，经济价值不高。常作为观赏鱼类。'
+                    }
+                },
+
+                activePoint: '1',
+
+                currentPointInfo: {
+                    name: '玳瑁石斑鱼',
+                    classify: '<span class="po"></span>鲈形目<br/><span class="po"></span>鮨科<br/><span class="po"></span>石斑鱼属'
+                }
+            };
+        },
+        watch: {
+            activePoint(val) {
+                switch (val) {
+                    case '1':
+                        this.currentPointInfo.name = this.list.dm_sby.name;
+                        this.currentPointInfo.classify = this.list.dm_sby.classify;
+                        break;
+                    case '2':
+                        this.currentPointInfo.name = this.list.md_sby.name;
+                        this.currentPointInfo.classify = this.list.md_sby.classify;
+                        break;
+                    case '3':
+                        this.currentPointInfo.name = this.list.qx_jql.name;
+                        this.currentPointInfo.classify = this.list.qx_jql.classify;
+                        break;
+                    case '4':
+                        this.currentPointInfo.name = this.list.rb_ldx.name;
+                        this.currentPointInfo.classify = this.list.rb_ldx.classify;
+                        break;
+                    case '5':
+                        this.currentPointInfo.name = this.list.sqy.name;
+                        this.currentPointInfo.classify = this.list.sqy.classify;
+                        break;
+                }
+            }
         },
         mounted() {
-            var option = {
-                title: {
-                    text: '堆叠区域图'
-                },
-                tooltip : {
-                    trigger: 'axis',
-                    axisPointer: {
-                        type: 'cross',
-                        label: {
-                            backgroundColor: '#6a7985'
-                        }
-                    }
-                },
-                legend: {
-                    data:['邮件营销','联盟广告','视频广告','直接访问','搜索引擎']
-                },
-                toolbox: {
-                    feature: {
-                        saveAsImage: {}
-                    }
-                },
-                grid: {
-                    left: '3%',
-                    right: '4%',
-                    bottom: '3%',
-                    containLabel: true
-                },
-                xAxis : [
-                    {
-                        type : 'category',
-                        boundaryGap : false,
-                        data : ['周一','周二','周三','周四','周五','周六','周日']
-                    }
-                ],
-                yAxis : [
-                    {
-                        type : 'value'
-                    }
-                ],
-                series : [
-                    {
-                        name:'邮件营销',
-                        type:'line',
-                        stack: '总量',
-                        areaStyle: {normal: {}},
-                        data:[120, 132, 101, 134, 90, 230, 210]
-                    },
-                    {
-                        name:'联盟广告',
-                        type:'line',
-                        stack: '总量',
-                        areaStyle: {normal: {}},
-                        data:[220, 182, 191, 234, 290, 330, 310]
-                    },
-                    {
-                        name:'视频广告',
-                        type:'line',
-                        stack: '总量',
-                        areaStyle: {normal: {}},
-                        data:[150, 232, 201, 154, 190, 330, 410]
-                    },
-                    {
-                        name:'直接访问',
-                        type:'line',
-                        stack: '总量',
-                        areaStyle: {normal: {}},
-                        data:[320, 332, 301, 334, 390, 330, 320]
-                    },
-                    {
-                        name:'搜索引擎',
-                        type:'line',
-                        stack: '总量',
-                        label: {
-                            normal: {
-                                show: true,
-                                position: 'top'
-                            }
-                        },
-                        areaStyle: {normal: {}},
-                        data:[820, 932, 901, 934, 1290, 1330, 1320]
-                    }
-                ]
-            };
-
+            this.initSwiper();
+            this.initPoint();
             // 基于准备好的dom，初始化echarts实例
             // var myChart = echarts.init(document.getElementById('main'));
            // myChart.setOption(option);
+        },
+        methods: {
+            initSwiper() {
+                this.mySwiper = new Swiper (this.$refs.swiper, {
+                    loop: true,
+                    // effect: 'cube',
+                    autoplay: true,
+                    delay: 500,
+                    pagination: {
+                        el: '.swiper-pagination',
+                        // bulletElement: 'span',
+                        clickable :true,
+                        // type: 'custom',
+                        // renderCustom: function (swiper, current, total) {
+                        //     switch (current) {
+                        //         case 0: return '海洋生物百科图鉴';
+                        //         case 1: return '海洋科普馆';
+                        //         case 2: return '海岛游';
+                        //         default: break;
+                        //     }
+                        // },
+                        renderBullet: function (index, className) {
+                            className = className + ' bullet' + index;
+                            var text = '';
+                            switch(index){
+                                case 0:text='海洋生物百科图鉴';break;
+                                case 1:text='海洋科普馆';break;
+                                case 2:text='海岛游';break;
+                            }
+                            return '<span class="' + className + '">' + text + '</span>';
+                        }
+                    },
+                    // disableOnInteraction: false
+                });
+            },
+
+            initPoint() {
+                var that = this;
+                setInterval(function () {
+                    switch (that.activePoint) {
+                        case '1': that.activePoint = '2'; break;
+                        case '2': that.activePoint = '3'; break;
+                        case '3': that.activePoint = '4'; break;
+                        case '4': that.activePoint = '5'; break;
+                        case '5': that.activePoint = '1'; break;
+                    }
+                }, 2000);
+            }
         }
     }
 </script>
 <style lang="scss" src="../style/navItem.scss" scoped></style>
-<style lang="scss" scoped>
+<style lang="scss" >
     .navItem-2-container {
         height: 100%;
         background-color: rgba(255,255,255,0.06);
+        font-size: 12px;
+        line-height: 18px;
+
+        .swiper-container {
+            height: 100%;
+
+            .swiper-slide {
+                height: 100%;
+                .level-panel {
+                    height: 100%;
+
+                    &.level-panel-1 {
+                        position: relative;
+                        padding: 46px 24px 0;
+                        height: 100%;
+                        background: url('./images/navItem2/xm_map1.png') no-repeat center;
+                        background-origin: content-box;
+                        background-size: contain;
+                        background-position: 40px 20px;
+
+                        .top {
+                            position: absolute;
+                            top: 46px;
+                            left: 24px;
+                            right: 0;
+                            bottom: 0;
+                            color: rgb(118, 228, 255);
+                            text-align: left;
+                            .title {
+                                box-sizing: border-box;
+                                display: inline-block;
+                                height: 80px;
+                                min-width: 120px;
+                                padding-top: 50px;
+                                font-size: 16px;
+                                line-height: 30px;
+                                background-size: auto 50px;
+                                background-repeat: no-repeat;
+                                background-position: left top;
+
+
+                                &.images-1 {
+                                    /*color: #;*/
+                                    background-image: url('./images/navItem2/md_sby.png');
+                                }
+                                &.images-2 {
+                                    background-image: url('./images/navItem2/dm_sby.png');
+                                }
+                                &.images-3 {
+                                    background-image: url('./images/navItem2/qx_jcl.png');
+                                }
+                                &.images-4 {
+                                    background-image: url('./images/navItem2/rb_ldx.png');
+                                }
+                                &.images-5 {
+                                    background-image: url('./images/navItem2/sqy.png');
+                                }
+
+                            }
+
+                            .content {
+                                width: 100px;
+                                .po {
+                                    margin-right: 3px;
+                                    display: inline-block;
+                                    width: 8px;
+                                    height: 8px;
+                                    border-radius: 50%;
+                                }
+
+                                &.po-1 {
+                                    .po {
+                                        background-color: #76e4ff;
+                                    }
+                                }
+                                &.po-2 {
+                                    .po {
+                                        background-color: #ed7462;
+                                    }
+                                }
+                                &.po-3 {
+                                    .po {
+                                        background-color: #86cab4;
+                                    }
+                                }
+                                &.po-4 {
+                                    .po {
+                                        background-color: #efde67;
+                                    }
+                                }
+                                &.po-5 {
+                                    .po {
+                                        background-color: #d963ea;
+                                    }
+                                }
+                            }
+                        }
+
+                        .point{
+                            position: absolute;
+                            width: 50px;
+                            height: 50px;
+                            background-size: 50% 50%;
+                            background-repeat: no-repeat;
+                            background-position: center;
+                            transition: all 0.2s;
+                            transform-origin: center bottom;
+
+
+                            &.point1 {
+                                top: 43%;
+                                left: 73%;
+                                background-image: url('./images/navItem2/dm_sby_point.png');
+                            }
+                            &.point2 {
+                                top: 52%;
+                                left: 62%;
+                                background-image: url('./images/navItem2/md_sby_point.png');
+                            }
+                            &.point3 {
+                                top: 65%;
+                                left: 50%;
+                                background-image: url('./images/navItem2/qx_jcl_point.png');
+                            }
+                            &.point4 {
+                                top: 80%;
+                                left: 55%;
+                                background-image: url('./images/navItem2/rb_ldx_point.png');
+                            }
+                            &.point5 {
+                                top: 75%;
+                                left: 30%;
+                                background-image: url('./images/navItem2/sqy_point.png');
+                            }
+
+                            &.point-active {
+                                background-size: 100% 100%;
+                            }
+                        }
+                    }
+
+                    &.level-panel-2 {
+                        position: relative;
+                        height: 100%;
+
+                        .xm-bg-panel {
+                            height: 100%;
+                            background-image: url('./images/navItem2/hdy-xm.png');
+                            background-repeat: no-repeat;
+                            background-origin: content-box;
+                            background-size: 80% auto;
+                            background-position: center bottom;
+
+                            .dsd-bg-panel {
+                                height: 100%;
+                               // background-image: url('./images/navItem2/hdy-dsd.png');
+                                background-repeat: no-repeat;
+                                background-origin: content-box;
+                                background-size: 80% auto;
+                            }
+                        }
+                    }
+                }
+
+            }
+
+        }
+
     }
+</style>
+
+<style lang="scss">
+    .navItem-2-container{
+        .swiper-pagination {
+            right: 10px;
+            top: 46px;
+            height: 100px;
+            .swiper-pagination-bullet {
+                position: absolute;
+                right: 10px;
+                display: block;
+                overflow: hidden;
+                height: 24px;
+                width: 24px;
+                letter-spacing: 2px;
+                padding: 0 5px;
+                line-height: 22px;
+                transition: width 0.5s;
+                border-radius: 12px;
+                text-align: left;
+                background-color: transparent;
+                border: 1px solid rgb(118,228,255);
+
+                &.bullet0 {
+                    top: 10px;
+                }
+                &.bullet1 {
+                    top: 40px;
+                }
+                &.bullet2 {
+                    top: 70px;
+                }
+
+                &.swiper-pagination-bullet-active {
+                    text-indent: 10px;
+                    &.bullet0 {
+                        width: 100px;
+                    }
+                    &.bullet1 {
+                        width: 100px;
+                    }
+                    &.bullet2 {
+                        width: 100px;
+                    }
+                }
+
+            }
+        }
+    }
+
 </style>

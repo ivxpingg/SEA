@@ -7,10 +7,11 @@
             <vNavLayout3 v-if="navLayoutType === '3'" :editLayout="editLayout"></vNavLayout3>
         </div>
 
-        <img src="./images/home-bg1.png" alt="" style="opacity: 0">
+        <img src="images/home-bg1.png" alt="" style="opacity: 0">
         <img src="./images/home-bg2.png" alt="" style="opacity: 0">
         <img src="./images/home-bg3.png" alt="" style="opacity: 0">
         <img src="./images/home-bg4.png" alt="" style="opacity: 0">
+        <img src="./images/home-bg5.png" alt="" style="opacity: 0">
 
     </div>
 </template>
@@ -96,6 +97,9 @@
                     this.skinType = '4';
                 }
                 else if (this.skinType === '4') {
+                    this.skinType = '5';
+                }
+                else if (this.skinType === '5') {
                     this.skinType = '1';
                 }
 
@@ -111,7 +115,7 @@
         /*background: url('./images/home-bg.png') no-repeat top center;*/
 
         &.home_bg_1 {
-            background: url('./images/home-bg1.png') no-repeat top center;
+            background: url('images/home-bg1.png') no-repeat top center;
         }
         &.home_bg_2 {
             background: url('./images/home-bg2.png') no-repeat top center;
@@ -121,6 +125,9 @@
         }
         &.home_bg_4 {
             background: url('./images/home-bg4.png') no-repeat top center;
+        }
+        &.home_bg_5 {
+            background: url('./images/home-bg5.png') no-repeat top center;
         }
 
 
