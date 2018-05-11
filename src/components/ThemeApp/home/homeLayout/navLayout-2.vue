@@ -20,7 +20,7 @@
                 lv1: [
                     {
                         className: 'double-w',
-                        navItemType: '1'
+                        navItemType: '6'
                     },
                     {
                         className: '',

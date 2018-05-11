@@ -5,6 +5,10 @@
         <vNavItem3 v-if="keyId ==='3'"></vNavItem3>
         <vNavItem4 v-if="keyId ==='4'"></vNavItem4>
         <vNavItem5 v-if="keyId ==='5'"></vNavItem5>
+        <vNavItem6 v-if="keyId ==='6'"></vNavItem6>
+        <vNavItem7 v-if="keyId ==='7'"></vNavItem7>
+        <vNavItem8 v-if="keyId ==='8'"></vNavItem8>
+        <vNavItem9 v-if="keyId ==='9'"></vNavItem9>
     </div>
 </template>
 
@@ -14,6 +18,10 @@
     import vNavItem3 from './navItem-3';
     import vNavItem4 from './navItem-4';
     import vNavItem5 from './navItem-5';
+    import vNavItem6 from './navItem-6';
+    import vNavItem7 from './navItem-7';
+    import vNavItem8 from './navItem-8';
+    import vNavItem9 from './navItem-9';
     export default {
         name: "navItemParent",
         data() {
@@ -32,7 +40,11 @@
             vNavItem2,
             vNavItem3,
             vNavItem4,
-            vNavItem5
+            vNavItem5,
+            vNavItem6,
+            vNavItem7,
+            vNavItem8,
+            vNavItem9
         }
     }
 </script>

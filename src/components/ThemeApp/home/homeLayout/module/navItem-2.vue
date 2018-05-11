@@ -26,20 +26,32 @@
                 </div>
 
                 <div class="swiper-slide">
-                    <div class="level-panel level-panel-2">
+                    <div class="level-panel level-panel-2" :class="switch_hdy ? 'map-dsd':'map-xm'">
                         <div class="xm-bg-panel">
-                            <div class="dsd-bg-panel">
-                                <div class="point point1" :class="{'point-active': activePoint === '1'}">宝珠岛</div>
-                                <div class="point point2" :class="{'point-active': activePoint === '2'}">鼓浪屿</div>
-                                <div class="point point3" :class="{'point-active': activePoint === '3'}">浯屿岛</div>
-                                <div class="point point4" :class="{'point-active': activePoint === '4'}">小嶝岛</div>
-                                <div class="point point5" :class="{'point-active': activePoint === '5'}">东山岛</div>
-                            </div>
+                            <div class="point point1">宝珠岛</div>
+                            <div class="point point2">鼓浪屿</div>
+                            <div class="point point3">浯屿岛</div>
+                            <div class="point point4">小嶝岛</div>
+                        </div>
+                        <div class="dsd-bg-panel">
+                            <div class="point point5">东山岛</div>
                         </div>
                     </div>
                 </div>
 
-                <div class="swiper-slide">Slide 3</div>
+                <div class="swiper-slide">
+                    <div class="level-panel level-panel-3">
+                        <div class="xm-bg-panel">
+                            <!--<div class="point point1">贝壳梦幻世界</div>-->
+                            <div class="point point2">诚毅科技探索中心</div>
+                            <div class="point point5">厦门科技馆</div>
+                            <div class="point point3">福建海洋渔业科学馆</div>
+                            <div class="point point4">厦门海底世界</div>
+
+                        </div>
+
+                    </div>
+                </div>
 
             </div>
             <!-- 如果需要分页器 -->
@@ -129,7 +141,10 @@
                 currentPointInfo: {
                     name: '玳瑁石斑鱼',
                     classify: '<span class="po"></span>鲈形目<br/><span class="po"></span>鮨科<br/><span class="po"></span>石斑鱼属'
-                }
+                },
+
+                //切换海岛游地图动画
+                switch_hdy: false
             };
         },
         watch: {
@@ -211,6 +226,11 @@
                         case '5': that.activePoint = '1'; break;
                     }
                 }, 2000);
+
+                // 海岛游动画
+                setInterval(function() {
+                   that.switch_hdy = !that.switch_hdy;
+                }, 7000);
             }
         }
     }
@@ -230,6 +250,8 @@
                 height: 100%;
                 .level-panel {
                     height: 100%;
+                    margin: 0 auto;
+                    width: 460px;
 
                     &.level-panel-1 {
                         position: relative;
@@ -364,21 +386,195 @@
                     &.level-panel-2 {
                         position: relative;
                         height: 100%;
+                        overflow: hidden;
 
                         .xm-bg-panel {
+                            position: absolute;
+                            width: 100%;
                             height: 100%;
+                            top: 0;
+                            left: 0;
+                            transform: translate3d(100%, -100%, 0);
                             background-image: url('./images/navItem2/hdy-xm.png');
                             background-repeat: no-repeat;
                             background-origin: content-box;
                             background-size: 80% auto;
                             background-position: center bottom;
+                            transition: all 0.5s;
 
-                            .dsd-bg-panel {
-                                height: 100%;
-                               // background-image: url('./images/navItem2/hdy-dsd.png');
+                            .point {
+                                box-sizing: border-box;
+                                position: absolute;
+                                padding-bottom: 35px;
+                                width: 50px;
+                                height: 60px;
+                                line-height: 25px;
+                                background-size: 70% auto;
                                 background-repeat: no-repeat;
-                                background-origin: content-box;
-                                background-size: 80% auto;
+                                background-position: center bottom;
+                                transform-origin: center bottom;
+                                transform: translate3d(0, -3000px, 0);
+                                &.point1 {
+                                    top: 33%;
+                                    left: 12%;
+                                    background-image: url('./images/navItem2/dm_sby_point.png');
+
+                                }
+                                &.point2 {
+                                    top: 50%;
+                                    left: 7%;
+                                    background-image: url('./images/navItem2/md_sby_point.png');
+
+                                }
+                                &.point3 {
+                                    top: 80%;
+                                    left: 19%;
+                                    background-image: url('./images/navItem2/qx_jcl_point.png');
+
+                                }
+                                &.point4 {
+                                    top: 28%;
+                                    left: 64%;
+                                    background-image: url('./images/navItem2/rb_ldx_point.png');
+
+                                }
+                            }
+                        }
+
+                        &.map-xm {
+                            .xm-bg-panel {
+                                transform: translate3d(0, 0, 0);
+                                .point{
+                                    animation-duration: 1.25s;
+                                    animation-name: bounceInDown;
+                                    animation-fill-mode: forwards;
+                                    &.point1 {
+                                        animation-delay: 1s;
+                                    }
+                                    &.point2 {
+                                        animation-delay: 2s;
+                                    }
+                                    &.point3 {
+                                        animation-delay: 3s;
+                                    }
+                                    &.point4 {
+                                        animation-delay: 4s;
+                                    }
+                                }
+                            }
+                        }
+
+                        .dsd-bg-panel {
+                            position: absolute;
+                            width: 100%;
+                            height: 100%;
+                            top: 0;
+                            left: 0;
+                            transform: translate3d(-100%, 100%, 0);
+                            background-image: url('./images/navItem2/hdy-dsd.png');
+                            background-repeat: no-repeat;
+                            background-origin: content-box;
+                            background-size: 80% auto;
+                            background-position: center bottom;
+                            transition: all 0.5s;
+
+                            .point {
+                                position: absolute;
+                                margin-bottom: 35px;
+                                width: 50px;
+                                height: 60px;
+                                line-height: 25px;
+                                background-size: 70% auto;
+                                background-repeat: no-repeat;
+                                background-position: center bottom;
+                                transform-origin: center bottom;
+                                transform: translate3d(0, -3000px, 0);
+                                &.point5 {
+                                    top: 30%;
+                                    left: 40%;
+                                    background-image: url('./images/navItem2/sqy_point.png');
+                                }
+                            }
+
+                        }
+
+                        &.map-dsd {
+                            .dsd-bg-panel {
+                                transform: translate3d(0, 0, 0);
+
+                                .point {
+                                    animation-duration: 1.25s;
+                                    animation-name: bounceInDown;
+                                    animation-fill-mode: forwards;
+
+                                    &.point5{
+                                        animation-delay: 1s;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    &.level-panel-3 {
+                        position: relative;
+                        height: 100%;
+                        overflow: hidden;
+                        .xm-bg-panel {
+                            box-sizing: border-box;
+                            padding-top: 35px;
+                            position: absolute;
+                            width: 100%;
+                            height: 100%;
+                            top: 0;
+                            left: 0;
+                            background-image: url('./images/navItem2/xm-bg-kpg.png');
+                            background-repeat: no-repeat;
+                            background-origin: content-box;
+                            background-size: 80% auto;
+                            background-position: center center;
+
+                            .point {
+                                box-sizing: border-box;
+                                position: absolute;
+                                padding-bottom: 35px;
+                                width: 120px;
+                                height: 60px;
+                                line-height: 25px;
+                                background-size: 42px auto;
+                                background-repeat: no-repeat;
+                                background-position: center bottom;
+                                transform-origin: center bottom;
+
+                                color: transparent;
+                                &.point1 {
+                                    top: 61%;
+                                    left: 10%;
+                                    background-image: url('./images/navItem2/dm_sby_point.png');
+
+                                }
+                                &.point2 {
+                                    top: 42%;
+                                    left: 25%;
+                                    background-image: url('./images/navItem2/md_sby_point.png');
+
+                                }
+                                &.point3 {
+                                    top: 57%;
+                                    left: 16%;
+                                    background-image: url('./images/navItem2/qx_jcl_point.png');
+
+                                }
+                                &.point4 {
+                                    top: 61%;
+                                    left: 11%;
+                                    background-image: url('./images/navItem2/rb_ldx_point.png');
+
+                                }
+                                &.point5 {
+                                    top: 55%;
+                                    left: 23%;
+                                    background-image: url('./images/navItem2/sqy_point.png');
+                                }
                             }
                         }
                     }
@@ -389,6 +585,47 @@
         }
 
     }
+
+
+    @keyframes bounceInDown {
+        from,
+        60%,
+        75%,
+        90%,
+        to {
+            -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+            animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+        }
+
+        0% {
+            opacity: 0;
+            -webkit-transform: translate3d(0, -3000px, 0);
+            transform: translate3d(0, -3000px, 0);
+        }
+
+        60% {
+            opacity: 1;
+            -webkit-transform: translate3d(0, 0px, 0);
+            transform: translate3d(0, 0px, 0);
+        }
+
+        75% {
+            -webkit-transform: translate3d(0, -5px, 0);
+            transform: translate3d(0, -5px, 0);
+        }
+
+        90% {
+            -webkit-transform: translate3d(0, 5px, 0);
+            transform: translate3d(0, 5px, 0);
+        }
+
+        to {
+            -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+
 </style>
 
 <style lang="scss">

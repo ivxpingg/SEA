@@ -75,11 +75,11 @@
                     this.navLayoutType = '2';
                 }
                 else if (this.navLayoutType === '2') {
-                    this.navLayoutType = '3';
-                }
-                else if (this.navLayoutType === '3') {
                     this.navLayoutType = '1';
                 }
+                // else if (this.navLayoutType === '3') {
+                //     this.navLayoutType = '1';
+                // }
 
                 this.editLayout = false;
             },
@@ -111,6 +111,8 @@
 <style lang="scss" scoped>
     .appHome-container {
         height: 100%;
+
+        transition: all 0.5s;
 
         /*background: url('./images/home-bg.png') no-repeat top center;*/
 

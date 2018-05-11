@@ -32,6 +32,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="swiper-slide">
                         <div class="item4-info">
                             <div class="title title1">发明专利290项</div>
@@ -53,6 +54,14 @@
                         </div>
                     </div>
 
+                    <div class="swiper-slide swiper-slide-chart">
+                        <div class="item3-info">
+                            <div class="title"></div>
+                            <div class="value">554000.00元</div>
+                            <div class="chart-box" ref="chart1"></div>
+                        </div>
+                    </div>
+
                     <div class="swiper-slide">
                         <div class="item2-info">
                             <div class="title title1">用户数量1000人</div>
@@ -62,13 +71,6 @@
                         </div>
                     </div>
 
-                    <div class="swiper-slide">
-                        <div class="item3-info">
-                            <div class="title"></div>
-                            <div class="value">554000.00元</div>
-                            <div class="chart-box" ref="chart1"></div>
-                        </div>
-                    </div>
                 </div>
             </div>
 
@@ -100,13 +102,23 @@
                 chart1: null,
                 optionChart1: {
                     color: ['#c12e34', '#e6b600'],
+                    grid: {
+                        show: false,
+                        top: 10,
+                        left: 0,
+                        right: 0,
+                        bottom: 0
+                    },
                     xAxis: {
                         type: 'category',
                         boundaryGap: false,
                         data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
                     },
                     yAxis: {
-                        type: 'value'
+                        type: 'value',
+                        splitLine: {
+                            show: false
+                        }
                     },
                     series: [{
                         data: [820, 932, 901, 934, 1290, 1330, 1320],
@@ -164,6 +176,18 @@
 
                     .swiper-slide {
 
+                        &.swiper-slide-chart {
+                            .chart-box {
+                                opacity: 0;
+                            }
+
+                        }
+                        &.swiper-slide-active {
+                            .chart-box {
+                                opacity: 1;
+                            }
+                        }
+
                         .item {
                             display: flex;
                             height: 29px;
@@ -192,6 +216,10 @@
 
                                 .bar {
                                     background: url('./images/gxcg-h1.png') no-repeat center center;
+                                    background-size: 100% auto;
+                                }
+                                .value {
+                                    line-height: 29px;
                                 }
                             }
                             &.item2 {
@@ -199,6 +227,10 @@
                                 color: #efde67;
                                 .bar {
                                     background: url('./images/gxcg-h2.png') no-repeat center center;
+                                    background-size: 100% auto;
+                                }
+                                .value {
+                                    line-height: 29px;
                                 }
                             }
                             &.item3 {
@@ -206,6 +238,10 @@
                                 color: #81c2ad;
                                 .bar {
                                     background: url('./images/gxcg-h3.png') no-repeat center center;
+                                    background-size: 100% auto;
+                                }
+                                .value {
+                                    line-height: 29px;
                                 }
                             }
                             &.item4 {
@@ -213,6 +249,7 @@
                                 color: #95ddff;
                                 .bar {
                                     background: url('./images/gxcg-h4.png') no-repeat center center;
+                                    background-size: 100% auto;
                                 }
                                 .value {
                                     line-height: 14px;
@@ -364,7 +401,7 @@
 
                             }
                             .chart-box {
-                                height: 200px;
+                                height: 120px;
                             }
                         }
 

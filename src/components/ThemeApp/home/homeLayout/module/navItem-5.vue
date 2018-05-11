@@ -29,9 +29,32 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="swiper-slide">
-                        <div class="chart3" ref="chart3"></div>
+                        <div class="chart3" ref="chart3">
+
+                        </div>
                     </div>
+
+                    <div class="swiper-slide">
+                        <div class="chart4">
+                            <div class="bg">
+                                <div class="value1">
+                                    <div><span>平台交易额</span></div>
+                                    <div>300万</div>
+                                </div>
+                                <div class="value2">
+                                    <div><span>服务器资源</span></div>
+                                    <div>1000G</div>
+                                </div>
+                                <div class="value3">
+                                    <div><span>平台用户数</span></div>
+                                    <div>10万</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
@@ -115,14 +138,14 @@
                         {
                             name:'海洋产业数据资源',
                             type:'pie',
-                            radius : [30, 90],
+                            radius : [30, 80],
                             center : ['50%', '50%'],
                             roseType : 'area',
                             label: {
                                 normal: {
                                     show: true,
                                     formatter: "{b}:{c}",
-                                    // position: 'center'
+                                    // position: 'left'
                                 },
                                 emphasis: {
                                     show: true,
@@ -291,6 +314,42 @@
 
                         .chart3 {
                             height: 100%;
+                        }
+
+                        .chart4 {
+                            position: relative;
+                            font-size: 12px;
+                            line-height: 18px;
+                            height: 100%;
+
+                            .bg {
+                                position: relative;
+                                height: 100%;
+                                background: url('./images/huanxing-bg.png') no-repeat center;
+
+                                .value1 {
+                                    position: absolute;
+                                    display: inline-block;
+                                    top: 38%;
+                                    right: 60px;
+                                    color: #cfcc74;
+                                }
+                                .value2 {
+                                    position: absolute;
+                                    display: inline-block;
+                                    top: 48%;
+                                    left: 60px;
+                                    color: #699998;
+                                }
+                                .value3 {
+                                    position: absolute;
+                                    display: inline-block;
+                                    top: 60%;
+                                    right: 60px;
+                                    color: #c06162;
+                                }
+                            }
+
                         }
 
                     }
