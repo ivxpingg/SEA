@@ -114,11 +114,13 @@
         methods: {
             initSwiper() {
                 var mySwiper = new Swiper (this.$refs.swiper, {
-                    loop: true,
-                    // effect: 'fade',
-                    autoplay: true,
-                    delay: 500,
-                    disableOnInteraction: false
+                    // loop: true,
+                    effect: 'cube',
+                    autoplay: {
+                        disableOnInteraction: false,
+                        delay: 3000,
+                        reverseDirection: true
+                    }
                 });
             }
         }

@@ -141,9 +141,13 @@
                 var mySwiper = new Swiper (this.$refs.swiper, {
                     loop: true,
                     effect: 'cube',
-                    autoplay: true,
+                    autoplay: {
+                        disableOnInteraction: false
+                    },
                     delay: 500,
-                    disableOnInteraction: false
+                    on: {
+
+                    }
                 });
             },
 

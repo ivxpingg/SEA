@@ -8,7 +8,7 @@
         <div class="swiper-container" ref="swiper">
             <div class="swiper-wrapper">
 
-                <div class="swiper-slide">
+                <div class="swiper-slide" data-swiper-autoplay="12000">
                     <div class="level-panel level-panel-1">
                         <div class="top">
                             <div class="title" :class="'images-' + activePoint">{{currentPointInfo.name}}</div>
@@ -25,8 +25,8 @@
                     </div>
                 </div>
 
-                <div class="swiper-slide">
-                    <div class="level-panel level-panel-2" :class="switch_hdy ? 'map-dsd':'map-xm'">
+                <div class="swiper-slide" data-swiper-autoplay="14000">
+                    <div class="level-panel level-panel-2" :class="{'map-xm': switch_hdy ==='1', 'map-dsd': switch_hdy === '2'}" >
                         <div class="xm-bg-panel">
                             <div class="point point1">宝珠岛</div>
                             <div class="point point2">鼓浪屿</div>
@@ -39,9 +39,10 @@
                     </div>
                 </div>
 
-                <div class="swiper-slide">
+                <div class="swiper-slide" data-swiper-autoplay="6000">
                     <div class="level-panel level-panel-3">
-                        <div class="xm-bg-panel">
+                        <div class="xm-bg-panel animate_xm-bg-panel-1">
+                            <div class="bg"></div>
                             <!--<div class="point point1">贝壳梦幻世界</div>-->
                             <div class="point point2">诚毅科技探索中心</div>
                             <div class="point point5">厦门科技馆</div>
@@ -77,12 +78,16 @@
 
 <script>
     import Swiper from 'swiper';
-
+    import Utils from '../../../../../libs/utils';
     export default {
         name: "navItem-2",
         data() {
             return {
                 mySwiper: null,
+                setInterv_0: undefined,
+                setInterv_1: undefined,
+                setInterv_2: undefined,
+
                 list: {
                     dm_sby: {
                         name: '玳瑁石斑鱼',
@@ -144,7 +149,8 @@
                 },
 
                 //切换海岛游地图动画
-                switch_hdy: false
+                switch_hdy: 0,
+                switch_hdy_time: 7000,
             };
         },
         watch: {
@@ -182,24 +188,17 @@
         },
         methods: {
             initSwiper() {
+                var that = this;
+
                 this.mySwiper = new Swiper (this.$refs.swiper, {
-                    loop: true,
+                    // loop: true,
                     // effect: 'cube',
-                    autoplay: true,
-                    delay: 500,
+                    autoplay: {
+                        disableOnInteraction: false
+                    },
                     pagination: {
                         el: '.swiper-pagination',
-                        // bulletElement: 'span',
                         clickable :true,
-                        // type: 'custom',
-                        // renderCustom: function (swiper, current, total) {
-                        //     switch (current) {
-                        //         case 0: return '海洋生物百科图鉴';
-                        //         case 1: return '海洋科普馆';
-                        //         case 2: return '海岛游';
-                        //         default: break;
-                        //     }
-                        // },
                         renderBullet: function (index, className) {
                             className = className + ' bullet' + index;
                             var text = '';
@@ -211,13 +210,80 @@
                             return '<span class="' + className + '">' + text + '</span>';
                         }
                     },
-                    // disableOnInteraction: false
+                    on: {
+                        slideChangeTransitionStart: function() {
+
+                            switch (this.activeIndex) {
+                                case 0:
+                                    // 生物百科
+                                    that.activePoint = '1';
+                                    that.switch_hdy = '0';
+                                    break;
+                                case 1:
+
+                                    // 海岛游动画
+                                    that.switch_hdy = '1';
+                                    that.switch_hdy_time = 7000;
+                                    break;
+                                case 2:
+                                    that.switch_hdy = '0';
+                                    break;
+                            }
+                        },
+                        slideChangeTransitionEnd: function(){
+                            //切换结束时，告诉我现在是第几个slide
+                            if( !Utils.isUndefined(that.setInterv_0) ) {
+                                clearInterval(that.setInterv_0);
+                            }
+
+                            if( !Utils.isUndefined(that.setInterv_1) ) {
+                                clearInterval(that.setInterv_1);
+                            }
+
+                            if( !Utils.isUndefined(that.setInterv_2) ) {
+                                clearInterval(that.setInterv_2);
+                            }
+
+                            switch (this.activeIndex) {
+                                case 0:
+                                    // 生物百科
+                                    that.activePoint = '1';
+                                    that.setInterv_0 = setInterval(function () {
+                                        switch (that.activePoint) {
+                                            case '1': that.activePoint = '2'; break;
+                                            case '2': that.activePoint = '3'; break;
+                                            case '3': that.activePoint = '4'; break;
+                                            case '4': that.activePoint = '5'; break;
+                                            case '5': that.activePoint = '1'; break;
+                                            default: that.activePoint = '1'; break;
+                                        }
+                                    }, 2000);
+                                    break;
+                                case 1:
+                                    // 海岛游动画
+
+                                    that.setInterv_1 = setInterval(function() {
+
+                                       that.switch_hdy = that.switch_hdy === '1' ? '2' : '1';
+
+                                        that.switch_hdy_time = that.switch_hdy === '1' ? 7000 : 3000;
+                                    }, that.switch_hdy_time);
+                                    break;
+                                case 2:
+                                    break;
+                            }
+                        }
+                    }
                 });
+
             },
 
             initPoint() {
                 var that = this;
-                setInterval(function () {
+
+
+                // 生物百科
+                this.setInterv_0 = setInterval(function () {
                     switch (that.activePoint) {
                         case '1': that.activePoint = '2'; break;
                         case '2': that.activePoint = '3'; break;
@@ -228,9 +294,11 @@
                 }, 2000);
 
                 // 海岛游动画
-                setInterval(function() {
-                   that.switch_hdy = !that.switch_hdy;
-                }, 7000);
+                // setInterval(function() {
+                //    that.switch_hdy = !that.switch_hdy;
+                // }, 7000);
+
+                // setInterval(function() {}, )
             }
         }
     }
@@ -281,6 +349,7 @@
                                 background-size: auto 50px;
                                 background-repeat: no-repeat;
                                 background-position: left top;
+                                transition: all 0.5s;
 
 
                                 &.images-1 {
@@ -310,6 +379,7 @@
                                     width: 8px;
                                     height: 8px;
                                     border-radius: 50%;
+                                    transition: all 0.5s;
                                 }
 
                                 &.po-1 {
@@ -347,7 +417,7 @@
                             background-size: 50% 50%;
                             background-repeat: no-repeat;
                             background-position: center;
-                            transition: all 0.2s;
+                            transition: all 0.5s;
                             transform-origin: center bottom;
 
 
@@ -521,17 +591,27 @@
                         overflow: hidden;
                         .xm-bg-panel {
                             box-sizing: border-box;
-                            padding-top: 35px;
                             position: absolute;
                             width: 100%;
                             height: 100%;
                             top: 0;
                             left: 0;
-                            background-image: url('./images/navItem2/xm-bg-kpg.png');
-                            background-repeat: no-repeat;
-                            background-origin: content-box;
-                            background-size: 80% auto;
-                            background-position: center center;
+
+
+                            .bg {
+                                position: absolute;
+                                top: 0;
+                                left: 0;
+                                padding-top: 35px;
+                                width: 100%;
+                                height: 100%;
+                                background-image: url('./images/navItem2/xm-bg-kpg.png');
+                                background-repeat: no-repeat;
+                                background-origin: content-box;
+                                background-size: 80% auto;
+                                background-position: center center;
+                                overflow: hidden;
+                            }
 
                             .point {
                                 box-sizing: border-box;
@@ -544,14 +624,16 @@
                                 background-repeat: no-repeat;
                                 background-position: center bottom;
                                 transform-origin: center bottom;
+                                opacity: 1;
 
                                 color: transparent;
-                                &.point1 {
-                                    top: 61%;
-                                    left: 10%;
-                                    background-image: url('./images/navItem2/dm_sby_point.png');
+                                z-index: 1;
+                                /*&.point1 {*/
+                                    /*top: 61%;*/
+                                    /*left: 10%;*/
+                                    /*background-image: url('./images/navItem2/dm_sby_point.png');*/
 
-                                }
+                                /*}*/
                                 &.point2 {
                                     top: 42%;
                                     left: 25%;
@@ -576,12 +658,41 @@
                                     background-image: url('./images/navItem2/sqy_point.png');
                                 }
                             }
+
+                            &.animate_xm-bg-panel-1 {
+                                .bg {
+                                    // transition: all 0.5s;
+                                    /*transform-origin: 0 0;*/
+
+                                    /*animation-name: hdy_bg;*/
+                                    /*animation-delay: 0.5s;*/
+                                    /*animation-fill-mode: forwards;*/
+                                    /*animation-duration: 1s;*/
+                                    //transform: matrix(2, 0, 0, 2, -10, -300);
+                                }
+
+
+                            }
                         }
                     }
                 }
 
             }
 
+        }
+
+    }
+
+
+    @keyframes hdy_bg {
+        0% {
+            transform: matrix(1, 0, 0, 1, 0, 0);
+        }
+        50% {
+            transform: matrix(2, 0, 0, 2, -10, -300);
+        }
+        100% {
+            transform: matrix(1, 0, 0, 1, 0, 0);
         }
 
     }

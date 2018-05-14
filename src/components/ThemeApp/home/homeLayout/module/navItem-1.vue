@@ -74,7 +74,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="swiper-slide">Slide 6</div>
+                    <!--<div class="swiper-slide">Slide 6</div>-->
                 </div>
             </div>
 
@@ -537,12 +537,13 @@
         methods: {
             initSwiper() {
                 var mySwiper = new Swiper (this.$refs.swiper, {
-                    loop: true,
+                    // loop: true,
                     // effect: 'cube',
                     initialSlide: 1,
-                    autoplay: true,
-                    delay: 500,
-                    disableOnInteraction: false
+                    autoplay: {
+                        disableOnInteraction: false
+                    }
+
                 });
 
                 new Swiper (this.$refs.swiperTable, {
@@ -550,9 +551,10 @@
                     loop: true,
                     slidesPerView: 4,
                     loopedSlides: 9,
-                    autoplay: true,
-                    delay: 0,
-                    disableOnInteraction: false
+                    autoplay: {
+                        disableOnInteraction: false
+                    },
+                    delay: 0
                 });
             },
             initChart() {
@@ -578,7 +580,6 @@
 
                 this.chart5_1 = Echarts.init(this.$refs.chart5_1);
                 //this.optionChart5_1 = Utils.merge(this.optionChart, this.optionChart5_1);
-                console.dir(this.optionChart5_1);
                 this.chart5_1.setOption(this.optionChart5_1);
 
 

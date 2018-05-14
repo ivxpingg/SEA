@@ -536,12 +536,14 @@
         methods: {
             initSwiper() {
                 var mySwiper = new Swiper (this.$refs.swiper, {
-                    loop: true,
+                    // loop: true,
                     // effect: 'cube',
                     initialSlide: 1,
-                    autoplay: true,
-                    delay: 500,
-                    disableOnInteraction: false
+                    autoplay: {
+                        delay: 3000,
+                        disableOnInteraction: false
+                    }
+
                 });
 
                 new Swiper (this.$refs.swiperTable, {

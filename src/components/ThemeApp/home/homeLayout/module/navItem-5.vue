@@ -86,21 +86,15 @@
             initSwiper() {
 
                 var mySwiper = new Swiper(this.$refs.swiper, {
-                    loop: true,
+                    // loop: true,
                     // effect: 'cube',
-                    autoplay: true,
-                    delay: 500,
-                    disableOnInteraction: false
-                });
-
-                new Swiper(this.$refs.swiperTable, {
                     direction: 'vertical',
-                    loop: true,
-                    slidesPerView: 4,
-                    loopedSlides: 9,
-                    autoplay: true,
-                    delay: 0,
-                    disableOnInteraction: false
+                    autoplay: {
+                        delay: 3000,
+                        disableOnInteraction: false,
+                        reverseDirection: true
+                    }
+
                 });
             },
             initChart() {
