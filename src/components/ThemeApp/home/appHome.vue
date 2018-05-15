@@ -75,11 +75,11 @@
                     this.navLayoutType = '2';
                 }
                 else if (this.navLayoutType === '2') {
+                    this.navLayoutType = '3';
+                }
+                else if (this.navLayoutType === '3') {
                     this.navLayoutType = '1';
                 }
-                // else if (this.navLayoutType === '3') {
-                //     this.navLayoutType = '1';
-                // }
 
                 this.editLayout = false;
             },

@@ -173,7 +173,7 @@
             &.level-panel-1 {
                 padding-top: 45px;
                 height: 280px;
-                margin: 0 30px;
+                margin: 0 20px;
 
                 .swiper-container {
                     height: 100%;
@@ -264,9 +264,10 @@
                         .item4-info {
                             position: relative;
                             margin: 45px auto 0;
-                            width: 338px;
+                            max-width: 338px;
                             height: 139px;
                             background: url('./images/gxcg-h4-1.png') no-repeat center;
+                            background-size: 100% auto;
 
                             .title {
                                 position: absolute;
@@ -287,7 +288,7 @@
                                 }
                                 &.title4 {
                                     top: 35%;
-                                    left: 66%;
+                                    left: 62%;
                                     color: #70a1e8;
                                 }
                                 &.title5 {
@@ -311,9 +312,10 @@
                         .item1-info {
                             position: relative;
                             margin: 37px auto 0;
-                            width: 338px;
+                            max-width: 338px;
                             height: 139px;
                             background: url('./images/gxcg-h1-1.png') no-repeat center;
+                            background-size: 100% auto;
 
                             .title {
                                 position: absolute;
@@ -351,9 +353,10 @@
                         .item2-info {
                             position: relative;
                             margin: 37px auto 0;
-                            width: 338px;
+                            max-width: 338px;
                             height: 139px;
                             background: url('./images/gxcg-h2-1.png') no-repeat center;
+                            background-size: 100% auto;
 
                             .title {
                                 position: absolute;
@@ -399,7 +402,7 @@
                                 font-weight: 700;
                                 letter-spacing: 4px;
                                 
-                                background: rgba(27,36,101,0.5) url('./images/meiyuanfuhao.png') no-repeat 40px center;
+                                background: rgba(27,36,101,0.5) url('./images/meiyuanfuhao.png') no-repeat 20px center;
                                 background-size: 25px auto;
                                 border-radius: 8px;
 

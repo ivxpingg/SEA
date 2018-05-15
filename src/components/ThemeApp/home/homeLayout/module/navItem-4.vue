@@ -117,7 +117,7 @@
                     // loop: true,
                     effect: 'cube',
                     autoplay: {
-                        disableOnInteraction: false,
+                        // disableOnInteraction: false,
                         delay: 3000,
                         reverseDirection: true
                     }
@@ -137,7 +137,6 @@
             margin: 0 24px;
             &.level-panel-1 {
                 padding-top: 35px;
-
 
                 .swiper-slide {
                     position: relative;
@@ -167,11 +166,12 @@
                         position: relative;
                         margin-top: 35px;
                         display: flex;
-                        height: 150px;
+                        height: 170px;
+                        line-height: 16px;
                         .leida-box {
                             flex: 1;
                             background: url('./images/bowen-bg-1.png') no-repeat center;
-                            background-size: 150px 150px;
+                            background-size: 85% auto;
                             color: #17172f;
                             .title {
                                 padding-top: 55px;
@@ -180,10 +180,10 @@
 
                             &.box1 {
                                 .title1 {
-                                    padding-top: 35px;
+                                    padding-top: 55px;
                                 }
                                 .title2 {
-                                    padding-top: 4px;
+                                    padding-top: 0px;
                                 }
                             }
                             &.box2 { }
@@ -193,11 +193,10 @@
                     .leida-info-1 {
                         position: relative;
                         margin: 0px auto 0;
-                        width: 300px;
+                        max-width: 300px;
                         height: 300px;
                         background: url('./images/bowen-bg-2.png') no-repeat center;
-                        background-size: 350px 350px;
-
+                        background-size: 100% auto;
                         color: #76e4ff;
 
                         .center-value {
@@ -211,7 +210,7 @@
                             color: #17172f;
 
                             .value {
-                                letter-spacing: 2px;
+                                letter-spacing: 0px;
                                 font-size: 13px;
                             }
 
@@ -220,7 +219,7 @@
                         .value1 {
                             position: absolute;
                             top: 45%;
-                            left: -8%;
+                            left: -2%;
                             padding: 5px;
                             width: 62px;
                             height: 62px;
@@ -230,8 +229,8 @@
                         }
                         .value2 {
                             position: absolute;
-                            top: 1%;
-                            left: 68%;
+                            top: 6%;
+                            left: 64%;
                             padding: 12px 5px;
                             width: 62px;
                             height: 62px;
@@ -241,8 +240,8 @@
                         }
                         .value3 {
                             position: absolute;
-                            top: 1%;
-                            left: 8%;
+                            top: 5%;
+                            left: 12%;
                             padding: 12px 5px;
                             width: 62px;
                             height: 62px;
@@ -252,8 +251,8 @@
                         }
                         .value4 {
                             position: absolute;
-                            top: 75%;
-                            left: 11%;
+                            top: 72%;
+                            left: 15%;
                             padding: 5px;
                             width: 62px;
                             height: 62px;
@@ -263,8 +262,8 @@
                         }
                         .value5 {
                             position: absolute;
-                            top: 69%;
-                            left: 68%;
+                            top: 65%;
+                            left: 65%;
                             padding: 12px 5px;
                             width: 62px;
                             height: 62px;
@@ -275,7 +274,7 @@
                         .value6 {
                             position: absolute;
                             top: 39%;
-                            left: 79%;
+                            left: 74%;
                             padding: 12px 5px;
                             width: 62px;
                             height: 62px;
@@ -289,18 +288,18 @@
                     .leida-info-2 {
                         position: relative;
                         margin: 0px auto 0;
-                        width: 300px;
+                        max-width: 300px;
                         height: 300px;
                         background: url('./images/bowen-bg-3.png') no-repeat center;
-                        background-size: 350px 350px;
-
+                        /*background-size: 350px 350px;*/
+                        background-size: 100% auto;
                         color: #76e4ff;
 
                         .center-value {
                             position: absolute;
                             top: 42%;
                             width: 100%;
-                            left: 5px;
+                            left: 0;
                             height: 80px;
                             text-align: center;
                             line-height: 16px;
@@ -315,8 +314,8 @@
 
                         .value1 {
                             position: absolute;
-                            top: 4%;
-                            left: 6%;
+                            top: 9%;
+                            left: 10%;
                             padding: 5px;
                             width: 62px;
                             height: 62px;
@@ -327,7 +326,7 @@
                         .value2 {
                             position: absolute;
                             top: 0%;
-                            left: 66%;
+                            left: 62%;
                             padding: 12px 5px;
                             width: 62px;
                             height: 62px;
@@ -337,8 +336,8 @@
                         }
                         .value3 {
                             position: absolute;
-                            top: 63%;
-                            left: 90%;
+                            top: 61%;
+                            left: 85%;
                             padding: 12px 5px;
                             width: 62px;
                             height: 62px;
@@ -348,7 +347,7 @@
                         }
                         .value4 {
                             position: absolute;
-                            top: 80%;
+                            top: 76%;
                             left: 45%;
                             padding: 5px;
                             width: 62px;
@@ -359,8 +358,8 @@
                         }
                         .value5 {
                             position: absolute;
-                            top: 69%;
-                            left: -4%;
+                            top: 65%;
+                            left: 0%;
                             padding: 12px 5px;
                             width: 62px;
                             height: 62px;

@@ -168,7 +168,7 @@
         &.nav-panel-lv1 {
             > .nav-item {
                 float: left;
-                width: 30%;
+                width: 25%;
                 padding-top: $lv1_padding_top;
                 padding-left: $lv1_padding_left;
                 padding-right: $lv1_padding_right;
@@ -176,7 +176,7 @@
                 height: $lv1_nav_item_height + $lv1_padding_top + $lv1_padding_bottom;
 
                 &.double-w {
-                    width: 40%;
+                    width: 50%;
                 }
             }
         }

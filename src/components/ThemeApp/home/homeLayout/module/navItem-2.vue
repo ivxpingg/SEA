@@ -8,7 +8,7 @@
         <div class="swiper-container" ref="swiper">
             <div class="swiper-wrapper">
 
-                <div class="swiper-slide" data-swiper-autoplay="12000">
+                <div class="swiper-slide" data-swiper-autoplay="11000">
                     <div class="level-panel level-panel-1">
                         <div class="top">
                             <div class="title" :class="'images-' + activePoint">{{currentPointInfo.name}}</div>
@@ -25,7 +25,7 @@
                     </div>
                 </div>
 
-                <div class="swiper-slide" data-swiper-autoplay="14000">
+                <div class="swiper-slide" data-swiper-autoplay="12000">
                     <div class="level-panel level-panel-2" :class="{'map-xm': switch_hdy ==='1', 'map-dsd': switch_hdy === '2'}" >
                         <div class="xm-bg-panel">
                             <div class="point point1">宝珠岛</div>
@@ -39,9 +39,9 @@
                     </div>
                 </div>
 
-                <div class="swiper-slide" data-swiper-autoplay="6000">
+                <div class="swiper-slide" data-swiper-autoplay="9000">
                     <div class="level-panel level-panel-3">
-                        <div class="xm-bg-panel animate_xm-bg-panel-1">
+                        <div class="xm-bg-panel"  :class="{'point-active': switch_kpg}">
                             <div class="bg"></div>
                             <!--<div class="point point1">贝壳梦幻世界</div>-->
                             <div class="point point2">诚毅科技探索中心</div>
@@ -49,6 +49,12 @@
                             <div class="point point3">福建海洋渔业科学馆</div>
                             <div class="point point4">厦门海底世界</div>
 
+                            <div class="title-panel">
+                                <div class="title title2">诚毅科技探索中心</div>
+                                <div class="title title3">厦门科技馆</div>
+                                <div class="title title4">福建海洋渔业科学馆</div>
+                                <div class="title title5">厦门海底世界</div>
+                            </div>
                         </div>
 
                     </div>
@@ -150,7 +156,10 @@
 
                 //切换海岛游地图动画
                 switch_hdy: 0,
-                switch_hdy_time: 7000,
+                switch_hdy_time: 6000,
+
+                //切换海洋科普馆
+                switch_kpg: false,
             };
         },
         watch: {
@@ -204,8 +213,8 @@
                             var text = '';
                             switch(index){
                                 case 0:text='海洋生物百科图鉴';break;
-                                case 1:text='海洋科普馆';break;
-                                case 2:text='海岛游';break;
+                                case 1:text='海岛游';break;
+                                case 2:text='海洋科普馆';break;
                             }
                             return '<span class="' + className + '">' + text + '</span>';
                         }
@@ -223,10 +232,10 @@
 
                                     // 海岛游动画
                                     that.switch_hdy = '1';
-                                    that.switch_hdy_time = 7000;
+                                    that.switch_hdy_time = 6000;
                                     break;
                                 case 2:
-                                    that.switch_hdy = '0';
+                                    that.switch_kpg = false;
                                     break;
                             }
                         },
@@ -266,10 +275,11 @@
 
                                        that.switch_hdy = that.switch_hdy === '1' ? '2' : '1';
 
-                                        that.switch_hdy_time = that.switch_hdy === '1' ? 7000 : 3000;
+                                        that.switch_hdy_time = that.switch_hdy === '1' ? 7000 : 2000;
                                     }, that.switch_hdy_time);
                                     break;
                                 case 2:
+                                    that.switch_kpg = true;
                                     break;
                             }
                         }
@@ -281,7 +291,6 @@
             initPoint() {
                 var that = this;
 
-
                 // 生物百科
                 this.setInterv_0 = setInterval(function () {
                     switch (that.activePoint) {
@@ -292,13 +301,6 @@
                         case '5': that.activePoint = '1'; break;
                     }
                 }, 2000);
-
-                // 海岛游动画
-                // setInterval(function() {
-                //    that.switch_hdy = !that.switch_hdy;
-                // }, 7000);
-
-                // setInterval(function() {}, )
             }
         }
     }
@@ -519,16 +521,16 @@
                                     animation-name: bounceInDown;
                                     animation-fill-mode: forwards;
                                     &.point1 {
-                                        animation-delay: 1s;
+                                        animation-delay: 0.5s;
                                     }
                                     &.point2 {
-                                        animation-delay: 2s;
+                                        animation-delay: 1.5s;
                                     }
                                     &.point3 {
-                                        animation-delay: 3s;
+                                        animation-delay: 2.5s;
                                     }
                                     &.point4 {
-                                        animation-delay: 4s;
+                                        animation-delay: 3.5s;
                                     }
                                 }
                             }
@@ -578,7 +580,7 @@
                                     animation-fill-mode: forwards;
 
                                     &.point5{
-                                        animation-delay: 1s;
+                                        animation-delay: 0.5s;
                                     }
                                 }
                             }
@@ -596,7 +598,6 @@
                             height: 100%;
                             top: 0;
                             left: 0;
-
 
                             .bg {
                                 position: absolute;
@@ -624,10 +625,12 @@
                                 background-repeat: no-repeat;
                                 background-position: center bottom;
                                 transform-origin: center bottom;
-                                opacity: 1;
-
+                                opacity: 0;
                                 color: transparent;
                                 z-index: 1;
+
+                                transition-property: all;
+                                transition-duration: 0.2s;
                                 /*&.point1 {*/
                                     /*top: 61%;*/
                                     /*left: 10%;*/
@@ -640,38 +643,120 @@
                                     background-image: url('./images/navItem2/md_sby_point.png');
 
                                 }
-                                &.point3 {
+                                &.point4 {
                                     top: 57%;
                                     left: 16%;
                                     background-image: url('./images/navItem2/qx_jcl_point.png');
 
                                 }
-                                &.point4 {
+                                &.point5 {
                                     top: 61%;
                                     left: 11%;
                                     background-image: url('./images/navItem2/rb_ldx_point.png');
 
                                 }
-                                &.point5 {
+                                &.point3 {
                                     top: 55%;
                                     left: 23%;
                                     background-image: url('./images/navItem2/sqy_point.png');
                                 }
+
                             }
 
-                            &.animate_xm-bg-panel-1 {
-                                .bg {
-                                    // transition: all 0.5s;
-                                    /*transform-origin: 0 0;*/
+                            .title-panel {
+                                position: absolute;
+                                top: 55px;
+                                left: 24px;
+                                right: 0;
+                                overflow: hidden;
 
-                                    /*animation-name: hdy_bg;*/
-                                    /*animation-delay: 0.5s;*/
-                                    /*animation-fill-mode: forwards;*/
-                                    /*animation-duration: 1s;*/
-                                    //transform: matrix(2, 0, 0, 2, -10, -300);
+                                .title {
+                                    position: relative;
+                                    padding-left: 16px;
+                                    font-size: 12px;
+                                    line-height: 20px;
+                                    color: #FFF;
+                                    text-align: left;
+                                    transition: all 0.5s;
+                                    opacity: 0;
+
+                                    &:after {
+                                        position: absolute;
+                                        left: 0;
+                                        top: 6px;
+                                        width: 8px;
+                                        height: 8px;
+                                        content: " ";
+                                        border-radius: 50%;
+                                        background-color: #FFF;
+                                    }
+
+                                    &.title2 {
+
+                                        &:after {
+                                            background-color: #ed7462;
+                                        }
+                                    }
+                                    &.title4 {
+                                        &:after {
+                                            background-color: #86cab4;
+                                        }
+                                    }
+                                    &.title5 {
+                                        &:after {
+                                            background-color: #efde67;
+                                        }
+                                    }
+                                    &.title3 {
+                                        &:after {
+                                            background-color: #d963ea;
+                                        }
+                                    }
+
+                                }
+                            }
+
+                            &.point-active {
+                                .point {
+                                    &.point2 {
+                                        opacity: 1;
+                                        transition-delay: 0.5s;
+                                    }
+                                    &.point3 {
+                                        opacity: 1;
+                                        transition-delay: 2.5s;
+                                    }
+                                    &.point4 {
+                                        opacity: 1;
+                                        transition-delay: 4.5s;
+                                    }
+                                    &.point5 {
+                                        opacity: 1;
+                                        transition-delay: 6.5s;
+                                    }
+
                                 }
 
-
+                                .title-panel {
+                                    .title {
+                                        &.title2 {
+                                            opacity: 1;
+                                            transition-delay: 0.5s;
+                                        }
+                                        &.title3 {
+                                            opacity: 1;
+                                            transition-delay: 2.5s;
+                                        }
+                                        &.title4 {
+                                            opacity: 1;
+                                            transition-delay: 4.5s;
+                                        }
+                                        &.title5 {
+                                            opacity: 1;
+                                            transition-delay: 6.5s;
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -679,20 +764,6 @@
 
             }
 
-        }
-
-    }
-
-
-    @keyframes hdy_bg {
-        0% {
-            transform: matrix(1, 0, 0, 1, 0, 0);
-        }
-        50% {
-            transform: matrix(2, 0, 0, 2, -10, -300);
-        }
-        100% {
-            transform: matrix(1, 0, 0, 1, 0, 0);
         }
 
     }
@@ -753,7 +824,7 @@
                 height: 24px;
                 width: 24px;
                 letter-spacing: 2px;
-                padding: 0 5px;
+                padding: 0 0px 0 24px;
                 line-height: 22px;
                 transition: width 0.5s;
                 border-radius: 12px;
@@ -761,26 +832,34 @@
                 background-color: transparent;
                 border: 1px solid rgb(118,228,255);
 
+                background-repeat: no-repeat;
+                background-size: 20px auto;
+                background-position: 2px center;
+                border-image: none;
+
                 &.bullet0 {
                     top: 10px;
+                    background-image: url('./images/navItem2/swkp-icon.png');
                 }
                 &.bullet1 {
                     top: 40px;
+                    background-image: url('./images/navItem2/hdy-icon.png');
                 }
                 &.bullet2 {
                     top: 70px;
+                    background-image: url('./images/navItem2/kpg-icon.png');
                 }
 
                 &.swiper-pagination-bullet-active {
                     text-indent: 10px;
                     &.bullet0 {
-                        width: 100px;
+                        width: 160px;
                     }
                     &.bullet1 {
                         width: 100px;
                     }
                     &.bullet2 {
-                        width: 100px;
+                        width: 120px;
                     }
                 }
 

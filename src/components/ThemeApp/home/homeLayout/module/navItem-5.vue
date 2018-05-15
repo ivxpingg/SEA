@@ -91,7 +91,7 @@
                     direction: 'vertical',
                     autoplay: {
                         delay: 3000,
-                        disableOnInteraction: false,
+                        // disableOnInteraction: false,
                         reverseDirection: true
                     }
 
