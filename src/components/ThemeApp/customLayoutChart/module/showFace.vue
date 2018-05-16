@@ -7,7 +7,7 @@
                     <div class="list" id="list">
                         <div class="list-inner">
                             <div class="item theme-item" v-for="(item, idx) in themeData" :name="item.customAnalysisId" :class="{active: item.customAnalysisId === currentCustomId}">
-                                <div class="item-title"  :key="idx" @click="onClickTheme(item.customAnalysisId, item.themeName)">{{item.themeName}}</div>
+                                <div class="item-title" :key="idx" @click="onClickTheme(item.customAnalysisId, item.themeName)">{{item.themeName}}</div>
                             </div>
                         </div>
                     </div>
@@ -206,7 +206,7 @@
             .left-panel-inner {
                 width: 100%;
                 height: 100%;
-                background-color: #142066;
+                background-color: #27296e;
                 border-radius: 0 35px 35px 0;
                 overflow: hidden;
                 opacity: 1;
@@ -338,6 +338,7 @@
                 height: 666px;
                 border: 1px solid #142066;
                 border-radius: 35px;
+                background-color: #27296e;
             }
         }
 
