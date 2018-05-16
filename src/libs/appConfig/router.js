@@ -88,5 +88,14 @@ export default [
             title: '厦门海洋生物观测装备公共服务平台'
         },
         component: (resolve) => require(['../../views/ObserveApp/ObserveApp.vue'], resolve)
+    },
+    {
+        path: '/AddTheme',
+        name: 'AddTheme',
+        requireAuth: false,
+        meta: {
+            title: '添加主题'
+        },
+        component: (resolve) => require(['../../components/ThemeApp/addTheme/addTheme.vue'], resolve)
     }
 ];
