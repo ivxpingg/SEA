@@ -12,7 +12,7 @@
                             <div class="lv1-handle" v-if="isEdit"><Icon type="drag"></Icon></div>
                             <div class="theme-sortable-panel">
                                 <div class="theme-item">
-                                    <vEcharts :id="item_lv2.navItemType" :isEdit="isEdit" :itemInfo="item_lv2"></vEcharts>
+                                    <vEcharts :id="item_lv2.navItemType" :isEdit="isEdit" :itemInfo="item_lv2" :key="item_lv2.navItemType" @sub_chartType="sub_chartType" @sub_layoutData="sub_layoutData"></vEcharts>
                                 </div>
                             </div>
                         </div>
@@ -23,7 +23,7 @@
                     <div class="lv1-handle"  v-if="isEdit"><Icon type="drag"></Icon></div>
                     <div class="theme-sortable-panel">
                         <div class="theme-item">
-                            <vEcharts :id="item_lv1.navItemType" :isEdit="isEdit" :itemInfo="item_lv1" @sub_chartType="sub_chartType"></vEcharts>
+                            <vEcharts :id="item_lv1.navItemType" :isEdit="isEdit" :itemInfo="item_lv1" :key="item_lv1.navItemType" @sub_chartType="sub_chartType" @sub_layoutData="sub_layoutData"></vEcharts>
                         </div>
                     </div>
                 </template>
@@ -39,6 +39,7 @@
     import vEcharts from './module/echarts';
     import Sortable from 'sortablejs';
     import Com from '../../../../../libs/com';
+    import Utils from '../../../../../libs/utils';
     export default {
         name: "layout-1",
         data() {
@@ -106,6 +107,7 @@
         },
         methods: {
             set_m_layoutData() {
+
                 var that = this;
                 that.layoutData.forEach(function(val1, idx1){
                    that.$set(that.m_layoutData, idx1, val1);
@@ -179,6 +181,7 @@
             },
 
             save() {
+
                 var that = this;
                 var data = [];
                 var dom, idx1, idx2;
@@ -188,11 +191,20 @@
                    dom = that.$el.querySelector('.' + val1.className);
                    idx1 = Com.dom.getNodeIdx(dom);
 
-                   data[idx1] = {
-                       chartType: val1.chartType || '',
-                       className: val1.className,
-                       navItemType: val1.navItemType
-                   };
+                   data[idx1] = {};
+                   for (let k1 in val1) {
+                       if (k1 !== 'lv2') {
+                           data[idx1][k1] = val1[k1];
+                       }
+                   }
+
+                   // data[idx1] = {
+                   //     chartType: val1.chartType || '',
+                   //     className: val1.className,
+                   //     navItemType: val1.navItemType,
+                   //     chartOption: val1.chartOption || {},
+                   //     externalOption: val1.externalOption || {}
+                   // };
 
                    if (!!val1.lv2) {
                        data[idx1].lv2 = [];
@@ -201,17 +213,28 @@
                            dom = that.$el.querySelector('.' + val2.className);
                            idx2 = Com.dom.getNodeIdx(dom);
 
-                           data[idx1].lv2[idx2] = {
-                               chartType: val2.chartType || '',
-                               className: val2.className,
-                               navItemType: val2.navItemType
-                           };
+                           data[idx1].lv2[idx2] = {};
+                           for (let k2 in val2) {
+                               data[idx1].lv2[idx2][k2] = val2[k2];
+                           }
+
+                           // data[idx1].lv2[idx2] = {
+                           //     chartType: val2.chartType || '',
+                           //     className: val2.className,
+                           //     navItemType: val2.navItemType,
+                           //     chartOption: val2.chartOption || {},
+                           //     externalOption: val2.externalOption || {}
+                           // };
                        });
                    }
                    else {
 
                    }
                 });
+
+
+                console.log(11);
+                console.dir(data);
 
                 return data;
             },
@@ -226,7 +249,7 @@
                         return;
                     }
 
-                    if(this.m_layoutData.lv2 && this.m_layoutData.lv2.length > 0) {
+                    if(this.m_layoutData[i].lv2 && this.m_layoutData[i].lv2.length > 0) {
 
                         for (let j = 0; j < this.m_layoutData[i].lv2.length; j++) {
                             if (this.m_layoutData[i].lv2[j].className === itemInfo.className) {
@@ -238,6 +261,35 @@
 
                 }
 
+            },
+
+            /**
+             * 修改布局数据
+             * @param key
+             * @param data
+             * @param itemInfo
+             */
+            sub_layoutData(key, data, itemInfo) {
+                for(let i = 0; i < this.m_layoutData.length; i++) {
+
+                    if (this.m_layoutData[i].className === itemInfo.className) {
+
+                        this.m_layoutData[i][key] = Utils.merge(this.m_layoutData[i][key], data);
+                        return;
+                    }
+
+                    if(this.m_layoutData[i].lv2 && this.m_layoutData[i].lv2.length > 0) {
+
+                        for (let j = 0; j < this.m_layoutData[i].lv2.length; j++) {
+                            if (this.m_layoutData[i].lv2[j].className === itemInfo.className) {
+
+                                this.m_layoutData[i].lv2[j][key] = Utils.merge(this.m_layoutData[i].lv2[j][key], data);
+                                return;
+                            }
+                        }
+                    }
+
+                }
             }
         }
     }

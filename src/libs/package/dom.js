@@ -26,7 +26,7 @@ var GetNodeIdx = (node) => {
 }
 
 var DG = () => {
-    alert(1);
+
 }
 
 export default {

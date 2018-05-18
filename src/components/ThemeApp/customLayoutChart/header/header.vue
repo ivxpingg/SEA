@@ -19,8 +19,8 @@
     .header-container {
         position: relative;
         height: 91px;
-        background: linear-gradient(to bottom, #27296e 79px,#0b0d49 80px, #0b0d49 91px);
-        border-bottom: 1px solid #27296e;
+        background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 79px, transparent 79px, transparent 91px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 
         &:after {
             position: absolute;
@@ -30,7 +30,7 @@
             right: 0;
             content: " ";
             height: 1px;
-            background: #27296e;
+            background: rgba(255, 255, 255, 0.1);
             z-index: 1;
         }
 

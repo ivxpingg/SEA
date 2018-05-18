@@ -220,6 +220,10 @@
                     if (valid) {
                         var url;
                         var json = this.$refs.vLayoutParentBox.save();
+
+                        console.log('json');
+                        console.dir(json);
+
                         var ajax_data = {
                                 themeName: that.themeForm.theme_name,
                                 layoutContent: JSON.stringify([{
@@ -227,6 +231,7 @@
                                     json: json
                                 }])
                             };
+
 
                         if (this.customId !== '') {
                             ajax_data.customAnalysisId = this.customId;
@@ -297,7 +302,7 @@
             .left-panel-inner {
                 width: 100%;
                 height: 100%;
-                background-color: #142066;
+                background-color: rgba(255, 255, 255, 0.1);
                 border-radius: 0 35px 35px 0;
                 overflow: hidden;
                 opacity: 1;
@@ -431,7 +436,7 @@
                 height: 666px;
                 border: 1px solid #142066;
                 border-radius: 35px 35px 35px 35px;
-                background-color: #f9f9f9;
+                background-color: rgba(255, 255, 255, 0.1);
 
                 &.echarts-area-add {
                     border-radius: 35px 35px 0 35px;

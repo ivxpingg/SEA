@@ -10,9 +10,11 @@
             <img :src="imgSrc" alt="">
         </div>
 
-        <div class="custom-style-panel" v-if="isEdit">
-            <div class="btn-icon btn-chart-type" @click="onChangeChartType"><i class="icon iconfont icon-tubiaoqiehuan"></i></div>
-            <div class="btn-icon btn-style"><i class="icon iconfont icon-fengge"></i></div>
+        <div class="custom-style-panel" v-if="isEdit && id !== ''">
+            <!--<div class="btn-icon btn-chart-type" @click="onChangeChartType"><i class="icon iconfont icon-tubiaoqiehuan"></i></div>-->
+            <!--<div class="btn-icon btn-style"><i class="icon iconfont icon-fengge"></i></div>-->
+            <Button type="text" icon="android-apps" size="small" @click="onClick_titlePosition">标题位置</Button>
+            <Button type="text" icon="android-apps" size="small" @click="onClick_legendPosition">图例位置</Button>
         </div>
     </div>
 </template>
@@ -20,6 +22,7 @@
 <script>
     import Echarts from 'echarts';
     import ChartOption from './chartOption';
+    import Utils from '../../../../../../libs/utils';
     export default {
         name: "echarts",
         data() {
@@ -34,9 +37,13 @@
                 typeList: [],
 
                 // 当前选中的图表类型
-                currentChartType: '',
+                // currentChartType: '',
 
-                option: {}
+                option: {},
+
+                // 图表标题对应 chartOption的标题位置参数的索引值
+                titlePostionIndex: 0,
+                legendPostionIndex: 0,
             };
         },
         props: {
@@ -67,6 +74,7 @@
             id(val, oldVal) {
                 var that = this;
                 if (val !== "") {
+
                     this.getChartInfo();
                 }
             },
@@ -74,32 +82,33 @@
                 deep: true,
                 handler(val, oldVal) {
 
-                    this.typeList = this.chartInfo.picType.split(',');
-
-                    if (!this.itemInfo.chartType) {
-                        this.parentChartType(this.typeList[0]);
-                    }
+                    // this.typeList = this.chartInfo.picType.split(',');
+                    //
+                    // if (!this.itemInfo.chartType) {
+                    //     this.parentChartType(this.typeList[0]);
+                    // }
                 }
             },
             itemInfo: {
                 deep: true,
                 handler(val, oldVal) {
-                    this.currentChartType = val.chartType || '';
-                }
-            },
-
-            currentChartType(val, oldVal) {
-                if (val !== '') {
-                    this.getChartData();
+                    // this.currentChartType = val.chartType || '';
                 }
             }
+
+            // currentChartType(val, oldVal) {
+            //     if (val !== '') {
+            //         this.getChartData();
+            //     }
+            // }
         },
         created() {
             if (this.itemInfo.chartType) {
-                this.currentChartType = this.itemInfo.chartType;
+                // this.currentChartType = this.itemInfo.chartType;
             }
         },
         mounted() {
+
             Echarts.registerTheme("shine", ChartOption.theme.shine);
 
             if (this.id !== ''){
@@ -148,7 +157,7 @@
             setEchart(data) {
                 var that = this;
 
-                var chartType = this.currentChartType;
+                var chartType = this.chartInfo.picType;//this.currentChartType;
 
                 if (this.myChart) {
                     this.myChart.clear();
@@ -168,18 +177,20 @@
                     value: 12
                 }] : data;
 
-                var option = ChartOption.getOption(chartType, data);
-
-                option.title.text = this.chartInfo.name;
+                this.option = ChartOption.getOption(chartType, data);
 
 
-                this.myChart.setOption(option);
+                this.option = Utils.merge(this.option, this.itemInfo.chartOption);
+
+                this.option.title.text = this.chartInfo.name;
+
+
+                this.myChart.setOption(this.option);
 
                 setTimeout(function() {
                     that.imgSrc = that.myChart.getDataURL();
                 }, 100);
             },
-
 
             // 更改图表类型
             onChangeChartType() {
@@ -198,6 +209,84 @@
             parentChartType(type) {
                 this.currentChartType = type;
                 this.$emit('sub_chartType', type, this.itemInfo);
+            },
+
+            // 图表标题位置
+            onClick_titlePosition() {
+
+                var that = this,
+                    titleOption = ChartOption.titleOption;
+
+                var isSame = true;
+                this.titlePostionIndex = this.titlePostionIndex >= (titleOption.length - 1) ? 0 : (this.titlePostionIndex + 1);
+
+                if (titleOption.length === 1) {
+
+                    return;
+                }
+
+                if (!Utils.isUndefined(this.itemInfo.chartType.title)) {
+                    for(let key in this.itemInfo.chartType.title) {
+                        if (this.itemInfo.chartType.title[key] !== titleOption[this.titlePostionIndex][key]) {
+                            isSame = false;
+                        }
+                    }
+                }
+                else {
+                    isSame = false;
+                }
+
+                if (isSame) {
+                    this.titlePostionIndex = this.titlePostionIndex >= (titleOption.length - 1) ? 0 : (this.titlePostionIndex + 1);
+                }
+
+                this.option = Utils.merge(this.option, titleOption[this.titlePostionIndex]);
+
+                this.myChart.setOption(this.option);
+
+                setTimeout(function() {
+                    that.imgSrc = that.myChart.getDataURL();
+                }, 100);
+
+                this.$emit('sub_layoutData','chartOption', titleOption[this.titlePostionIndex], this.itemInfo);
+            },
+            onClick_legendPosition() {
+
+                var that = this,
+                    legendOption = ChartOption.legendOption;
+
+                var isSame = true;
+                this.legendPostionIndex = this.legendPostionIndex >= (legendOption.length - 1) ? 0 : (this.legendPostionIndex + 1);
+
+                if (legendOption.length === 1) {
+
+                    return;
+                }
+
+                if (!Utils.isUndefined(this.itemInfo.chartType.title)) {
+                    for(let key in this.itemInfo.chartType.title) {
+                        if (this.itemInfo.chartType.title[key] !== legendOption[this.legendPostionIndex][key]) {
+                            isSame = false;
+                        }
+                    }
+                }
+                else {
+                    isSame = false;
+                }
+
+                if (isSame) {
+                    this.legendPostionIndex = this.legendPostionIndex >= (legendOption.length - 1) ? 0 : (this.legendPostionIndex + 1);
+                }
+
+                this.option = Utils.merge(this.option, legendOption[this.legendPostionIndex]);
+
+                this.myChart.setOption(this.option);
+
+                setTimeout(function() {
+                    that.imgSrc = that.myChart.getDataURL();
+                }, 100);
+
+                this.$emit('sub_layoutData','chartOption', legendOption[this.legendPostionIndex], this.itemInfo);
             }
         }
     }
@@ -210,13 +299,17 @@
 
         .echart-panel {
             height: 100%;
+            /*background-color: #FFF;*/
+            border: 1px solid rgba(255,255,255,0.5);
+            border-radius: 20px;
         }
 
         .empty {
             position: relative;
             height: 100%;
             text-align: center;
-            background-color: #cbcedc;
+            background-color: rgba(220,220,220, 0.6);
+            border-radius: 20px;
 
             .iconfont {
                 position: absolute;
@@ -230,29 +323,24 @@
 
         .custom-style-panel {
             position: absolute;
-            height: 45px;
+            height: 26px;
             bottom: 0px;
-            left: 0px;
+            left: 0;
+            right: 0;
             text-align: left;
-            background-color: #55a532;
-
+            background-color: rgba(255,255,255, 0.2);
+            border-radius: 0 0 20px 20px;
             overflow: hidden;
-
             z-index: 10;
 
-            .btn-icon {
-                display: inline-block;
-                width: 60px;
-                text-align: center;
-                cursor: pointer;
-                .icon {
-                    color: rgba(51,51,51, 0.7);
-                    font-size: 30px;
-                    line-height: 45px;
+            .ivu-btn {
+                margin-left: 10px;
+                color: rgba(255,255,255,0.6);
+                border-width: 0;
+                box-shadow: none;
 
-                    &:hover {
-                        color: rgba(51,51,51, 1);
-                    }
+                &:hover {
+                    color: #FFF;
                 }
             }
         }

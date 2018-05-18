@@ -14,14 +14,28 @@ var Theme = {
         "textColor": "#333",
         "markTextColor": "#eee",
         "color": [
-            "#c12e34",
-            "#e6b600",
-            "#0098d9",
-            "#2b821d",
-            "#005eaa",
-            "#339ca8",
-            "#cda819",
-            "#32a487"
+            // "#c12e34",
+            // "#e6b600",
+            // "#0098d9",
+            // "#2b821d",
+            // "#005eaa",
+            // "#339ca8",
+            // "#cda819",
+            // "#32a487"
+
+            "#38a5db",
+            "#3bc9e8",
+            "#6be0df",
+            "#ade5ae",
+            "#ffd366",
+            "#fe9685",
+            "#f67199",
+            "#e26eb6",
+            "#e691d1",
+            "#e1baf3",
+            "#9f98f4",
+            "#8378ea",
+            "#97b8fc"
         ],
         "borderColor": "#ccc",
         "borderWidth": 0,
@@ -173,16 +187,76 @@ var Theme = {
 };
 
 var BaseOption = {
-    title: { },
-    legend: {},
+    title: {
+        textStyle: {
+            color: '#FFF',
+            fontSize: 15
+        },
+        top: 10,
+        left: 10,
+        right: 'auto',
+        bottom: 'auto'
+    },
+    legend: {
+        textStyle: {
+            color: '#FFF'
+        },
+        left: 'auto',
+        top: 10,
+        right: 10,
+        bottom: 'auto',
+        orient: 'horizontal'
+    },
     grid: {},
     toolbox: {},
     xAxis: {
         type: 'category',
-        data: []
+        data: [],
+        axisLine: {
+            lineStyle: {
+                color: '#FFF'
+            }
+        },
+        axisTick: {
+            lineStyle: {
+                color: 'rgba(255,255,255,0.7)'
+            }
+        },
+        axisLabel: {
+            color: '#fff'
+        },
+        splitLine: {
+            show: false
+        },
+        splitArea: {
+            show: false
+        }
+
     },
     yAxis: {
-        type: 'value'
+        type: 'value',
+        axisLine: {
+            lineStyle: {
+                color: '#FFF'
+            }
+        },
+        axisTick: {
+            lineStyle: {
+                color: 'rgba(255,255,255,0.7)'
+            }
+        },
+        axisLabel: {
+            color: '#fff'
+        },
+        splitLine: {
+            show: true,
+            lineStyle: {
+                color: 'rgba(255,255,255,0.3)'
+            }
+        },
+        splitArea: {
+            show: false
+        }
     }
 };
 
@@ -193,12 +267,20 @@ var Line = Utils.merge(BaseOption, {
 });
 
 var Bar = Utils.merge(BaseOption, {
+    legend: {},
     xAxis: {},
     yAxis: {},
     series: []
 });
 
 var Pie = Utils.merge(BaseOption, {
+    legend: {
+        left: 'auto',
+        top: 'center',
+        right: 10,
+        bottom: 'auto',
+        orient: 'vertical'
+    },
     xAxis: {
         show: false
     },
@@ -209,6 +291,64 @@ var Pie = Utils.merge(BaseOption, {
 });
 
 
+//
+
+// 图例切换参数
+var LegendOption = [
+    {
+        legend: {
+            left: 'auto',
+            top: 10,
+            right: 10,
+            bottom: 'auto',
+            orient: 'horizontal'
+        }
+    },
+    {
+        legend: {
+            left: 'auto',
+            top: 'center',
+            right: 10,
+            bottom: 'auto',
+            orient: 'vertical'
+        }
+    },
+    {
+        legend: {
+            left: 10,
+            top: 'center',
+            right: 'auto',
+            bottom: 'auto',
+            orient: 'vertical'
+        }
+    },
+    {
+        legend: {
+            left: 'center',
+            top: 'auto',
+            right: 'auto',
+            bottom: 10,
+            orient: 'horizontal'
+        }
+    }
+];
+
+var TitleOption = [
+    {
+        title: {
+            top: 10,
+            left: 10,
+            right: 'auto',
+            bottom: 'auto'
+        }
+    },{
+        title: {
+            top: 10,
+            left: 'center',
+            right: 'auto',
+            bottom: 'auto'
+        }
+    }];
 
 
 var GetOption = (type, data, params) => {
@@ -284,10 +424,9 @@ var GetOption = (type, data, params) => {
     }
 
     else {}
-console.dir(option);
+    // console.dir(option);
     return option;
 };
-
 
 
 export default {
@@ -295,6 +434,8 @@ export default {
     line: Utils.merge(BaseOption, Line),
     bar: Utils.merge(BaseOption, Bar),
     pie: Utils.merge(BaseOption, Pie),
-    getOption: GetOption
+    getOption: GetOption,
+    legendOption: LegendOption,
+    titleOption: TitleOption
 }
 

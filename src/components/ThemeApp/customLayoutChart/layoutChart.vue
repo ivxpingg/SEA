@@ -55,7 +55,8 @@
 
         .router-view {
             padding-top: 91px;
-            background-color: #0c0d4b;
+            /*background-color: #0c0d4b;*/
+            background: url('./images/home-bg1.png');
         }
     }
 </style>

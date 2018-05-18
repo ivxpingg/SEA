@@ -69,7 +69,7 @@
                             customAnalysisId: that.currentCustomId
                         }
                     }).then(function (response) {
-                        console.dir(response);
+                        // console.dir(response);
                         if (response.status === 1) {
                             var layoutContent = response.result.layoutContent;
                             layoutContent = eval(layoutContent)[0];
@@ -171,7 +171,7 @@
                     url: '/ocean/theme/customAnalysis/list',
                     methods: 'get'
                 }).then(function (response) {
-                    console.dir(response);
+                    // console.dir(response);
                     if (response.status === 1) {
                         that.themeData = response.result;
 
@@ -206,7 +206,7 @@
             .left-panel-inner {
                 width: 100%;
                 height: 100%;
-                background-color: #27296e;
+                background-color: rgba(255, 255, 255, 0.1);
                 border-radius: 0 35px 35px 0;
                 overflow: hidden;
                 opacity: 1;
@@ -338,7 +338,7 @@
                 height: 666px;
                 border: 1px solid #142066;
                 border-radius: 35px;
-                background-color: #27296e;
+                background-color: rgba(255, 255, 255, 0.1);
             }
         }
 
