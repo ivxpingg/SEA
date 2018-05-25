@@ -31,7 +31,8 @@
                 imgSrc: '',
                 chartInfo: {
                     name: '',
-                    picType: ''
+                    picType: '',
+                    params: null
                 },
 
                 typeList: [],
@@ -40,6 +41,9 @@
                 // currentChartType: '',
 
                 option: {},
+
+                // 图表数据
+                chartData: {},
 
                 // 图表标题对应 chartOption的标题位置参数的索引值
                 titlePostionIndex: 0,
@@ -129,13 +133,70 @@
                         if(response.status === 1) {
                             that.chartInfo.name = response.result.name;
                             that.chartInfo.picType = response.result.picType;
-                            that.getChartData();
+                            that.chartInfo.params = response.result.params;
+                            that.analysisData();
                         }
                     }).catch(function (e) {
 
                     });
                 }
             },
+
+            // 解析图表参数信息
+            analysisData() {
+                var that = this;
+                if (that.chartInfo.params) {
+                    that.chartInfo.params = eval('[' + that.chartInfo.params + ']')[0];
+                }
+                else {
+                    that.chartInfo.params = {
+                        echartsOption: {      // 图表参数
+                            radar: {
+                                indicator: []
+                            }
+                        },
+                        sqlDataName: [],                  // sql语句对应的名称,顺序与SQL顺序一致
+                        filterParamsName: ['时间','仪器'], // 筛选参数名称，顺序与参数SQL顺序一致
+                        bar: {},                          // 对应需要图表需要的动态参数
+                        line: {},                         // 对应需要图表需要的动态参数
+                        pie: {},                          // 对应需要图表需要的动态参数
+                        radar: {},                        // 对应需要图表需要的动态参数
+                        scatter: {}                       // 对应需要图表需要的动态参数
+                    };
+                }
+
+                // 判断是否有筛选的参数
+                if (that.chartInfo.params.filterParamsName.length > 0) {
+                    // do Something
+                    // 渲染筛选条件，
+                    // 获取之前保存的筛选条件，如果没有值则初始化筛选条件值。
+                    //
+                }
+
+                that.initChart();
+
+                // 设置图表的额外参数配置。
+                // do Something
+
+                that.getChartDataTest();
+            },
+
+            // 初始化图表对象，和基本option
+            initChart() {
+                var chartType = this.chartInfo.picType;
+                if (this.myChart) {
+                    this.myChart.clear();
+                }
+                else {
+                    this.myChart = Echarts.init(this.$refs.echart, 'shine');
+                }
+
+                this.option = ChartOption[this.myChart] || {};
+                this.option.title.text = this.chartInfo.name;
+
+            },
+
+
             getChartData() {
                 var that = this;
                 if (this.id !== '') {
@@ -154,6 +215,34 @@
                     });
                 }
             },
+            getChartDataTest() {
+                switch (this.chartInfo.picType) {
+                    case 'line':
+                    case 'bar':
+                        this.chartData = {
+
+                        };
+                        break;
+                    case 'pie' : break;
+                    case 'radar':
+
+                        this.chartData = [{
+                            name1: '仪器使用情况',
+                            value1: 100,
+                            value2: 200,
+
+                        }];
+                        break;
+                    case 'scatter': break;
+                }
+
+                this.setChartData();
+            },
+
+            setChartData() {
+
+            },
+
             setEchart(data) {
                 var that = this;
 
@@ -176,6 +265,8 @@
                     name: '贝类百科',
                     value: 12
                 }] : data;
+
+
 
                 this.option = ChartOption.getOption(chartType, data);
 
@@ -213,7 +304,6 @@
 
             // 图表标题位置
             onClick_titlePosition() {
-
                 var that = this,
                     titleOption = ChartOption.titleOption;
 

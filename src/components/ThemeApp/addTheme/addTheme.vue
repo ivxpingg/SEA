@@ -26,9 +26,17 @@
                 </FormItem>
 
                 <FormItem label="SQL">
-                    <Input v-model="formData.sql" type="textarea" :rows="4" placeholder="请输入SQL" />
+                    <Input v-model="formData.sqlData" type="textarea" :rows="4" placeholder="请输入SQL，多个SQL请用';'隔开" />
                 </FormItem>
 
+                <!--雷达图-->
+
+                <!--<FormItem label="参数SQL">-->
+                    <!--<Input v-model="formData.sqlParam" type="textarea" :rows="4" placeholder="请输入参数SQL，多个SQL请用';'隔开" />-->
+                <!--</FormItem>-->
+                <FormItem label="图表参数" v-if="formData.picType === 'radar'">
+                    <Input v-model="formData.echartParam" type="textarea" :rows="4" placeholder="" />
+                </FormItem>
 
             </Form>
         </div>
@@ -44,8 +52,24 @@
                 formData: {
                     id: '',
                     name: '',
-                    picType: '',
-                    sql: ''
+                    picType: 'radar',
+                    sql: '',
+                    sqlParam: '',
+                    echartParam: '',
+                    params: {
+                        echartsOption: {      // 图表参数
+                            radar: {
+                                indicator: []
+                            }
+                        },
+                        sqlDataName: [],                  // sql语句对应的名称,顺序与SQL顺序一致
+                        filterParamsName: ['时间','仪器'], // 筛选参数名称，顺序与参数SQL顺序一致
+                        bar: {},              // 对应需要图表需要的动态参数
+                        line: {},             // 对应需要图表需要的动态参数
+                        pie: {},              // 对应需要图表需要的动态参数
+                        radar: {},            // 对应需要图表需要的动态参数
+                        scatter: {}           // 对应需要图表需要的动态参数
+                    }
                 },
                 themeDataList: [],
 
@@ -65,23 +89,25 @@
                 },{
                     name: '气泡图',
                     value: 'scatter'
-                }]
+                }],
+
+
             };
         },
         watch: {
-            formData: {
-                deep: true,
-                handler(val, oldVal) {
-                    // 如果图形变更
-                    if (val.picType !== oldVal.picType) {
-                        switch(val.picType) {
-                            case 'bar': break;
-                            case 'line': break;
-                            case 'pie': break;
-                            case 'radar': break;
-                            case 'scatter': break;
-                        }
-                    }
+            'formData.picType': function(val, oldVal) {
+                // 如果图形变更
+                switch (val) {
+                    case 'bar':
+                        break;
+                    case 'line':
+                        break;
+                    case 'pie':
+                        break;
+                    case 'radar':
+                        break;
+                    case 'scatter':
+                        break;
                 }
             }
         },

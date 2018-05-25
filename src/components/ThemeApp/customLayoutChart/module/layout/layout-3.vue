@@ -2,7 +2,7 @@
     <div class="layout-3-container">
         <div class="sortable-panel sortable-lv1" :class="{'cursor-move': isEdit}" ref="sortable-panel-lv1">
             <div class="sortable-item" v-for="item_lv1 in layoutData" :name="item_lv1.navItemType" :class="item_lv1.className">
-                <vEcharts :id="item_lv1.navItemType"></vEcharts>
+                <vEcharts :id="item_lv1.navItemType" :isEdit="isEdit" :itemInfo="item_lv1"></vEcharts>
             </div>
         </div>
     </div>

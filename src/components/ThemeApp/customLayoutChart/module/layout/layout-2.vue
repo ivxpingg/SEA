@@ -5,7 +5,7 @@
                 <div class="lv1-handle"  v-if="isEdit"><Icon type="drag"></Icon></div>
                 <div class="theme-sortable-panel">
                     <div class="theme-item">
-                        <vEcharts :id="item_lv1.navItemType"></vEcharts>
+                        <vEcharts :id="item_lv1.navItemType" :itemInfo="item_lv1" :isEdit="isEdit" @sub_layoutData="sub_layoutData"></vEcharts>
                     </div>
                 </div>
             </div>
@@ -17,6 +17,7 @@
     import vEcharts from './module/echarts';
     import Sortable from 'sortablejs';
     import Com from '../../../../../libs/com';
+    import Utils from '../../../../../libs/utils';
     export default {
         name: "layout-2",
         data() {
@@ -126,10 +127,18 @@
                     dom = that.$el.querySelector('.' + val1.className);
                     idx1 = Com.dom.getNodeIdx(dom);
 
-                    data[idx1] = {
-                        className: val1.className,
-                        navItemType: val1.navItemType
-                    };
+
+                    data[idx1] = {};
+                    for (let k1 in val1) {
+                        if (k1 !== 'lv2') {
+                            data[idx1][k1] = val1[k1];
+                        }
+                    }
+
+                    // data[idx1] = {
+                    //     className: val1.className,
+                    //     navItemType: val1.navItemType
+                    // };
 
                     if (!!val1.lv2) {
                         data[idx1].lv2 = [];
@@ -138,10 +147,15 @@
                             dom = that.$el.querySelector('.' + val2.className);
                             idx2 = Com.dom.getNodeIdx(dom);
 
-                            data[idx1].lv2[idx2] = {
-                                className: val2.className,
-                                navItemType: val2.navItemType
-                            };
+                            data[idx1].lv2[idx2] = {};
+                            for (let k2 in val2) {
+                                data[idx1].lv2[idx2][k2] = val2[k2];
+                            }
+
+                            // data[idx1].lv2[idx2] = {
+                            //     className: val2.className,
+                            //     navItemType: val2.navItemType
+                            // };
                         });
                     }
                     else {
@@ -150,6 +164,35 @@
                 });
 
                 return data;
+            },
+
+            /**
+             * 修改布局数据
+             * @param key
+             * @param data
+             * @param itemInfo
+             */
+            sub_layoutData(key, data, itemInfo) {
+                for(let i = 0; i < this.m_layoutData.length; i++) {
+
+                    if (this.m_layoutData[i].className === itemInfo.className) {
+
+                        this.m_layoutData[i][key] = Utils.merge(this.m_layoutData[i][key], data);
+                        return;
+                    }
+
+                    if(this.m_layoutData[i].lv2 && this.m_layoutData[i].lv2.length > 0) {
+
+                        for (let j = 0; j < this.m_layoutData[i].lv2.length; j++) {
+                            if (this.m_layoutData[i].lv2[j].className === itemInfo.className) {
+
+                                this.m_layoutData[i].lv2[j][key] = Utils.merge(this.m_layoutData[i].lv2[j][key], data);
+                                return;
+                            }
+                        }
+                    }
+
+                }
             }
         }
     }

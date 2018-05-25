@@ -232,10 +232,6 @@
                    }
                 });
 
-
-                console.log(11);
-                console.dir(data);
-
                 return data;
             },
 

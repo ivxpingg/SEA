@@ -76,7 +76,7 @@
                 gripOpen: true,
                 rightGripOpen: true,
                 // 布局
-                keyId: '1',           // 布局类型 当前有4种布局类型。 ['1'|'2'|'3'|'4']
+                keyId: '2',           // 布局类型 当前有4种布局类型。 ['1'|'2'|'3'|'4']
                 isEdit_layout: true,  // 布局是否是可拖放状态
                 pdata: [],            // 布局数据信息
 

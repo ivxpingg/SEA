@@ -290,6 +290,30 @@ var Pie = Utils.merge(BaseOption, {
     series: []
 });
 
+var Radar = Utils.merge(BaseOption, {
+    legend: {
+        left: 'auto',
+        top: 'center',
+        right: 10,
+        bottom: 'auto',
+        orient: 'vertical'
+    },
+    xAxis: {
+        show: false
+    },
+    yAxis: {
+        show: false
+    },
+    radar: {
+        indicator: []
+    },
+    series: [{
+        name: '',
+        type: 'radar',
+        data: []
+    }]
+});
+
 
 //
 
@@ -297,6 +321,7 @@ var Pie = Utils.merge(BaseOption, {
 var LegendOption = [
     {
         legend: {
+            show: true,
             left: 'auto',
             top: 10,
             right: 10,
@@ -306,6 +331,7 @@ var LegendOption = [
     },
     {
         legend: {
+            show: true,
             left: 'auto',
             top: 'center',
             right: 10,
@@ -315,6 +341,7 @@ var LegendOption = [
     },
     {
         legend: {
+            show: true,
             left: 10,
             top: 'center',
             right: 'auto',
@@ -324,11 +351,17 @@ var LegendOption = [
     },
     {
         legend: {
+            show: true,
             left: 'center',
             top: 'auto',
             right: 'auto',
             bottom: 10,
             orient: 'horizontal'
+        }
+    },
+    {
+        legend: {
+            show: false
         }
     }
 ];
@@ -336,6 +369,7 @@ var LegendOption = [
 var TitleOption = [
     {
         title: {
+            show: true,
             top: 10,
             left: 10,
             right: 'auto',
@@ -343,10 +377,15 @@ var TitleOption = [
         }
     },{
         title: {
+            show: true,
             top: 10,
             left: 'center',
             right: 'auto',
             bottom: 'auto'
+        }
+    },{
+        title: {
+            show: false
         }
     }];
 
