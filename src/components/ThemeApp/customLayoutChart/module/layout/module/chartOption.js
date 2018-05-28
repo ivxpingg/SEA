@@ -467,6 +467,72 @@ var GetOption = (type, data, params) => {
     return option;
 };
 
+/**
+ * 获取图表的数据展示信息
+ * @param type {String}
+ * @param params {Object}
+ * @param data {Array}
+ * @returns {{legend: {data: Array}, series: Array}}
+ * @constructor
+ */
+var GetDataOption = (type, params,  data) => {
+    var dataOption = {},
+        legend_data = [],
+        xAxis_data = [],
+        series = [],
+        series_data = {};
+    if (type === 'line' || type === 'bar') {
+
+        // 拼接legend, series
+        data.SQL1.forEach(function (val, idx) {
+            legend_data.push(val.time);
+
+            for(let key1 in val) {
+
+                if (key1 !== 'time') {
+                    series.push({
+                        name: key1,
+                        type: type,
+                        data: []
+                    });
+                }
+
+            }
+
+        });
+
+        for(let key2 in data) {
+
+            data[key2].forEach(function (val, idx, attrs) {
+
+                for(let key3 in val) {
+
+                    if(key3 !== 'time') {
+
+                        series_data[key3] ? series_data[key3].push(val[key3]) : series_data[key3] = [val[key3]];
+
+                    }
+
+                }
+
+            });
+
+        }
+
+        series.forEach(function (val, idx, attrs) {
+            series.data = series_data[val.name];
+        });
+
+        dataOption = {
+            legend: {
+                data: legend_data
+            },
+            series: series
+        };
+
+        return dataOption;
+    }
+}
 
 export default {
     theme: Theme,

@@ -22,15 +22,6 @@ export default [
         component: (resolve) => require(['../../views/ThemeApp/ThemeApp.vue'], resolve),
         children: [
             {
-                path: 'test',
-                name: 'test',
-                requireAuth: false,
-                meta: {
-                    title: '拖放'
-                },
-                component: (resolve) => require(['../../components/ThemeApp/dragAndDrop/test.vue'], resolve)
-            },
-            {
                 path: 'appHome',
                 name: 'appHome',
                 requireAuth: false,

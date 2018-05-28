@@ -19,6 +19,29 @@
                     <Input v-model="formData.name" title="" placeholder="请输入主题名称" />
                 </FormItem>
 
+                <FormItem label="数据库">
+                    <Select v-model="DataBaseType" placeholder="请选择图形">
+                        <Option value="oracle.jdbc.driver.OracleDriver">Oracle</Option>
+                        <Option value="com.mysql.jdbc.Driver">MySQL</Option>
+                    </Select>
+                </FormItem>
+
+                <FormItem label="数据库驱动">
+                    <Input v-model="formData.driver" title="" disabled placeholder="数据库驱动" />
+                </FormItem>
+
+                <FormItem label="url">
+                    <Input v-model="formData.url" title="" placeholder="url" />
+                </FormItem>
+
+                <FormItem label="用户名">
+                    <Input v-model="formData.userName" title="" placeholder="用户名" />
+                </FormItem>
+
+                <FormItem label="密码">
+                    <Input v-model="formData.password" type="password" title="" placeholder="密码" />
+                </FormItem>
+
                 <FormItem label="图形">
                     <Select v-model="formData.picType" placeholder="请选择图形">
                         <Option v-for="item in dict_chart" :value="item.value" :key="item.value">{{item.name}}</Option>
@@ -26,7 +49,7 @@
                 </FormItem>
 
                 <FormItem label="SQL">
-                    <Input v-model="formData.sqlData" type="textarea" :rows="4" placeholder="请输入SQL，多个SQL请用';'隔开" />
+                    <Input v-model="formData.queryStatement" type="textarea" :rows="4" placeholder="请输入SQL，多个SQL请用';'隔开" />
                 </FormItem>
 
                 <!--雷达图-->
@@ -52,8 +75,13 @@
                 formData: {
                     id: '',
                     name: '',
+                    sysName: '',  // 系统名称
                     picType: 'radar',
-                    sql: '',
+                    driver: '',
+                    url: '',
+                    userName: '',
+                    password: '',
+                    queryStatement: '',
                     sqlParam: '',
                     echartParam: '',
                     params: {
@@ -73,6 +101,12 @@
                 },
                 themeDataList: [],
 
+                DataBaseType: 'oracle.jdbc.driver.OracleDriver',
+                DataBaseURL: {
+                    'oracle.jdbc.driver.OracleDriver': 'jdbc:oracle:thin:@ip:1521:数据库实例',
+                    'com.mysql.jdbc.Driver': 'jdbc:mysql://ip:3306/数据库名称?useUnicode=true&characterEncoding=utf-8'
+                },
+
                 // 字典
                 dict_chart: [{
                     name: '柱形图',
@@ -89,6 +123,9 @@
                 },{
                     name: '气泡图',
                     value: 'scatter'
+                },{
+                    name: '字符云',
+                    value: 'wordCloud'
                 }],
 
 
@@ -108,6 +145,17 @@
                         break;
                     case 'scatter':
                         break;
+                    case 'wordCloud':
+                        break;
+                }
+            },
+            DataBaseType: {
+                immediate: true,
+                handler: function (val) {
+                    if (this.id === '') {
+                        this.formData.driver = val;
+                        this.formData.url = this.DataBaseURL[val];
+                    }
                 }
             }
         },

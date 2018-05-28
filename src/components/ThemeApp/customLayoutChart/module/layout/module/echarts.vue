@@ -196,7 +196,6 @@
 
             },
 
-
             getChartData() {
                 var that = this;
                 if (this.id !== '') {
@@ -220,7 +219,28 @@
                     case 'line':
                     case 'bar':
                         this.chartData = {
-
+                            SQL1: [{
+                                time: '2018',
+                                '个人': '100',
+                                '高校机构': '200',
+                                '企业单位': 102
+                            }, {
+                                time: '2019',
+                                '个人': '100',
+                                '高校机构': '200',
+                                '企业单位': 102
+                            }],
+                            SQL2: [{
+                                time: '2018',
+                                '个人1': '100',
+                                '高校机构1': '200',
+                                '企业单位1': 102
+                            },{
+                                time: '2018',
+                                '个人1': '100',
+                                '高校机构1': '200',
+                                '企业单位1': 102
+                            }]
                         };
                         break;
                     case 'pie' : break;
@@ -240,7 +260,9 @@
             },
 
             setChartData() {
+                var dataOption = {};
 
+                dataOption = ChartOption.getOption(this.chartInfo.picType, this.chartInfo.params, this.chartData);
             },
 
             setEchart(data) {
