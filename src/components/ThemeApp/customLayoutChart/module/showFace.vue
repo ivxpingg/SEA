@@ -146,8 +146,7 @@
                                 }
                             }).then(function (response) {
                                 if (response.status === 1) {
-                                    that.$Modal.success({
-                                        title: '删除',
+                                    that.$Message.success({
                                         content: '删除成功！'
                                     });
                                     that.currentCustomId = '';

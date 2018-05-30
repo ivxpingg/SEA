@@ -11,7 +11,6 @@
         </div>
 
         <div class="custom-style-panel" v-if="isEdit && id !== ''">
-            <!--<div class="btn-icon btn-chart-type" @click="onChangeChartType"><i class="icon iconfont icon-tubiaoqiehuan"></i></div>-->
             <!--<div class="btn-icon btn-style"><i class="icon iconfont icon-fengge"></i></div>-->
             <Button type="text" icon="android-apps" size="small" @click="onClick_titlePosition">标题位置</Button>
             <Button type="text" icon="android-apps" size="small" @click="onClick_legendPosition">图例位置</Button>
@@ -79,7 +78,7 @@
                 var that = this;
                 if (val !== "") {
 
-                    this.getChartInfo();
+                   this.getChartInfo();
                 }
             },
             chartInfo: {
@@ -114,13 +113,15 @@
         mounted() {
 
             Echarts.registerTheme("shine", ChartOption.theme.shine);
+            // Echarts2.registerTheme("shine", ChartOption.theme.shine);
 
             if (this.id !== ''){
-                this.getChartInfo();
+               this.getChartInfo();
             }
         },
         methods: {
             getChartInfo() {
+
                 var that = this;
                 if (this.id !== '') {
                     this.$http({
@@ -152,7 +153,25 @@
                     that.chartInfo.params = {
                         echartsOption: {      // 图表参数
                             radar: {
-                                indicator: []
+                                indicator: [{
+                                    name: '平均预热开机时长(s)',
+                                    max: 200
+                                },{
+                                    name: '使用时长',
+                                    max: 200
+                                },{
+                                    name: '共享时长',
+                                    max: 200
+                                },{
+                                    name: '使用率',
+                                    max: 200
+                                },{
+                                    name: '维护次数',
+                                    max: 200
+                                },{
+                                    name: '待测项目',
+                                    max: 200
+                                }]
                             }
                         },
                         sqlDataName: [],                  // sql语句对应的名称,顺序与SQL顺序一致
@@ -177,7 +196,6 @@
 
                 // 设置图表的额外参数配置。
                 // do Something
-
                 that.getChartDataTest();
             },
 
@@ -188,12 +206,16 @@
                     this.myChart.clear();
                 }
                 else {
-                    this.myChart = Echarts.init(this.$refs.echart, 'shine');
+                    if (chartType !== 'wordCloud') {
+                        this.myChart = Echarts.init(this.$refs.echart, 'shine');
+                    }
+                    else {
+                      // this.myChart = echarts.init(this.$refs.echart);
+                    }
                 }
 
-                this.option = ChartOption[this.myChart] || {};
+                this.option = ChartOption.getOption(chartType);
                 this.option.title.text = this.chartInfo.name;
-
             },
 
             getChartData() {
@@ -207,7 +229,8 @@
                         }
                     }).then(function(response) {
                         if(response.status === 1) {
-                            that.setEchart(response.result);
+                            // that.setEchart(response.result);
+                            that.setChartData();
                         }
                     }).catch(function (e) {
 
@@ -215,106 +238,104 @@
                 }
             },
             getChartDataTest() {
+
                 switch (this.chartInfo.picType) {
                     case 'line':
                     case 'bar':
                         this.chartData = {
                             SQL1: [{
                                 time: '2018',
-                                '个人': '100',
-                                '高校机构': '200',
+                                '个人': 100,
+                                '高校机构': 200,
                                 '企业单位': 102
                             }, {
                                 time: '2019',
-                                '个人': '100',
-                                '高校机构': '200',
+                                '个人': 100,
+                                '高校机构': 200,
                                 '企业单位': 102
                             }],
                             SQL2: [{
                                 time: '2018',
-                                '个人1': '100',
-                                '高校机构1': '200',
+                                '个人1': 120,
+                                '高校机构1': 210,
                                 '企业单位1': 102
                             },{
-                                time: '2018',
-                                '个人1': '100',
-                                '高校机构1': '200',
+                                time: '2019',
+                                '个人1': 110,
+                                '高校机构1': 220,
                                 '企业单位1': 102
                             }]
                         };
                         break;
-                    case 'pie' : break;
+                    case 'pie' :
+                        this.chartData = {
+                            SQL1: [{
+                                name: '用户',
+                                '高校机构': '111',
+                                '企业单位': '111',
+                                '个人': '111',
+                            }]
+                        };
+                        break;
                     case 'radar':
 
-                        this.chartData = [{
-                            name1: '仪器使用情况',
-                            value1: 100,
-                            value2: 200,
-
-                        }];
+                        this.chartData = {
+                            SQL1: [{
+                                name: '共享仪器',
+                                '平均预热开机时长': 60,
+                                '使用时长': 100,
+                                '共享时长': 100,
+                                '使用率': 90,
+                                '维护次数': 10,
+                                '待测项目': 9
+                            }]
+                        };
+;
                         break;
                     case 'scatter': break;
+                    case 'wordCloud':
+                        this.chartData = {
+                            SQL1: [{
+                                name: '关键字1',
+                                value: 521
+                            },{
+                                name: '关键字2',
+                                value: 321
+                            },{
+                                name: '关键字3',
+                                value: 651
+                            },{
+                                name: '关键字4',
+                                value: 231
+                            },{
+                                name: '关键字5',
+                                value: 447
+                            }]
+                        };
+                        break;
                 }
 
                 this.setChartData();
             },
 
             setChartData() {
-                var dataOption = {};
 
-                dataOption = ChartOption.getOption(this.chartInfo.picType, this.chartInfo.params, this.chartData);
-            },
-
-            setEchart(data) {
                 var that = this;
 
-                var chartType = this.chartInfo.picType;//this.currentChartType;
+                var dataOption = {};
 
-                if (this.myChart) {
-                    this.myChart.clear();
-                }
-                else {
-                    this.myChart = Echarts.init(this.$refs.echart, 'shine');
-                }
+                dataOption = ChartOption.getDataOption(this.chartInfo.picType, this.chartInfo.params, this.chartData);
 
-                data = chartType === 'pie'? [{
-                    name: '海洋百科',
-                    value: 12
-                },{
-                    name: '生物百科',
-                    value: 22
-                },{
-                    name: '贝类百科',
-                    value: 12
-                }] : data;
+                this.option = Utils.merge2.recursive(this.option, dataOption);
 
 
-
-                this.option = ChartOption.getOption(chartType, data);
-
-
-                this.option = Utils.merge(this.option, this.itemInfo.chartOption);
-
-                this.option.title.text = this.chartInfo.name;
-
+                this.option = Utils.merge2.recursive(this.option, this.itemInfo.chartOption);
 
                 this.myChart.setOption(this.option);
 
                 setTimeout(function() {
                     that.imgSrc = that.myChart.getDataURL();
                 }, 100);
-            },
-
-            // 更改图表类型
-            onChangeChartType() {
-                var idx = this.typeList.indexOf(this.currentChartType);
-
-                if (idx === (this.typeList.length - 1)) {
-                    this.parentChartType(this.typeList[0]);
-                }
-                else {
-                    this.parentChartType(this.typeList[idx + 1]);
-                }
 
             },
 

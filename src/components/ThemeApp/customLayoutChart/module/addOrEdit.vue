@@ -134,10 +134,8 @@
             },
             // 切换布局
             onSwitchLayout() {
-                if (this.keyId === '1') { this.keyId = '2'; }
-                else if (this.keyId === '2') { this.keyId = '3'; }
-                else if (this.keyId === '3') { this.keyId = '4'; }
-                else if (this.keyId === '4') { this.keyId = '1'; }
+                if (this.keyId === '2') { this.keyId = '4'; }
+                else if (this.keyId === '4') { this.keyId = '2'; }
             },
             
             // ajax获取主题指标
@@ -251,27 +249,22 @@
                         }).then(function(response) {
                             if (response.status === 1) {
 
+                                that.$Message.success({
+                                    content: that.saveState ==='add'? '新增成功！':'更新成功！'
+                                });
+
                                 if (that.saveState === 'add') {
                                     that.customId = response.result;
                                     that.saveState = 'edit';
                                 }
-
-                                that.$Modal.success({
-                                    title: that.saveState ==='add'? '新增':'更新',
-                                    content: that.saveState ==='add'? '新增成功！':'更新成功！'
-                                });
-
-                                setTimeout(function () {
-
-
-                                }, 2000)
                             }
                             else {
-                                that.$Modal.error({
-                                    title: that.saveState ==='add'? '新增':'更新',
+                                that.$Message.error({
                                     content: response.errMsg
                                 });
                             }
+
+                            that.modal_theme = false;
 
                         }).catch(function (e) {
 

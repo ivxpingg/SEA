@@ -58,10 +58,10 @@
                 color: rgba(255,255,255, 0.8);
                 letter-spacing: 4px;
                 /*transition: background-color .2s linear;*/
-                background: linear-gradient(right, transparent 0% , rgba(255,255,255, 0.33) 50% , transparent 100%);
+                background: linear-gradient(to left, transparent 0% , rgba(255,255,255, 0.33) 50% , transparent 100%);
                 &:hover {
                     color: rgba(255,255,255, 1);
-                    background: linear-gradient(right, transparent 0% , rgba(255,255,255, 0.44) 50% , transparent 100%);
+                    background: linear-gradient(to left, transparent 0% , rgba(255,255,255, 0.44) 50% , transparent 100%);
                 }
             }
         }

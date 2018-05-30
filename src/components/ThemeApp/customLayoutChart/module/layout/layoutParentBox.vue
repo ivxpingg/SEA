@@ -159,7 +159,7 @@
             keyId: {
                 type: String,
                 default() {
-                    return '1';
+                    return '2';
                 }
             },
             // 是否是编辑状态

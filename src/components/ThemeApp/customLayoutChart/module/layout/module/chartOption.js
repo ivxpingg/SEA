@@ -390,81 +390,13 @@ var TitleOption = [
     }];
 
 
-var GetOption = (type, data, params) => {
-    var option;
-
-    var legend_data = [],
-        xAxis_data = [],
-        series = [],
-        series_data = {};
-
-    switch(type) {
-        case 'line': option = Line; break;
-        case 'bar': option = Bar; break;
-        case 'pie': option = Pie; break;
-        default: option = null; break;
+var GetOption = (type) => {
+    switch (type) {
+        case 'line': return Line; break;
+        case 'bar': return Bar; break;
+        case 'pie': return Pie; break;
+        case 'radar': return Radar; break;
     }
-
-    if (!option) { return null; }
-
-    if (!Utils.isArray(data)) { return option; }
-
-    if (type === 'line' || type === 'bar') {
-
-        data.forEach(function(val, idx) {
-            xAxis_data.push(val.time);
-
-
-            for(let key1 in val) {
-                if (idx === 0 && key1 !== 'time') {
-                    legend_data.push(key1);
-                    series_data[key1] = [];
-                }
-            }
-
-            for(let key2 in val) {
-                if (key2 !== 'time') {
-                    series_data[key2].push(val[key2] || 0);
-                }
-            }
-
-        });
-
-        for(let name in series_data) {
-            series.push({
-                name: name,
-                type: type,
-                data: series_data[name]
-            });
-        }
-
-        option.legend.data = legend_data;
-        option.xAxis.data = xAxis_data;
-        option.series = series;
-
-    }
-
-    else if (type === 'pie') {
-        series = [{
-            type: type,
-            data: []
-        }];
-
-        data.forEach(function(val, idx) {
-            legend_data.push(val.name);
-            series[0].data.push({
-                name: val.name,
-                value: val.value
-            });
-        });
-
-        option.legend.data = legend_data;
-        option.series = series;
-    }
-
-    else {}
-    // console.dir(option);
-    return option;
 };
 
 /**
@@ -476,52 +408,92 @@ var GetOption = (type, data, params) => {
  * @constructor
  */
 var GetDataOption = (type, params,  data) => {
+
     var dataOption = {},
         legend_data = [],
         xAxis_data = [],
         series = [],
         series_data = {};
+
+    var loop_idx = 1;
+    
+
     if (type === 'line' || type === 'bar') {
 
-        // 拼接legend, series
-        data.SQL1.forEach(function (val, idx) {
-            legend_data.push(val.time);
-
-            for(let key1 in val) {
-
-                if (key1 !== 'time') {
-                    series.push({
-                        name: key1,
-                        type: type,
-                        data: []
-                    });
-                }
-
+        while (data['SQL' + loop_idx]) {
+            if (loop_idx === 1) {
+                // 拼接legend, series
+                data.SQL1.forEach(function (val, idx) {
+                    xAxis_data.push(val.time);
+                });
             }
 
-        });
+            var series_item = [];
+            var key_value_data = {};
 
-        for(let key2 in data) {
+            data['SQL' + loop_idx].forEach(function (val, idx) {
 
-            data[key2].forEach(function (val, idx, attrs) {
+                if (idx === 0) {
+                    for (var key1 in val) {
+                        if (key1 !== 'time') {
+                            series_item.push({
+                                name: key1,
+                                type: type,
+                                data: []
+                            });
 
-                for(let key3 in val) {
-
-                    if(key3 !== 'time') {
-
-                        series_data[key3] ? series_data[key3].push(val[key3]) : series_data[key3] = [val[key3]];
-
+                            key_value_data[key1] = [];
+                            legend_data.push(key1);
+                        }
                     }
-
                 }
 
+                for (var key2 in val) {
+                    if (key_value_data[key2]) {
+                        key_value_data[key2].push(val[key2]);
+                    }
+                }
             });
 
-        }
+            series_item.forEach(function (v, idx) {
+                series_item[idx].data =  key_value_data[v.name];
+            });
 
-        series.forEach(function (val, idx, attrs) {
-            series.data = series_data[val.name];
-        });
+
+            series = series.concat(series_item);
+            dataOption = {
+                xAxis: {
+                    data: xAxis_data
+                },
+                legend: {
+                    data: legend_data
+                },
+                series: series
+            };
+
+            ++loop_idx;
+        }
+    }
+
+    else if (type === 'pie') {
+        series[0] = {
+            name: '',
+            type: type,
+            data: []
+        };
+        for (var key in data.SQL1[0]) {
+            if(key === 'name') {
+                series[0].name = data.SQL1[0][key];
+            }
+            else {
+                series[0].data.push({
+                    value: data.SQL1[0][key],
+                    name: key
+                });
+
+                legend_data.push(key);
+            }
+        }
 
         dataOption = {
             legend: {
@@ -529,18 +501,92 @@ var GetDataOption = (type, params,  data) => {
             },
             series: series
         };
-
-        return dataOption;
     }
+
+    else if (type === 'radar') {
+
+        series.push({
+            name: '',
+            type: type,
+            data: []
+        });
+
+        for (var key1 in data) {
+
+            data[key1].forEach(function(val,idx) {
+
+                legend_data.push(val.name);
+
+                series[0].data.push({
+                    name: val.name,
+                    value: []
+                });
+
+                params.echartsOption.radar.indicator.forEach(function (v) {
+                    series[0].data[idx].value.push(val[v.name]);
+                });
+
+            });
+
+        }
+
+        dataOption = Utils.merge({
+            legend: {
+                data: legend_data
+            },
+            series: series
+        }, params.echartsOption);
+
+    }
+
+    else if (type === 'wordCloud') {
+
+        series.push({
+            name: '',
+            type: type,
+            size: ['80%', '80%'],
+            textRotation : [0, 45, 90, -45],
+            textPadding: 0,
+            autoSize: {
+                enable: true,
+                minSize: 14
+            },
+            data: []
+        });
+
+        data.SQL1.forEach(function(val) {
+            series[0].data.push({
+                name: val.name,
+                value: val.value,
+                itemStyle: createRandomItemStyle()
+            });
+        });
+
+        dataOption = {
+            series: series
+        };
+    }
+    return dataOption;
+}
+
+
+var  createRandomItemStyle = function() {
+    return {
+        normal: {
+            color: 'rgb(' + [
+                Math.round(Math.random() * 160),
+                Math.round(Math.random() * 160),
+                Math.round(Math.random() * 160)
+            ].join(',') + ')'
+        }
+    };
 }
 
 export default {
     theme: Theme,
-    line: Utils.merge(BaseOption, Line),
-    bar: Utils.merge(BaseOption, Bar),
-    pie: Utils.merge(BaseOption, Pie),
     getOption: GetOption,
     legendOption: LegendOption,
-    titleOption: TitleOption
+    titleOption: TitleOption,
+    getDataOption: GetDataOption
 }
 

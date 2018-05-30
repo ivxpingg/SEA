@@ -111,10 +111,10 @@
                 color: rgba(149,221,255, 0.37);
                 letter-spacing: 2px;
                 /*transition: background-color .2s linear;*/
-                background: linear-gradient(right, transparent 0% , rgba(149,193,241, 0.11) 50% , transparent 100%);
+                background: linear-gradient(to left, transparent 0% , rgba(149,193,241, 0.11) 50% , transparent 100%);
                 &:hover {
                     color: rgba(149,221,255, 0.5);
-                    background: linear-gradient(right, transparent 0% , rgba(149,193,241, 0.33) 50% , transparent 100%);
+                    background: linear-gradient(to left, transparent 0% , rgba(149,193,241, 0.33) 50% , transparent 100%);
                 }
             }
         }

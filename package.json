@@ -1,11 +1,11 @@
 {
-  "name": "my-project1",
+  "name": "project",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "serve2": "vue-cli-service serve --mode development",
-    "build": "vue-cli-service build"
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "axios": "^0.18.0",
@@ -13,19 +13,41 @@
     "echarts": "^4.0.4",
     "iscroll": "^5.2.0",
     "iview": "^2.11.0",
+    "merge": "^1.2.0",
     "moment": "^2.21.0",
     "sortablejs": "^1.7.0",
     "swiper": "^4.2.6",
-    "vue": "^2.5.13",
+    "vue": "^2.5.16",
     "vue-router": "^3.0.1",
-    "vuex": "^3.0.1"
+    "vuex": "^3.0.1",
+    "zrenderjs": "^2.1.1"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.0.0-beta.6",
-    "@vue/cli-service": "^3.0.0-beta.6",
+    "@vue/cli-plugin-babel": "^3.0.0-beta.14",
+    "@vue/cli-plugin-eslint": "^3.0.0-beta.14",
+    "@vue/cli-service": "^3.0.0-beta.14",
     "node-sass": "^4.8.3",
     "sass-loader": "^6.0.7",
-    "vue-template-compiler": "^2.5.13"
+    "vue-template-compiler": "^2.5.16"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "rules": {},
+    "parserOptions": {
+      "parser": "babel-eslint"
+    }
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
   },
   "browserslist": [
     "> 1%",

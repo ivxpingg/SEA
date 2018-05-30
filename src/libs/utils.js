@@ -1,6 +1,7 @@
 'use strict';
 
 var bind = require('./helpers/bind');
+import Merge from 'merge';
 
 /*global toString:true*/
 
@@ -294,6 +295,7 @@ export default {
   isStandardBrowserEnv: isStandardBrowserEnv,
   forEach: forEach,
   merge: merge,
+  merge2: Merge,
   extend: extend,
   trim: trim
 };
