@@ -257,62 +257,74 @@ var BaseOption = {
         splitArea: {
             show: false
         }
+    },
+    tooltip: {
+        show: true
     }
 };
 
-var Line = Utils.merge(BaseOption, {
-    xAxis: {},
-    yAxis: {},
-    series: []
-});
+var Line = function () {
+    return Utils.merge2.recursive(true, BaseOption, {
+        xAxis: {},
+        yAxis: {},
+        series: []
+    });
+};
 
-var Bar = Utils.merge(BaseOption, {
-    legend: {},
-    xAxis: {},
-    yAxis: {},
-    series: []
-});
+var Bar = function () {
+    return Utils.merge2.recursive(true, BaseOption, {
+        legend: {},
+        grid: {},
+        xAxis: {},
+        yAxis: {},
+        series: []
+    });
+}
 
-var Pie = Utils.merge(BaseOption, {
-    legend: {
-        left: 'auto',
-        top: 'center',
-        right: 10,
-        bottom: 'auto',
-        orient: 'vertical'
-    },
-    xAxis: {
-        show: false
-    },
-    yAxis: {
-        show: false
-    },
-    series: []
-});
+var Pie = function () {
+    return Utils.merge2.recursive(true, BaseOption, {
+        legend: {
+            left: 'auto',
+            top: 'center',
+            right: 10,
+            bottom: 'auto',
+            orient: 'vertical'
+        },
+        grid: {},
+        xAxis: {
+            show: false
+        },
+        yAxis: {
+            show: false
+        }
+    });
+}
 
-var Radar = Utils.merge(BaseOption, {
-    legend: {
-        left: 'auto',
-        top: 'center',
-        right: 10,
-        bottom: 'auto',
-        orient: 'vertical'
-    },
-    xAxis: {
-        show: false
-    },
-    yAxis: {
-        show: false
-    },
-    radar: {
-        indicator: []
-    },
-    series: [{
-        name: '',
-        type: 'radar',
-        data: []
-    }]
-});
+var Radar = function () {
+    return Utils.merge2.recursive(true, BaseOption, {
+        legend: {
+            left: 'auto',
+            top: 'center',
+            right: 10,
+            bottom: 'auto',
+            orient: 'vertical'
+        },
+        xAxis: {
+            show: false
+        },
+        yAxis: {
+            show: false
+        },
+        radar: {
+            indicator: []
+        },
+        series: [{
+            name: '',
+            type: 'radar',
+            data: []
+        }]
+    });
+}
 
 
 //
@@ -392,22 +404,22 @@ var TitleOption = [
 
 var GetOption = (type) => {
     switch (type) {
-        case 'line': return Line; break;
-        case 'bar': return Bar; break;
-        case 'pie': return Pie; break;
-        case 'radar': return Radar; break;
+        case 'line': return Line(); break;
+        case 'bar': return Bar(); break;
+        case 'pie': return Pie(); break;
+        case 'radar': return Radar(); break;
     }
 };
 
 /**
  * 获取图表的数据展示信息
  * @param type {String}
- * @param params {Object}
+ * @param configure {Object}
  * @param data {Array}
  * @returns {{legend: {data: Array}, series: Array}}
  * @constructor
  */
-var GetDataOption = (type, params,  data) => {
+var GetDataOption = (type, configure,  data) => {
 
     var dataOption = {},
         legend_data = [],
@@ -461,15 +473,30 @@ var GetDataOption = (type, params,  data) => {
 
 
             series = series.concat(series_item);
-            dataOption = {
-                xAxis: {
-                    data: xAxis_data
-                },
-                legend: {
-                    data: legend_data
-                },
-                series: series
-            };
+
+            if (configure.xAxis && configure.xAxis.type === 'value') {
+                dataOption = {
+                    yAxis: {
+                        data: xAxis_data
+                    },
+                    legend: {
+                        data: legend_data
+                    },
+                    series: series
+                };
+            }
+            else {
+                dataOption = {
+                    xAxis: {
+                        data: xAxis_data
+                    },
+                    legend: {
+                        data: legend_data
+                    },
+                    series: series
+                };
+            }
+
 
             ++loop_idx;
         }
@@ -522,7 +549,7 @@ var GetDataOption = (type, params,  data) => {
                     value: []
                 });
 
-                params.echartsOption.radar.indicator.forEach(function (v) {
+                configure.radar.indicator.forEach(function (v) {
                     series[0].data[idx].value.push(val[v.name]);
                 });
 
@@ -535,7 +562,7 @@ var GetDataOption = (type, params,  data) => {
                 data: legend_data
             },
             series: series
-        }, params.echartsOption);
+        });
 
     }
 

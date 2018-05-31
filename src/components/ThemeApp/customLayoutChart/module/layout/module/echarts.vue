@@ -31,8 +31,9 @@
                 chartInfo: {
                     name: '',
                     picType: '',
-                    params: null
+                    configure: ''
                 },
+                configure_Obj: {},
 
                 typeList: [],
 
@@ -70,14 +71,25 @@
                 default() {
                     return {};
                 }
-            }
+            },
 
+            isPreview: {
+                type: Boolean,
+                default() {
+                    return false;
+                }
+            },
+            previewData: {
+                type: Object,
+                default() {
+                    return {};
+                }
+            }
         },
         watch: {
             id(val, oldVal) {
                 var that = this;
                 if (val !== "") {
-
                    this.getChartInfo();
                 }
             },
@@ -97,6 +109,13 @@
                 handler(val, oldVal) {
                     // this.currentChartType = val.chartType || '';
                 }
+            },
+
+            previewData:{
+                deep: true,
+                handler(val, oldVal) {
+                    this.preview();
+                }
             }
 
             // currentChartType(val, oldVal) {
@@ -114,9 +133,11 @@
 
             Echarts.registerTheme("shine", ChartOption.theme.shine);
             // Echarts2.registerTheme("shine", ChartOption.theme.shine);
-
-            if (this.id !== ''){
-               this.getChartInfo();
+            if (this.isPreview) {
+                this.preview();
+            }
+            else if (this.id !== ''){
+                this.getChartInfo();
             }
         },
         methods: {
@@ -134,7 +155,8 @@
                         if(response.status === 1) {
                             that.chartInfo.name = response.result.name;
                             that.chartInfo.picType = response.result.picType;
-                            that.chartInfo.params = response.result.params;
+                            that.chartInfo.configure = response.result.configure || '';
+
                             that.analysisData();
                         }
                     }).catch(function (e) {
@@ -142,55 +164,37 @@
                     });
                 }
             },
+            // 预览
+            preview() {
+                var that = this;
+
+                that.chartInfo.name = this.previewData.name;
+                that.chartInfo.picType = this.previewData.picType;
+                that.chartInfo.configure = this.previewData.configure || '';
+
+                that.analysisData();
+            },
 
             // 解析图表参数信息
             analysisData() {
+
                 var that = this;
-                if (that.chartInfo.params) {
-                    that.chartInfo.params = eval('[' + that.chartInfo.params + ']')[0];
+                if (that.chartInfo.configure !== '') {
+                    that.configure_Obj = eval('[' + that.chartInfo.configure + ']')[0];
                 }
                 else {
-                    that.chartInfo.params = {
-                        echartsOption: {      // 图表参数
-                            radar: {
-                                indicator: [{
-                                    name: '平均预热开机时长(s)',
-                                    max: 200
-                                },{
-                                    name: '使用时长',
-                                    max: 200
-                                },{
-                                    name: '共享时长',
-                                    max: 200
-                                },{
-                                    name: '使用率',
-                                    max: 200
-                                },{
-                                    name: '维护次数',
-                                    max: 200
-                                },{
-                                    name: '待测项目',
-                                    max: 200
-                                }]
-                            }
-                        },
-                        sqlDataName: [],                  // sql语句对应的名称,顺序与SQL顺序一致
-                        filterParamsName: ['时间','仪器'], // 筛选参数名称，顺序与参数SQL顺序一致
-                        bar: {},                          // 对应需要图表需要的动态参数
-                        line: {},                         // 对应需要图表需要的动态参数
-                        pie: {},                          // 对应需要图表需要的动态参数
-                        radar: {},                        // 对应需要图表需要的动态参数
-                        scatter: {}                       // 对应需要图表需要的动态参数
+                    that.configure_Obj = {
+
                     };
                 }
 
                 // 判断是否有筛选的参数
-                if (that.chartInfo.params.filterParamsName.length > 0) {
+               // if (that.configure_Obj.filterParamsName.length > 0) {
                     // do Something
                     // 渲染筛选条件，
                     // 获取之前保存的筛选条件，如果没有值则初始化筛选条件值。
                     //
-                }
+               // }
 
                 that.initChart();
 
@@ -201,6 +205,7 @@
 
             // 初始化图表对象，和基本option
             initChart() {
+
                 var chartType = this.chartInfo.picType;
                 if (this.myChart) {
                     this.myChart.clear();
@@ -253,17 +258,11 @@
                                 '个人': 100,
                                 '高校机构': 200,
                                 '企业单位': 102
-                            }],
-                            SQL2: [{
-                                time: '2018',
-                                '个人1': 120,
-                                '高校机构1': 210,
-                                '企业单位1': 102
-                            },{
-                                time: '2019',
-                                '个人1': 110,
-                                '高校机构1': 220,
-                                '企业单位1': 102
+                            }, {
+                                time: '2020',
+                                '个人': 90,
+                                '高校机构': 150,
+                                '企业单位': 88
                             }]
                         };
                         break;
@@ -324,18 +323,25 @@
 
                 var dataOption = {};
 
-                dataOption = ChartOption.getDataOption(this.chartInfo.picType, this.chartInfo.params, this.chartData);
+                // var configure = {};
+
+                // if (this.chartInfo.configure !== '') {
+                //    configure = eval('[' + this.chartInfo.configure + ']')[0];
+                // }
+
+
+                dataOption = ChartOption.getDataOption(this.chartInfo.picType, this.configure_Obj, this.chartData);
 
                 this.option = Utils.merge2.recursive(this.option, dataOption);
-
-
                 this.option = Utils.merge2.recursive(this.option, this.itemInfo.chartOption);
+
+                this.option = Utils.merge2.recursive(this.option, this.configure_Obj);
 
                 this.myChart.setOption(this.option);
 
                 setTimeout(function() {
                     that.imgSrc = that.myChart.getDataURL();
-                }, 100);
+                }, 1000);
 
             },
 
@@ -379,7 +385,7 @@
 
                 setTimeout(function() {
                     that.imgSrc = that.myChart.getDataURL();
-                }, 100);
+                }, 1000);
 
                 this.$emit('sub_layoutData','chartOption', titleOption[this.titlePostionIndex], this.itemInfo);
             },

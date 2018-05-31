@@ -7,7 +7,7 @@
                     <div class="list" id="list">
                         <div class="list-inner">
                             <div class="item theme-item" v-for="(item, idx) in themeData" :name="item.customAnalysisId" :class="{active: item.customAnalysisId === currentCustomId}">
-                                <div class="item-title" :key="idx" @click="onClickTheme(item.customAnalysisId, item.themeName)">{{item.themeName}}</div>
+                                <div class="item-title" :key="idx" @click="onClickTheme(item.customAnalysisId, item.themeName)" :title="item.themeName">{{item.themeName}}</div>
                             </div>
                         </div>
                     </div>
@@ -245,6 +245,7 @@
                             }
 
                             .item-title {
+                                padding-right: 10px;
                                 height: 100%;
                                 width: 165px;
                                 color: #FFF;
@@ -253,6 +254,9 @@
                                 text-indent: 24px;
                                 background-color: rgba(79,88,140, 0.25);
                                 border-radius: 0 15px 15px 0;
+                                overflow:hidden;
+                                text-overflow:ellipsis;
+                                white-space:nowrap;
                                 &:hover {
                                     background-color: rgba(79,88,140, 1);
                                 }

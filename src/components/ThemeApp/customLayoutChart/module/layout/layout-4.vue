@@ -10,7 +10,7 @@
                             <div class="lv1-handle lv2-handle" v-if="isEdit"><Icon type="drag"></Icon></div>
                             <div class="theme-sortable-panel">
                                 <div class="theme-item">
-                                    <vEcharts :id="item_lv2.navItemType" :isEdit="isEdit" :itemInfo="item_lv2"  @sub_layoutData="sub_layoutData"></vEcharts>
+                                    <vEcharts :id="item_lv2.navItemType" :isEdit="isEdit" :itemInfo="item_lv2" :key="item_lv2.navItemType"  @sub_layoutData="sub_layoutData"></vEcharts>
                                 </div>
                             </div>
                             <!--<vEcharts :id="item_lv1.navItemType"  :isEdit="isEdit" :itemInfo="item_lv2" @sub_layoutData="sub_layoutData"></vEcharts>-->
@@ -18,7 +18,7 @@
                     </div>
                 </template>
                 <template v-else>
-                    <vEcharts :id="item_lv1.navItemType"></vEcharts>
+                    <vEcharts :id="item_lv1.navItemType" :key="item_lv1.navItemType"></vEcharts>
                 </template>
             </div>
         </div>

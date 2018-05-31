@@ -5,7 +5,7 @@
                 <div class="lv1-handle"  v-if="isEdit"><Icon type="drag"></Icon></div>
                 <div class="theme-sortable-panel">
                     <div class="theme-item">
-                        <vEcharts :id="item_lv1.navItemType" :itemInfo="item_lv1" :isEdit="isEdit" @sub_layoutData="sub_layoutData"></vEcharts>
+                        <vEcharts :id="item_lv1.navItemType" :itemInfo="item_lv1" :isEdit="isEdit" :key="item_lv1.navItemType" @sub_layoutData="sub_layoutData"></vEcharts>
                     </div>
                 </div>
             </div>

@@ -13,10 +13,11 @@
                 <Button type="info" icon="plus-round" size="large" @click="onClickThemeAdd">添加</Button>
                 <Button type="success" icon="android-checkmark-circle"  size="large" @click="onClickThemeSave">保存</Button>
                 <Button type="success" icon="close-round"  size="large" @click="onClickThemeDel">删除</Button>
+                <Button type="success" icon="eye"  size="large" @click="onClickPreview">预览</Button>
             </div>
 
             <Form class="form" ref="formValidate" :model="formData" :label-width="80">
-                <FormItem label="标题">
+                <FormItem label="名称">
                     <Input v-model="formData.name" title="" placeholder="请输入主题名称" />
                 </FormItem>
 
@@ -75,10 +76,24 @@
             </Form>
         </div>
 
+        <Modal
+                v-model="modal_preview"
+                :title="formData.name">
+            <vEchart
+                     v-if="modal_preview"
+                     id="000"
+                     :isPreview= "true"
+                     :isEdit= "false"
+                     :previewData="formData"
+                     style="height: 286px; background-color: #0086b3;"
+            ></vEchart>
+        </Modal>
+
     </div>
 </template>
 
 <script>
+    import vEchart from '../customLayoutChart/module/layout/module/echarts';
     export default {
         name: "addTheme",
         data() {
@@ -163,17 +178,21 @@
                 },{
                     name: '雷达图',
                     value: 'radar'
-                },
-                                   {
+                },{
                     name: '字符云',
                     value: 'wordCloud'
                 }],
 
                 // 后台字典
                 // 子系统列表
-                dict_sysList: []
+                dict_sysList: [],
+
+                // ***********
+                // 预览
+                modal_preview: false
             };
         },
+        components: {vEchart},
         computed: {
             defaultConfig() {
                 return JSON.stringify(this.defaultConfigure[this.formData.picType]);
@@ -271,7 +290,6 @@
                         }
                     }).then(function(response) {
                         if(response.status === 1) {
-                            console.dir(response.result);
                             that.formData.id = response.result.id;
                             that.formData.name = response.result.name || '';
                             that.formData.sysNo = response.result.sysNo || '';
@@ -362,21 +380,20 @@
                         data: JSON.stringify(this.formData)
                     }).then(function (response) {
                         if (response.status === 1) {
-                            that.$Modal.success({
+                            that.$Message.success({
                                 content: '添加成功！'
                             });
 
                             that.getThemeDataList();
                         }
                         else {
-                            that.$Modal.error({
-                                content: '添加失败！'
+                            that.$Message.error({
+                                content: response.errMsg
                             });
                         }
 
                     }).catch(function (e) {
-                        debugger
-                        that.$Modal.error({
+                        that.$Message.error({
                             content: '添加失败！'
                         });
                     });
@@ -409,6 +426,10 @@
 
                     });
                 }
+            },
+
+            onClickPreview() {
+                this.modal_preview = true;
             }
         }
     }

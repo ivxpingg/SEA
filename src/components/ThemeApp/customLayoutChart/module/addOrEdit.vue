@@ -3,7 +3,10 @@
         <div class="left-panel" :class="{ 'gripOpen': gripOpen, 'gripClose': !gripOpen }">
             <div class="left-panel-inner">
                 <div class="list-panel">
-                    <div class="title">微分析模块工具栏</div>
+                    <div class="title">
+                        微分析模块工具栏
+                        <Button type="ghost" shape="circle" icon="plus-round" title="添加微分析" size="small" @click="onClick_add"></Button>
+                    </div>
 
                     <div class="list" id="list">
                         <div class="list-inner" ref="list-inner-sortable">
@@ -124,6 +127,11 @@
             this.getThemeData();
         },
         methods: {
+            onClick_add() {
+                this.$router.push({
+                    name: 'AddTheme'
+                });
+            },
             onLeftPanelGrip() {
                 this.gripOpen = !this.gripOpen;
             },
@@ -312,6 +320,11 @@
                         line-height: 33px;
                         text-align: center;
                         background-color: rgba(128,134,172,0.76);
+
+                        .ivu-btn {
+                            margin-left: 10px;
+                            margin-bottom: 3px;
+                        }
                     }
 
                     .list {
