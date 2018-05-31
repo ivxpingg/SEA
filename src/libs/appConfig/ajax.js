@@ -7,7 +7,7 @@ import axios from 'axios';
 import utils from '../utils';
 import Config from './config';
 
-const ajaxUrl = window.location.origin + Config[Config.env].baseUrl;
+const ajaxUrl = window.location.protocol + '//' + window.location.host + Config[Config.env].baseUrl;
 
 function setContentTypeIfUnset(headers, value) {
     if (!utils.isUndefined(headers) && utils.isUndefined(headers['Content-Type'])) {
