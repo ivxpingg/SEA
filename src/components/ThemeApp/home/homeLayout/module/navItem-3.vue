@@ -54,13 +54,13 @@
                         </div>
                     </div>
 
-                    <div class="swiper-slide swiper-slide-chart">
-                        <div class="item3-info">
-                            <div class="title"></div>
-                            <div class="value">554000.00元</div>
-                            <div class="chart-box" ref="chart1"></div>
-                        </div>
-                    </div>
+                    <!--<div class="swiper-slide swiper-slide-chart">-->
+                        <!--<div class="item3-info">-->
+                            <!--<div class="title"></div>-->
+                            <!--<div class="value">554000.00元</div>-->
+                            <!--<div class="chart-box" ref="chart1"></div>-->
+                        <!--</div>-->
+                    <!--</div>-->
 
                     <div class="swiper-slide">
                         <div class="item2-info">

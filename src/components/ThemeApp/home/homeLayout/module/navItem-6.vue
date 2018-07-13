@@ -76,7 +76,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="swiper-slide">Slide 6</div>
+
                     </div>
                 </div>
 
