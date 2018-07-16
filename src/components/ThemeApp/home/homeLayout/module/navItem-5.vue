@@ -1,6 +1,6 @@
 <template>
     <div class="navItem-5-container">
-        <div class="item-title">
+        <div class="item-title" @click="jumpPage">
             <span class="text">观测装备全景试验分析组件</span>
         </div>
 
@@ -125,6 +125,9 @@
         },
 
         methods: {
+            jumpPage() {
+                window.location.href = 'http://xmsoc.com:20500/qj/#/mapShow';
+            },
             initSwiper() {
 
                 var mySwiper = new Swiper(this.$refs.swiper, {
