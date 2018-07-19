@@ -1,4 +1,4 @@
-import "@babel/polyfill";
+// import "@babel/polyfill";
 import Vue from 'vue';
 import iView from 'iview';
 import App from './App.vue';
@@ -9,10 +9,11 @@ import RouterConfig from './libs/appConfig/routerConfig';
 import Store from './libs/appConfig/vuex/vuexConfig';
 import 'iview/dist/styles/iview.css';
 import './libs/iconfont/iconfont.css';
+import Cookie from './libs/helpers/cookies';
 
 import './style/app.scss';
 
-// console.log(process.env.BASE_URL);
+// console.dir(process.env.NODE_ENV);
 
 Vue.config.productionTip = false;
 Vue.prototype.$http = Ajax;
@@ -28,6 +29,12 @@ new Vue({
     router: router,
     store: store,
     render: h => h(App),
-    created() {},
+    created() {
+        this.$store.commit('setToken', Cookie.read('token'));
+        this.$store.commit('setUid', Cookie.read('uid'));
+        this.$store.commit('setUsertype', Cookie.read('usertype'));
+        this.$store.commit('setType', Cookie.read('type'));
+        this.$store.commit('setSyscode', Cookie.read('syscode'));
+    },
     mounted() {}
 });

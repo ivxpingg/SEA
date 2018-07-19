@@ -6,13 +6,15 @@ let config = {
         // domain: 'http://localhost',
         // port: '8090',
         baseUrl: '/oceanobservation',
-        staticUrl: '/'
+        staticUrl: '/',
+        path: '/'    // 用于设置cookie
     },
     production: {
         // domain: 'http://localhost',
         // port: '8090',
         baseUrl: '/oceanobservation',
-        staticUrl: '/'
+        staticUrl: '/',
+        path: '/'    // 用于设置cookie
     }
 };
 export default config;

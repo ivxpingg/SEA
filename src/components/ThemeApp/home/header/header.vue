@@ -1,7 +1,7 @@
 <template>
     <div class="header-container">
         <div class="header-inner">
-            <div class="btn-panel">
+            <div class="btn-panel" v-if="isAdmin">
                 <div class="btn-b btn-layout" @click="onSwitchLayout" title="切换布局">
                     <i class="iconfont icon-ai212"></i>
                 </div>
@@ -22,7 +22,9 @@
     export default {
         name: "themeHeader",
         data() {
-            return {};
+            return {
+                isAdmin: false
+            };
         },
         props: {
             editLayout: {
@@ -37,6 +39,9 @@
                     return '1';
                 }
             }
+        },
+        created() {
+            this.isAdmin = this.$store.state.type === '3';
         },
         methods: {
             onSwitchLayout() {

@@ -15,8 +15,9 @@ export default [
     {
         path: '/ThemeApp',
         name: 'ThemeApp',
-        requireAuth: false,
+        alias: '/',
         meta: {
+            requireAuth: false,
             title: '厦门海洋生物观测装备公共服务平台'
         },
         component: (resolve) => require(['../../views/ThemeApp/ThemeApp.vue'], resolve),
@@ -24,8 +25,9 @@ export default [
             {
                 path: 'appHome',
                 name: 'appHome',
-                requireAuth: false,
+                alias: '/',
                 meta: {
+                    requireAuth: false,
                     title: '首页'
                 },
                 component: (resolve) => require(['../../components/ThemeApp/home/appHome.vue'], resolve)
@@ -33,8 +35,8 @@ export default [
             {
                 path: 'layoutChart',
                 name: 'layoutChart',
-                requireAuth: false,
                 meta: {
+                    requireAuth: false,
                     title: '海洋产业定制分析'
                 },
                 component: (resolve) => require(['../../components/ThemeApp/customLayoutChart/layoutChart.vue'], resolve),
@@ -42,26 +44,26 @@ export default [
                     {
                         path: 'showFace',
                         name: 'showFace',
-                        requireAuth: false,
                         meta: {
-                            title: '海洋产业定制分析'
+                            title: '海洋产业定制分析',
+                            requireAuth: false,
                         },
                         component: (resolve) => require(['../../components/ThemeApp/customLayoutChart/module/showFace.vue'], resolve)
                     },
                     {
                         path: 'addOrEdit',
                         name: 'addOrEdit',
-                        requireAuth: false,
                         meta: {
-                            title: '海洋产业定制分析'
+                            title: '海洋产业定制分析',
+                            requireAuth: true,
                         },
                         component: (resolve) => require(['../../components/ThemeApp/customLayoutChart/module/addOrEdit.vue'], resolve)
                     },
                     {
                         path: 'addOrEdit/:customId',
                         name: 'addOrEdit_param',
-                        requireAuth: false,
                         meta: {
+                            requireAuth: true,
                             title: '海洋产业定制分析'
                         },
                         component: (resolve) => require(['../../components/ThemeApp/customLayoutChart/module/addOrEdit.vue'], resolve)
@@ -74,8 +76,8 @@ export default [
     {
         path: '/ObserveApp',
         name: 'ObserveApp',
-        requireAuth: false,
         meta: {
+            requireAuth: false,
             title: '厦门海洋生物观测装备公共服务平台'
         },
         component: (resolve) => require(['../../views/ObserveApp/ObserveApp.vue'], resolve)
@@ -83,10 +85,28 @@ export default [
     {
         path: '/AddTheme',
         name: 'AddTheme',
-        requireAuth: false,
         meta: {
+            requireAuth: true,
             title: '添加主题'
         },
         component: (resolve) => require(['../../components/ThemeApp/addTheme/addTheme.vue'], resolve)
+    },
+    {
+        path: '/403',
+        meta: {
+            requireAuth: false,
+            title: '403-权限不足'
+        },
+        name: 'error-403',
+        component: (resolve) => require(['../../components/error-page/403.vue'], resolve)
+    },
+    {
+        path: '/*',
+        meta: {
+            requireAuth: false,
+            title: '403-页面不存在'
+        },
+        name: 'error-404',
+        component: (resolve) => require(['../../components/error-page/404.vue'], resolve)
     }
 ];

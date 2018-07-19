@@ -136,8 +136,8 @@
 </template>
 
 <script>
-    import Swiper from 'swiper';
-    import 'swiper/dist/css/swiper.min.css';
+    // import Swiper from 'swiper';
+    // import 'swiper/dist/css/swiper.min.css';
     import Echarts from 'echarts';
     import Utils from '../../../../../libs/utils';
     import Marquee from '../../../marquee/marquee';
@@ -468,7 +468,8 @@
                     }]
                 },
 
-                tableData: [{
+                tableData: [
+                    {
                     name: '质谱仪1',
                     value1: '300h',
                     value2: '200h',

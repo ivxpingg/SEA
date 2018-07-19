@@ -83,7 +83,7 @@
 </template>
 
 <script>
-    import Swiper from 'swiper';
+    // import Swiper from 'swiper';
     import Utils from '../../../../../libs/utils';
     export default {
         name: "navItem-2",

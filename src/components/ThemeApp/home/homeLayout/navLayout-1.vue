@@ -1,6 +1,8 @@
 <template>
     <div class="navLayout-1-container">
-        <div class="nav-panel nav-panel-lv1" :class="{'nav-panel-edit':isDrayNavPanelLv1, 'cursor-move': editLayout}" ref="nav-panel-lv1">
+        <div class="nav-panel nav-panel-lv1"
+             :class="{'nav-panel-edit':isDrayNavPanelLv1, 'cursor-move': editLayout}"
+             ref="nav-panel-lv1">
             <div class="nav-item" v-for="item_lv1 in lv1" :name="item_lv1.navItemType" :class="item_lv1.className">
                 <template v-if="!!item_lv1.lv2">
                     <div class="nav-panel nav-panel-lv2">

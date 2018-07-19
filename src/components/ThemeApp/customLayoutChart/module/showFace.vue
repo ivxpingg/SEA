@@ -20,7 +20,7 @@
                 <vLayoutParentBox :keyId="keyId" :pdata="pdata" ref="vLayoutParentBox"></vLayoutParentBox>
             </div>
         </div>
-        <div class="right-panel">
+        <div class="right-panel" v-if="isAdmin">
             <div class="btn-panel" :class="{ 'btn-panel-close': !rightGripOpen }">
                 <div class="btn-icon" title="添加" @click="onAddList">
                     <i class="iconfont icon-tianjia"></i>
@@ -48,6 +48,8 @@
         components: {vLayoutParentBox},
         data() {
             return {
+                isAdmin: false,   // 是否是后台管理员登陆
+
                 gripOpen: true,
                 rightGripOpen: true,
                 themeData: [],
@@ -57,6 +59,9 @@
                 keyId: '',
                 pdata: []
             };
+        },
+        created() {
+            this.isAdmin = this.$store.state.type === '3';
         },
         watch: {
             currentCustomId(val, valOld) {
@@ -235,7 +240,7 @@
 
                         .item {
                             height: 30px;
-                            margin: 20px 0;
+                            margin: 10px 0;
                             cursor: pointer;
 
                             &.active{

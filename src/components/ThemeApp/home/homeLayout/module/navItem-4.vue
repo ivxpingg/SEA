@@ -101,8 +101,8 @@
 </template>
 
 <script>
-    import Swiper from 'swiper';
-    import 'swiper/dist/css/swiper.min.css';
+    // import Swiper from 'swiper';
+    // import 'swiper/dist/css/swiper.min.css';
     export default {
         name: "navItem-4",
         data() {

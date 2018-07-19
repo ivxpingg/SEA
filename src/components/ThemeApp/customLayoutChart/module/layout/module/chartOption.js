@@ -326,6 +326,22 @@ var Radar = function () {
     });
 }
 
+var WordCloud = function () {
+
+    return {
+        title: {
+            textStyle: {
+                color: '#FFF',
+                fontSize: 15
+            },
+            top: 10,
+            left: 10,
+            right: 'auto',
+            bottom: 'auto'
+        },
+        tooltip: {}
+    };
+}
 
 //
 
@@ -408,6 +424,7 @@ var GetOption = (type) => {
         case 'bar': return Bar(); break;
         case 'pie': return Pie(); break;
         case 'radar': return Radar(); break;
+        case 'wordCloud': return WordCloud(); break;
     }
 };
 
@@ -572,8 +589,10 @@ var GetDataOption = (type, configure,  data) => {
             name: '',
             type: type,
             size: ['80%', '80%'],
-            textRotation : [0, 45, 90, -45],
-            textPadding: 0,
+            sizeRange: [12, 60],
+            rotationRange : [-90, 90],
+            // textPadding: 0,
+            shape: 'circle',
             autoSize: {
                 enable: true,
                 minSize: 14
@@ -581,11 +600,11 @@ var GetDataOption = (type, configure,  data) => {
             data: []
         });
 
-        data.SQL1.forEach(function(val) {
+        data.SQL1.forEach(function(val, idx) {
             series[0].data.push({
                 name: val.name,
                 value: val.value,
-                itemStyle: createRandomItemStyle()
+                textStyle: createRandomItemStyle(idx)
             });
         });
 
@@ -597,16 +616,25 @@ var GetDataOption = (type, configure,  data) => {
 }
 
 
-var  createRandomItemStyle = function() {
+var  createRandomItemStyle = function(idx) {
+
+    var k = idx % Theme.shine.color.length;
+
     return {
         normal: {
-            color: 'rgb(' + [
-                Math.round(Math.random() * 160),
-                Math.round(Math.random() * 160),
-                Math.round(Math.random() * 160)
-            ].join(',') + ')'
+            color: Theme.shine.color[k]
         }
     };
+
+    // return {
+    //     normal: {
+    //         color: 'rgb(' + [
+    //             Math.round(Math.random() * 160),
+    //             Math.round(Math.random() * 160),
+    //             Math.round(Math.random() * 160)
+    //         ].join(',') + ')'
+    //     }
+    // };
 }
 
 export default {

@@ -60,8 +60,8 @@
 </template>
 
 <script>
-    import Swiper from 'swiper';
-    import 'swiper/dist/css/swiper.min.css';
+    // import Swiper from 'swiper';
+    // import 'swiper/dist/css/swiper.min.css';
     import Marquee from '../../../marquee/marquee';
     export default {
         name: "navItem-8",

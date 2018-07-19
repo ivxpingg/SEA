@@ -22,6 +22,7 @@
         methods: {
             initStyle(){
                 var that = this;
+
                 var height = that.$refs.layoutChart.clientHeight;
 
                 if (height < 768) { height = 768; }

@@ -394,7 +394,7 @@
         .theme-sortable-panel {
             position: relative;
             height: 100%;
-            overflow: hidden;
+            /*overflow: hidden;*/
             .theme-item {
                 height: 100%;
 

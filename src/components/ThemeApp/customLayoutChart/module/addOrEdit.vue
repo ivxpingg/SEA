@@ -23,7 +23,12 @@
         </div>
         <div class="center-panel">
             <div class="echarts-area" :class="{'echarts-area-add': saveState === 'add'}">
-                    <vLayoutParentBox :keyId="keyId" :isEdit="isEdit_layout" :pdata="pdata" ref="vLayoutParentBox"></vLayoutParentBox>
+                    <vLayoutParentBox
+                            :class="overflowHidden ? 'theme-overflow-hidden' : ''"
+                            :keyId="keyId"
+                            :isEdit="isEdit_layout"
+                            :pdata="pdata"
+                            ref="vLayoutParentBox"></vLayoutParentBox>
                 <div class="btn-switch-layout" @click="onSwitchLayout" v-if="saveState === 'add'">布局切换</div>
             </div>
         </div>
@@ -93,7 +98,10 @@
                         message: '主题名称不能为空！',
                         trigger: 'blur'
                     }
-                }
+                },
+
+                // 溢出隐藏
+                overflowHidden: false
             };
         },
         created() {
@@ -201,10 +209,16 @@
                     forceFallback: true,
                     // ghostClass: 'theme-model',
                     chosenClass: 'theme-model',
+                    onRemove() {
+                    },
+                    onMove() {
+                        that.overflowHidden = true;
+                    },
                     onStart(e) {
 
                     },
                     onEnd(e) {
+                        that.overflowHidden = false;
                         if (e.from !== e.to) {
 
                             var id = e.item.getAttribute('name');
@@ -339,7 +353,7 @@
 
                         .item {
                             height: 30px;
-                            margin: 20px 0;
+                            margin: 10px 0;
                             cursor: pointer;
 
                             &.active{
@@ -542,6 +556,12 @@
         .ivu-modal {
             top: 50%;
             margin-top: -100px;
+        }
+    }
+
+    .theme-overflow-hidden {
+        .theme-sortable-panel {
+            overflow: hidden;
         }
     }
 </style>

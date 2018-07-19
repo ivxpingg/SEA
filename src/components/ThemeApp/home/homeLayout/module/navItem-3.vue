@@ -92,8 +92,8 @@
 
 <script>
     import Marquee from '../../../marquee/marquee';
-    import Swiper from 'swiper';
-    import 'swiper/dist/css/swiper.min.css';
+    // import Swiper from 'swiper';
+    // import 'swiper/dist/css/swiper.min.css';
     import Echarts from 'echarts';
     export default {
         name: "navItem-3",
@@ -134,7 +134,7 @@
         components: {Marquee},
         mounted() {
             this.initSwiper();
-            this.initChart();
+            // this.initChart();
         },
         methods: {
             initSwiper() {
@@ -142,7 +142,7 @@
                     loop: true,
                     effect: 'cube',
                     autoplay: {
-                        disableOnInteraction: false
+                        // disableOnInteraction: false
                     },
                     delay: 500,
                     on: {

@@ -22,6 +22,9 @@
     import Echarts from 'echarts';
     import ChartOption from './chartOption';
     import Utils from '../../../../../../libs/utils';
+    import 'echarts-wordcloud';
+    // require('../../../../../../libs/echarts2/chart/wordCloud');
+    // // import echarts2 from '../../../../../../libs/echarts2';
     export default {
         name: "echarts",
         data() {
@@ -211,12 +214,13 @@
                     this.myChart.clear();
                 }
                 else {
-                    if (chartType !== 'wordCloud') {
-                        this.myChart = Echarts.init(this.$refs.echart, 'shine');
-                    }
-                    else {
-                      // this.myChart = echarts.init(this.$refs.echart);
-                    }
+                    this.myChart = Echarts.init(this.$refs.echart, 'shine');
+                    // if (chartType !== 'wordCloud') {
+                    //     this.myChart = Echarts.init(this.$refs.echart, 'shine');
+                    // }
+                    // else {
+                    //   this.myChart = echarts.init(this.$refs.echart);
+                    // }
                 }
 
                 this.option = ChartOption.getOption(chartType);
@@ -295,20 +299,32 @@
                     case 'wordCloud':
                         this.chartData = {
                             SQL1: [{
-                                name: '关键字1',
-                                value: 521
+                                name: '服务',
+                                value: 62
                             },{
-                                name: '关键字2',
-                                value: 321
+                                name: '海洋平台',
+                                value: 92
                             },{
-                                name: '关键字3',
-                                value: 651
+                                name: '科研仪器',
+                                value: 34
                             },{
-                                name: '关键字4',
-                                value: 231
+                                name: '科技成果',
+                                value: 53
                             },{
-                                name: '关键字5',
-                                value: 447
+                                name: '科普',
+                                value: 28
+                            },{
+                                name: '品质',
+                                value: 71
+                            },{
+                                name: '专家',
+                                value: 20
+                            },{
+                                name: '行业数据',
+                                value: 124
+                            },{
+                                name: '云服务',
+                                value: 48
                             }]
                         };
                         break;
@@ -336,6 +352,7 @@
                 this.option = Utils.merge2.recursive(this.option, this.itemInfo.chartOption);
 
                 this.option = Utils.merge2.recursive(this.option, this.configure_Obj);
+
 
                 this.myChart.setOption(this.option);
 
