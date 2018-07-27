@@ -86,7 +86,7 @@ export default [
         path: '/AddTheme',
         name: 'AddTheme',
         meta: {
-            requireAuth: true,
+            requireAuth: false,
             title: '添加主题'
         },
         component: (resolve) => require(['../../components/ThemeApp/addTheme/addTheme.vue'], resolve)
