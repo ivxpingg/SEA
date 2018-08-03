@@ -258,6 +258,23 @@ function merge(/* obj1, obj2, obj3, ... */) {
   return result;
 }
 
+function mergeOneself() {
+    var result = arguments[0];
+
+    function assignValue(val, key) {
+        if (typeof result[key] === 'object' && typeof val === 'object') {
+            result[key] = merge(result[key], val);
+        } else {
+            result[key] = val;
+        }
+    }
+
+    for (var i = 1, l = arguments.length; i < l; i++) {
+        forEach(arguments[i], assignValue);
+    }
+    return result;
+}
+
 /**
  * Extends object a by mutably adding to it the properties of object b.
  *
@@ -295,6 +312,7 @@ export default {
   isStandardBrowserEnv: isStandardBrowserEnv,
   forEach: forEach,
   merge: merge,
+  mergeOneself: mergeOneself,
   merge2: Merge,
   extend: extend,
   trim: trim

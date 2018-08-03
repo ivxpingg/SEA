@@ -12,23 +12,23 @@
                         <div class="item item1">
                             <div class="title title1">平台服务</div>
                             <div class="bar"></div>
-                            <div class="value">110起</div>
+                            <div class="value">{{platform_services_sum}}起</div>
                         </div>
                         <div class="item item2">
                             <div class="title">平台用户数量</div>
                             <div class="bar"></div>
-                            <div class="value">10万人</div>
+                            <div class="value">{{dataInfo.achievementData['平台用户总数']}}人</div>
                         </div>
                         <div class="item item3">
                             <div class="title">平台交易金额</div>
                             <div class="bar"></div>
-                            <div class="value">300万元</div>
+                            <div class="value">{{dataInfo.achievementData['交易总额']}}元</div>
                         </div>
                         <div class="item item4">
                             <div class="bar"></div>
                             <div class="value">
                                 <div>科研成果</div>
-                                <div>10542项</div>
+                                <div>{{dataInfo.achievementData['发布成果总数']}}项</div>
                             </div>
                         </div>
                     </div>
@@ -40,17 +40,17 @@
                             <div class="title title3">实用新型专利10项</div>
                             <div class="title title4">发表论文总数9352篇</div>
                             <div class="title title5">各类涉海奖项172项</div>
-                            <div class="title title-name">科研成果1000项</div>
+                            <div class="title title-name">科研成果{{dataInfo.achievementData['发布成果总数']}}项</div>
                         </div>
                     </div>
 
                     <div class="swiper-slide">
                         <div class="item1-info">
-                            <div class="title title1">科研需求200例</div>
-                            <div class="title title2">难题发布100个</div>
-                            <div class="title title3">技术方案评审100项</div>
-                            <div class="title title4">可视化洽谈20次</div>
-                            <div class="title title-name">平台服务1000起</div>
+                            <div class="title title1">科研需求{{dataInfo.achievementNum['科研需求总数']}}例</div>
+                            <div class="title title2">难题发布{{dataInfo.achievementNum['难题发布总数']}}个</div>
+                            <div class="title title3">技术方案评审{{dataInfo.achievementNum['技术方案评审总次数']}}项</div>
+                            <div class="title title4">可视化洽谈{{dataInfo.achievementNum['可视化洽谈总次数']}}次</div>
+                            <div class="title title-name">平台服务{{platform_services_sum}}起</div>
                         </div>
                     </div>
 
@@ -97,6 +97,16 @@
     import Echarts from 'echarts';
     export default {
         name: "navItem-3",
+        computed: {
+            // 平台服务总数
+            platform_services_sum() {
+                var sum = 0;
+                for(var key in this.dataInfo.achievementNum) {
+                    sum += this.dataInfo.achievementNum[key];
+                }
+                return sum;
+            }
+        },
         data() {
             return {
                 chart1: null,
@@ -128,6 +138,48 @@
                         },
                         smooth: true
                     }]
+                },
+
+                dataInfo: {
+                    "achievementData": {
+                        "企事业用户总数": 35,
+                        "发布成果总数": 11, // 科技成果
+                        "普通用户总数": 33,
+                        "平台用户总数": 94,
+                        "交易总额": 0,
+                        "专家用户总数": 0
+                    },
+                    "newAchievement": [{
+                        "resultId": 15,
+                        "resultName": "南日岛风电区全潜式可升降刚性网箱系统",
+                        "pay": [{
+                            "resultId": 15
+                        }, {
+                            "resultId": 15
+                        }],
+                        "image": [{
+                            "resultId": 15
+                        }, {
+                            "resultId": 15
+                        }],
+                        "rdealPayStatus": "0"
+                    }, {
+                        "resultId": 11,
+                        "resultName": "发酵技术在有机固体废弃物资源化",
+                        "pay": [{
+                            "resultId": 11
+                        }],
+                        "image": [{
+                            "resultId": 11
+                        }],
+                        "rdealPayStatus": "2"
+                    }],
+                    "achievementNum": {
+                        "科研需求总数": 49,
+                        "技术方案评审总次数": 42,
+                        "难题发布总数": 35,
+                        "可视化洽谈总次数": 511
+                    }
                 }
             };
         },
@@ -135,18 +187,17 @@
         mounted() {
             this.initSwiper();
             // this.initChart();
+            this.getData();
         },
         methods: {
             initSwiper() {
                 var mySwiper = new Swiper (this.$refs.swiper, {
-                    loop: true,
+                    // loop: true,
                     effect: 'cube',
                     autoplay: {
-                        // disableOnInteraction: false
-                    },
-                    delay: 500,
-                    on: {
-
+                        // disableOnInteraction: true
+                        delay: 3000,
+                        reverseDirection: true
                     }
                 });
             },
@@ -155,6 +206,22 @@
                 this.chart1 = Echarts.init(this.$refs.chart1);
 
                 this.chart1.setOption(this.optionChart1);
+            },
+
+            getData() {
+                var that = this;
+
+                that.$http({
+                    method: 'get',
+                    url: '/ocean/panoramic/themeDataShow/achievementShare'
+                }).then(function (response) {
+                    if (response.status === 1) {
+                        that.$set(that.dataInfo, 'achievementData', response.result.achievementData);
+                        that.$set(that.dataInfo, 'achievementNum', response.result.achievementData);
+                    }
+                }).catch(function (e) {
+
+                })
             }
         }
     }

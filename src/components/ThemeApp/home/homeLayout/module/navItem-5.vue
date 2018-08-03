@@ -36,7 +36,7 @@
                     <div class="swiper-slide swiper-slide-chart">
                         <div class="item3-info">
                             <div class="title">服务申请数量</div>
-                            <div class="value">500个</div>
+                            <div class="value">{{serverData.applyServerNumber}}个</div>
                             <div class="chart-box" ref="chart4"></div>
                         </div>
                     </div>
@@ -52,15 +52,15 @@
                             <div class="bg">
                                 <div class="value1">
                                     <div><span>平台交易额</span></div>
-                                    <div>300万</div>
+                                    <div>{{serverData.tradeAmount}}元</div>
                                 </div>
                                 <div class="value2">
                                     <div><span>服务器资源</span></div>
-                                    <div>1000G</div>
+                                    <div>{{serverData.storage}}G</div>
                                 </div>
                                 <div class="value3">
                                     <div><span>平台用户数</span></div>
-                                    <div>10万</div>
+                                    <div>{{serverData.userNumber}}万</div>
                                 </div>
                             </div>
                         </div>
@@ -93,17 +93,31 @@
                     grid: {
                         show: false,
                         top: 10,
-                        left: 0,
-                        right: 0,
-                        bottom: 0
+                        left: 40,
+                        right: 10,
+                        bottom: 20
+                    },
+                    tooltip: {
+                        show: true
                     },
                     xAxis: {
                         type: 'category',
                         boundaryGap: false,
-                        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+                        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                        axisLabel: {
+                            show: false
+                        },
                     },
                     yAxis: {
                         type: 'value',
+                        axisLine: {
+                            lineStyle: {
+                                color: 'rgba(255,255,255,0.2)'
+                            }
+                        },
+                        axisLabel: {
+                            color: 'rgba(255,255,255,0.6)'
+                        },
                         splitLine: {
                             show: false
                         }
@@ -116,12 +130,38 @@
                         },
                         smooth: true
                     }]
+                },
+
+                serverData: {
+                    applyServerNumber: '',    // 申请服务器数量
+                    storage: '',              // 服务器
+                    tradeAmount: '',          // 交易总金额
+                    userNumber: 0,            // 用户数量
+                    applyNumberByMon: []      // 申请服务数量图表数据
                 }
             };
+        },
+        watch: {
+            serverData: {
+                deep: true,
+                handler(val) {
+                    var that = this;
+                    that.optionChart4.xAxis.data = [];
+                    that.optionChart4.series.data = [];
+                    
+                    val.applyNumberByMon.forEach(function (v) {
+                        that.optionChart4.xAxis.data.push(v.applyMonth);
+                        that.optionChart4.series.data.push(v.number);
+                    });
+
+                    this.chart4.setOption(this.optionChart4);
+                }
+            }
         },
         mounted() {
             this.initSwiper();
             this.initChart();
+            this.getData();
         },
 
         methods: {
@@ -207,81 +247,29 @@
 
                 this.chart3.setOption(option3);
 
-
-                // this.chart1 = Echarts.init(this.$refs.chart1);
-                //
-                // var option1 = {
-                //     title : {
-                //         show: true,
-                //         text: '海洋产业数据资源15类',
-                //         x:'center',
-                //         // y: 'bottom',
-                //         bottom: '20px',
-                //         textStyle: {
-                //             color: '#76e4ff',
-                //             fontSize: '13px'
-                //         }
-                //     },
-                //     tooltip : {
-                //         show: false,
-                //         trigger: 'item',
-                //         formatter: "{a} <br/>{b} : {c} ({d}%)",
-                //         position: function (point, params, dom, rect, size) {
-                //             // 固定在中间
-                //             return [(size.viewSize[0] - size.contentSize[0]) / 2, (size.viewSize[1] - size.contentSize[1]) / 2];
-                //         },
-                //     },
-                //     legend: {
-                //         show: false,
-                //         x : 'center',
-                //         y : 'bottom',
-                //         data:['海洋周边水质监测数据','海洋生鲜交易数据','海洋百科数据','海洋企业名录','水产养殖数据']
-                //     },
-                //     toolbox: {
-                //         show : false
-                //     },
-                //     yAxis: {
-                //         show: false
-                //     },
-                //     calculable : true,
-                //     series : [
-                //         {
-                //             name:'海洋产业数据资源',
-                //             type:'pie',
-                //             center : ['50%', '50%'],
-                //             // radius: [],
-                //             label: {
-                //                 normal: {
-                //                     show: false,
-                //                     formatter: "{b}\n{c}",
-                //                     // position: 'center'
-                //                 },
-                //                 emphasis: {
-                //                     show: false,
-                //                     formatter: "{b}\n{c}",
-                //                     textStyle: {
-                //                         fontSize: '12'
-                //                     }
-                //                 }
-                //             },
-                //             data:[
-                //                 {value:10, name:'海洋周边水质监测数据'},
-                //                 {value:5, name:'海洋生鲜交易数据'},
-                //                 {value:15, name:'海洋百科数据'},
-                //                 {value:25, name:'海洋企业名录'},
-                //                 {value:20, name:'水产养殖数据'}
-                //             ]
-                //         }
-                //     ]
-                // };
-                //
-                // this.chart1.setOption(option1);
-
-
                 this.chart4 = Echarts.init(this.$refs.chart4);
 
                 this.chart4.setOption(this.optionChart4);
 
+            },
+
+            getData() {
+                var that = this;
+
+                that.$http({
+                    method: 'get',
+                    url: '/ocean/panoramic/themeDataShow/serverDataCount'
+                }).then(function (response) {
+                    if (response.status === 1) {
+                        that.serverData.applyServerNumber = response.result.applyServerNumber || 0;
+                        that.serverData.storage = response.result.storage || 0;
+                        that.serverData.tradeAmount = response.result.tradeAmount || 0;
+                        that.serverData.userNumber = response.result.userNumber || 0;
+                        that.serverData.applyNumberByMon = response.result.applyNumberByMon || [];
+                    }
+                }).catch(function (e) {
+
+                })
             }
         }
     }
@@ -431,7 +419,7 @@
 
                             }
                             .chart-box {
-                                height: 120px;
+                                height: 160px;
                             }
                         }
 

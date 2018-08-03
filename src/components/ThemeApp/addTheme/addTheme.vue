@@ -57,8 +57,23 @@
                 </FormItem>
 
                 <FormItem label="SQL">
-                    <Input v-model="formData.queryStatement" type="textarea" :rows="4" placeholder="请输入SQL，多个SQL请用';'隔开" />
+                    <Poptip placement="top-start" width="800">
+                        <Input v-model="formData.queryStatement" type="textarea" :rows="4" placeholder="请输入SQL，多个SQL请用';'隔开" />
+                        <div class="poptip-addTheme" slot="content">
+                            <h3 class="h3">SQL例子:</h3>
+                            <div v-html="poptip_sql"></div>
+
+                            <h3>SQL结果</h3>
+                            <div>
+                                <Table :columns="poptip_sql_columns"
+                                       :height="250"
+                                       :data="poptip_sql_data"></Table>
+                            </div>
+
+                        </div>
+                    </Poptip>
                 </FormItem>
+
 
                 <!--雷达图-->
 
@@ -70,7 +85,14 @@
                 <!--</FormItem>-->
 
                 <FormItem label="配置">
-                    <Input v-model="formData.configure" type="textarea" :rows="4" :placeholder="defaultConfig" />
+                    <Poptip placement="top-start" width="800">
+                        <Input v-model="formData.configure" type="textarea" :rows="4" :placeholder="defaultConfig" />
+                        <div class="poptip-addTheme" slot="content">
+                            <h3 class="h3">配置内容：</h3>
+                            <h3 class="h4">配置参考：http://echarts.baidu.com/option.html</h3>
+                            <div v-html="poptip_value('config')"></div>
+                        </div>
+                    </Poptip>
                 </FormItem>
 
             </Form>
@@ -168,13 +190,16 @@
                 // 字典
                 dict_chart: [{
                     name: '柱形图',
-                    value: 'bar'
+                    value: 'bar',
+                    config: `bar: {}`
                 },{
                     name: '折线图',
-                    value: 'line'
+                    value: 'line',
+                    config: `line: {}`
                 },{
                     name: '饼图',
-                    value: 'pie'
+                    value: 'pie',
+                    config: `pie: {}`
                 },{
                     name: '雷达图',
                     value: 'radar'
@@ -182,6 +207,100 @@
                     name: '字符云',
                     value: 'wordCloud'
                 }],
+                // 用户提示信息
+                poptip: {
+                    bar: {
+                        sql: "select time, '个人', '高校机构', '企业单位' from table",
+                        sql_columns: [
+                            { title: 'time', key: 'time', algin: 'center' },
+                            { title: '个人', key: '个人', algin: 'center' },
+                            { title: '高校机构', key: '高校机构', algin: 'center' },
+                            { title: '企业单位', key: '企业单位', algin: 'center' }
+                        ],
+                        sql_data: [
+                            { time: '2018', '个人': 100,  '高校机构': 200, '企业单位': 102},
+                            { time: '2019', '个人': 100,  '高校机构': 200, '企业单位': 102},
+                            { time: '2020', '个人': 90,  '高校机构': 150, '企业单位': 88}
+                        ],
+                        config: `bar: {}`
+                    },
+                    line: {
+                        sql: "select time, '个人', '高校机构', '企业单位' from table",
+                        sql_columns: [
+                            { title: 'time', key: 'time', algin: 'center' },
+                            { title: '个人', key: '个人', algin: 'center' },
+                            { title: '高校机构', key: '高校机构', algin: 'center' },
+                            { title: '企业单位', key: '企业单位', algin: 'center' }
+                        ],
+                        sql_data: [
+                            { time: '2018', '个人': 100,  '高校机构': 200, '企业单位': 102},
+                            { time: '2019', '个人': 100,  '高校机构': 200, '企业单位': 102},
+                            { time: '2020', '个人': 90,  '高校机构': 150, '企业单位': 88}
+                        ],
+                        config: `line: {}`
+                    },
+                    pie: {
+                        sql: "select name, '个人', '高校机构', '企业单位' from table",
+                        sql_columns: [
+                            { title: 'name', key: 'name', algin: 'center' },
+                            { title: '高校机构', key: '高校机构', algin: 'center' },
+                            { title: '企业单位', key: '企业单位', algin: 'center' },
+                            { title: '个人', key: '个人', algin: 'center' }
+                        ],
+                        sql_data: [
+                            { name: '用户', '高校机构': 100,  '企业单位': 200, '个人': 102}
+                        ],
+                        config: `pie: {}`
+                    },
+                    radar: {
+                        sql: "<div>select</div> <div> name, '平均预热开机时长', '使用时长', '共享时长','使用率', '维护次数', '待测项目' </div><div>from table </div>",
+                        sql_columns: [
+                            { title: 'name', key: 'name', algin: 'center' },
+                            { title: '平均预热开机时长', key: '平均预热开机时长', algin: 'center' },
+                            { title: '使用时长', key: '使用时长', algin: 'center' },
+                            { title: '共享时长', key: '共享时长', algin: 'center' },
+                            { title: '使用率', key: '使用率', algin: 'center' },
+                            { title: '维护次数', key: '维护次数', algin: 'center' },
+                            { title: '待测项目', key: '待测项目', algin: 'center' },
+                        ],
+                        sql_data: [
+                            {name: '共享仪器','平均预热开机时长': 60, '使用时长': 100, '共享时长': 100, '使用率': 90, '维护次数': 10, '待测项目': 9}
+                        ],
+                        config: `
+                            radar: { </br>&nbsp;
+                                radar: { </br>&nbsp;&nbsp;
+                                    indicator: [</br>&nbsp;&nbsp;&nbsp;&nbsp;
+                                        { name: '平均预热开机时长', max: 100 },</br>&nbsp;&nbsp;&nbsp;&nbsp;
+                                        { name: '使用时长', max: 100 },</br>&nbsp;&nbsp;&nbsp;&nbsp;
+                                        { name: '共享时长', max: 100 },</br>&nbsp;&nbsp;&nbsp;&nbsp;
+                                        { name: '使用率', max: 100 },</br>&nbsp;&nbsp;&nbsp;&nbsp;
+                                        { name: '维护次数', max: 100 },</br>&nbsp;&nbsp;&nbsp;&nbsp;
+                                        { name: '待测项目', max: 100 }</br>&nbsp;&nbsp;&nbsp;&nbsp;
+                                    ]</br>&nbsp;&nbsp;
+                                },</br>&nbsp;&nbsp;
+                            _radar: {}</br>
+                        }`
+                    },
+                    wordCloud: {
+                        sql: "select name, value from table",
+                        sql_columns: [
+                            { title: 'name', key: 'name', algin: 'center' },
+                            { title: 'value', key: 'value', algin: 'center' }
+                        ],
+                        sql_data: [
+                            { name: '服务',value: 62 },
+                            { name: '海洋平台', value: 92 },
+                            { name: '科研仪器', value: 34 },
+                            { name: '科技成果',  value: 53 },
+                            { name: '科普', value: 28 },
+                            { name: '品质', value: 71 },
+                            { name: '专家', value: 20 },
+                            { name: '行业数据', value: 124 },
+                            { name: '云服务', value: 48 }
+                        ],
+                        config: `wordCloud: {}`
+                    }
+                },
 
                 // 后台字典
                 // 子系统列表
@@ -196,6 +315,32 @@
         computed: {
             defaultConfig() {
                 return JSON.stringify(this.defaultConfigure[this.formData.picType]);
+            },
+
+            poptip_sql() {
+
+                if (this.formData.picType !== '') {
+                    return this.poptip[this.formData.picType].sql;
+                }
+                else {
+                    return '';
+                }
+            },
+            poptip_sql_columns() {
+                if (this.formData.picType !== '') {
+                    return this.poptip[this.formData.picType].sql_columns;
+                }
+                else {
+                    return [];
+                }
+            },
+            poptip_sql_data() {
+                if (this.formData.picType !== '') {
+                    return this.poptip[this.formData.picType].sql_data;
+                }
+                else {
+                    return [];
+                }
             }
         },
         watch: {
@@ -430,6 +575,16 @@
 
             onClickPreview() {
                 this.modal_preview = true;
+            },
+
+            poptip_value(key) {
+
+                if (this.formData.picType !== '' && !!this.poptip[this.formData.picType][key]) {
+                    return this.poptip[this.formData.picType][key];
+                }
+                else {
+                    return '';
+                }
             }
         }
     }
@@ -485,4 +640,25 @@
             }
         }
     }
+
+    .poptip-addTheme{
+        min-height: 300px;
+        background-color: #f8f8f9;
+        h3{
+            margin: 10px 0;
+            padding: 10px 0;
+            border-top: 1px solid #dcdee2;
+        }
+    }
+
+</style>
+<style lang="scss">
+    .ivu-poptip {
+        display: block;
+
+        .ivu-poptip-rel {
+            display: block;
+        }
+    }
+
 </style>
