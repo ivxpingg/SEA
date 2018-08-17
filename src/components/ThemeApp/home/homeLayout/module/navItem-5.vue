@@ -103,7 +103,7 @@
                     xAxis: {
                         type: 'category',
                         boundaryGap: false,
-                        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                        data: ['2018-02','2018-03','2018-04','2018-05'],
                         axisLabel: {
                             show: false
                         },
@@ -123,7 +123,7 @@
                         }
                     },
                     series: [{
-                        data: [820, 932, 901, 934, 1290, 1330, 1320],
+                        data: [100,200,300,210],
                         type: 'line',
                         areaStyle: {
                             opacity: 0.5
@@ -147,12 +147,13 @@
                 handler(val) {
                     var that = this;
                     that.optionChart4.xAxis.data = [];
-                    that.optionChart4.series.data = [];
+                    that.optionChart4.series[0].data = [];
                     
                     val.applyNumberByMon.forEach(function (v) {
                         that.optionChart4.xAxis.data.push(v.applyMonth);
-                        that.optionChart4.series.data.push(v.number);
+                        that.optionChart4.series[0].data.push(v.number);
                     });
+
 
                     this.chart4.setOption(this.optionChart4);
                 }

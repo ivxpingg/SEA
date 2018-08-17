@@ -15,7 +15,7 @@
                             <div class="chart-value-5-1">
                                 <span>共享仪器</span>
                                 <br/>
-                                <span class="value">16780</span>
+                                <span class="value">{{dataInfo.rankCount.allnumber}}</span>
                                 <br/>
                                 <span>台</span>
                             </div>
@@ -30,11 +30,11 @@
                             <div class="chart chart-4" ref="chart4"></div>
                             <div class="chart chart-5" ref="chart5"></div>
 
-                            <div class="chart-value chart-value-1">99<br/>万</div>
-                            <div class="chart-value chart-value-2">99<br/>万人</div>
-                            <div class="chart-value chart-value-3">99<br/>项</div>
-                            <div class="chart-value chart-value-4">99<br/>万元</div>
-                            <div class="chart-value chart-value-5">99<br/>台</div>
+                            <div class="chart-value chart-value-1">{{dataInfo.statistics.alldealdown}}<br/>万</div>
+                            <div class="chart-value chart-value-2">{{dataInfo.statistics.allusernumber}}<br/>人</div>
+                            <div class="chart-value chart-value-3">{{dataInfo.statistics.allservicenumber}}<br/>项</div>
+                            <div class="chart-value chart-value-4">{{dataInfo.statistics.allinfototal}}<br/>万元</div>
+                            <div class="chart-value chart-value-5">{{dataInfo.statistics.allinstrnumber}}<br/>台</div>
                         </div>
                     </div>
 
@@ -56,9 +56,9 @@
                             <div class="chart-value-2-1">
                                 <span>平台用户数量</span>
                                 <br/>
-                                <span class="value">355</span>
+                                <span class="value">{{dataInfo.userCount.allusernumber}}</span>
                                 <br/>
-                                <span>万人</span>
+                                <span>人</span>
                             </div>
                         </div>
                     </div>
@@ -68,7 +68,7 @@
                             <div class="chart-value-3-1">
                                 <span>平台服务项目</span>
                                 <br/>
-                                <span class="value">136</span>
+                                <span class="value">{{dataInfo.service.allservicenumber}}</span>
                                 <br/>
                                 <span>项</span>
                             </div>
@@ -83,7 +83,7 @@
         <div class="level-panel level-panel-2">
             <div class="time-panel">
                 <div class="title">平台共享时长</div>
-                <div class="value">9000h</div>
+                <div class="value">{{dataInfo.share.shaertime}}h</div>
             </div>
         </div>
 
@@ -104,9 +104,9 @@
                             <div class="swiper-wrapper">
                                 <div class="swiper-slide" v-for="item in tableData">
                                     <div class="table-row">
-                                        <div class="table-col">{{item.name}}</div>
+                                        <div class="table-col">{{item.siiHinesename || ''}}</div>
                                         <div class="table-col">{{item.value1}}</div>
-                                        <div class="table-col">{{item.value2}}</div>
+                                        <div class="table-col">{{item.siiServicetime}}</div>
                                         <div class="table-col">{{item.value3}}</div>
                                         <div class="table-col">{{item.value4}}</div>
                                     </div>
@@ -126,8 +126,8 @@
             <div class="roll-info-content">
                 <Marquee
                         font="12px"
-                        :speed='35'
-                        content="FF正在预约。。。FF正在预约。。。FF正在预约。。。FF正在预约。。。FF正在预约。。。FF正在预约。。。FF正在预约。。。FF正在预约。。。FF正在预约。。。FF正在预约。。。">
+                        :speed='15'
+                        :content="appointmentContent">
                 </Marquee>
 
             </div>
@@ -202,10 +202,8 @@
                             }
                         },
                         data: [
-                            {value:335, name:'直接访问'},
-                            {value:310, name:'邮件营销'},
-                            // {value:234, name:'联盟广告'},
-                            // {value:135, name:'视频广告'},
+                            {value:100, name:'直接访问'},
+                            {value:100, name:'邮件营销'},
                         ]
                     }]
                 },
@@ -361,12 +359,12 @@
                         label: {
                             normal: {
                                 show: true,
-                                formatter: "{b}\n{c}万人"
+                                formatter: "{b}\n{c}人"
                                 // position: 'center'
                             },
                             emphasis: {
                                 show: true,
-                                formatter: "{b}\n{c}万人",
+                                formatter: "{b}\n{c}人",
                                 textStyle: {
                                     fontSize: '12'
                                 }
@@ -378,8 +376,8 @@
                             }
                         },
                         data: [
-                            {value:325, name:'用户'},
-                            {value:30, name:'服务机构'}
+                            {value:325, name:'消费用户'},
+                            {value:30, name:'机构用户'}
                         ]
                     }]
                 },
@@ -517,7 +515,121 @@
                     value2: '200h',
                     value3: '运行中',
                     value4: '90%'
-                }]
+                }],
+
+                dataInfo: {
+                    // 平台用户数量
+                    "userCount": {
+                        "alluserofcon": 11,    // 消费用户总数
+                        "allusernumber": 17,   // 平台用户数
+                        "alluseroforg": 6      // 机构用户总数
+                    },
+                    // 共享仪器
+                    "share": {
+                        "sharelist": [{
+                            "siiId": 29,                   // 仪器Id
+                            "siiHinesename": "医疗救助",   // 仪器名称
+                            "siiServicetime": 10,         // 仪器使用时长
+                            "ssoSosid": 3,                // 仪器订单Id
+                            "ssoCreatetime": "Aug 11, 2018 4:39:32 PM",  //仪器订单创建时间
+                            "ssoProjectname": "检测项目6"   // 仪器检测项目
+                        }],
+                        "shaertime": 272
+                    },
+                    // 大型仪器服务的预约排行项目（共排行前5条）数据。
+                    // (平台服务项目)
+                    "service": {
+                        "allservicenumber": 9,
+                        "servicelist": [{
+                            "serviceId": 36,           // 服务项目Id
+                            "serviceName": "测试发布",  // 服务项目名
+                            "sCount": 5,               // 该服务被预约的总和
+                            "ssimagelist": [{
+                                "serviceId": 36
+                            }]
+                        }, {
+                            "serviceId": 34,
+                            "serviceName": "bvcfdg",
+                            "sCount": 3,
+                            "ssimagelist": [{
+                                "serviceId": 34
+                            }]
+                        }, {
+                            "serviceId": 35,
+                            "serviceName": "ererv",
+                            "sCount": 1,
+                            "ssimagelist": [{
+                                "serviceId": 35
+                            }]
+                        }]
+                    },
+                    // 大型仪器项目订单统计
+                    "orderCount": {
+                        "alldealdownofinfo": 3,      // 仪器交易数
+                        "alldealdownofservice": 6,  // 服务交易数
+                        "alldealdown": 9           // 系统产生的总交易数
+                    },
+                    // 预约的共享仪器（正在预约）
+                    "appointment": {
+                        // 最新的正在被预约的仪器集合，共3条数据
+                        "orderofinfolist": [{
+                            "soid": 155,                 // 仪器预约Id
+                            "infoofname": "科研植被考察", //仪器名称
+                            "Sample": []
+                        }]
+                    },
+                    // 共享仪器
+                    "rankCount": {
+                        "orderinfolist":
+                            [{
+                            "bId": 1,
+                            "bName": "分析仪器",    // 仪器名称
+                            "sCount": "45",        // 所属分类的仪器个数
+                            "oCount": "8"          // 仪器预约总数
+                        }, {
+                            "bId": 129,
+                            "bName": "物理性能测试仪器",
+                            "sCount": "4",
+                            "oCount": "3"
+                        }, {
+                            "bId": 441,
+                            "bName": "工艺实验设备",
+                            "sCount": "1",
+                            "oCount": "0"
+                        }, {
+                            "bId": 362,
+                            "bName": "电子测量仪器",
+                            "sCount": "0",
+                            "oCount": "0"
+                        }, {
+                            "bId": 395,
+                            "bName": "海洋仪器",
+                            "sCount": "0",
+                            "oCount": "0"
+                        }, {
+                            "bId": 172,
+                            "bName": "计量仪器",
+                            "sCount": "0",
+                            "oCount": "0"
+                        }, {
+                            "bId": 486,
+                            "bName": "其他仪器",
+                            "sCount": "0",
+                            "oCount": "0"
+                        }],
+                        "allnumber": 11      // 共享仪器总预约数
+                    },
+                    // 共享仪器2
+                    "statistics": {
+                        "allinfototal": 202286,     // 平台仪器价值
+                        "allusernumber": 17,        // 平台用户数
+                        "allservicenumber": 13,     // 平台服务项目
+                        "allinstrnumber": 64,       // 共享仪器总数
+                        "alldealdown": 9            // 平台交易总数
+                    }
+                },
+
+                appointmentContent: ''
             };
         },
         components: {Marquee},
@@ -533,6 +645,8 @@
              this.initSwiper();
              this.initChart();
              this.getDataChart1();
+
+             this.getData();
         },
 
         methods: {
@@ -599,7 +713,67 @@
 
             getDataChart1() {
                 this.optionChart1 = {};
+            },
 
+            getData() {
+                var that = this;
+
+                that.$http({
+                    method: 'get',
+                    url: '/ocean/panoramic/themeDataShow/instrumentShare'
+                }).then(function (response) {
+                    if (response.status === 1) {
+                        that.$set(that, 'dataInfo', response.result);
+                        that.resetEchartsOption();
+                    }
+                }).catch(function (e) {
+
+                })
+            },
+
+            // 重置
+            resetEchartsOption() {
+                var that = this;
+                // 共享仪器
+                this.optionChart5_1.series[0].data = [];
+                this.dataInfo.rankCount.orderinfolist.forEach(function (val) {
+                    that.optionChart5_1.series[0].data.push({
+                        value: val.oCount,
+                        name: val.bName
+                    });
+                });
+                this.chart5_1.setOption(this.optionChart5_1);
+
+                // 共享仪器2
+
+                // 平台用户数量
+                this.optionChart2_1.series[0].data = [
+                    {value: this.dataInfo.userCount.alluserofcon, name: '消费用户'},
+                    {value: this.dataInfo.userCount.alluseroforg, name: '机构用户'}
+                ];
+
+                this.chart2_1.setOption(this.optionChart2_1);
+
+                // 平台服务项目
+                this.optionChart3_1.series[0].data = [];
+                this.dataInfo.service.servicelist.forEach(function (val) {
+                    that.optionChart3_1.series[0].data.push({
+                        value: val.sCount,
+                        name: val.serviceName
+                    });
+                });
+                this.chart3_1.setOption(this.optionChart3_1);
+
+                // 表格
+
+                this.tableData = this.dataInfo.share.sharelist || [];
+
+                // 正在预约
+
+                this.appointmentContent = '';
+                this.dataInfo.appointment.orderofinfolist.forEach(function (val) {
+                    that.appointmentContent += ' 正在预约 : ' + val.infoofname + '。。。  ';
+                });
             }
         }
     }

@@ -40,7 +40,7 @@
                             <div class="title title3">实用新型专利10项</div>
                             <div class="title title4">发表论文总数9352篇</div>
                             <div class="title title5">各类涉海奖项172项</div>
-                            <div class="title title-name">科研成果{{dataInfo.achievementData['发布成果总数']}}项</div>
+                            <div class="title title-name">科研成果共计9914项</div>
                         </div>
                     </div>
 
@@ -64,10 +64,10 @@
 
                     <div class="swiper-slide">
                         <div class="item2-info">
-                            <div class="title title1">用户数量1000人</div>
-                            <div class="title title2">专家1000人</div>
-                            <div class="title title3">科研机构20家</div>
-                            <div class="title title-name">平台用户数量1000人</div>
+                            <div class="title title1">用户数量{{dataInfo.achievementData['普通用户总数']}}人</div>
+                            <div class="title title2">专家{{dataInfo.achievementData['专家用户总数']}}人</div>
+                            <div class="title title3">科研机构{{dataInfo.achievementData['企事业用户总数']}}家</div>
+                            <div class="title title-name">平台用户数量{{dataInfo.achievementData['平台用户总数']}}人</div>
                         </div>
                     </div>
 
