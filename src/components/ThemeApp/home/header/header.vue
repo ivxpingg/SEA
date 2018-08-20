@@ -1,14 +1,17 @@
 <template>
     <div class="header-container">
         <div class="header-inner">
-            <div class="btn-panel" v-if="isAdmin">
-                <div class="btn-b btn-layout" @click="onSwitchLayout" title="切换布局">
+            <div class="btn-panel">
+                <div class="btn-b btn-layout" v-if="!isAdmin" @click="onClick_backHome" title="返回首页">
+                    <Icon type="home"></Icon>
+                </div>
+                <div class="btn-b btn-layout" v-if="isAdmin" @click="onSwitchLayout" title="切换布局">
                     <i class="iconfont icon-ai212"></i>
                 </div>
-                <div class="btn-b btn-style" @click="onSwitchSpin" title="切换风格">
+                <div class="btn-b btn-style" v-if="isAdmin" @click="onSwitchSpin" title="切换风格">
                     <i class="iconfont icon-beijingtupian"></i>
                 </div>
-                <div class="btn-b btn-setting" @click="onEditLayout" title="拖放布局">
+                <div class="btn-b btn-setting" v-if="isAdmin" @click="onEditLayout" title="拖放布局">
                     <i class="iconfont icon-shezhi"></i>
                 </div>
             </div>
@@ -19,6 +22,7 @@
 </template>
 
 <script>
+    import Config from '../../../../libs/appConfig/config';
     export default {
         name: "themeHeader",
         data() {
@@ -52,6 +56,16 @@
             },
             onSwitchSpin() {
                 this.$emit('sub_onSwitchSpin');
+            },
+            onClick_backHome() {
+
+                if (this.$store.state.type === '3') {
+                    window.location.href = Config[Config.env].homeSeaBaseUrl_manage + '/OCEANAM/nav/index';
+                }
+                else {
+                    window.location.href = Config[Config.env].homeSeaBaseUrl_person + '/OCEAN/login_default';
+                }
+
             }
         }
 
@@ -79,7 +93,7 @@
                     height: 49px;
                     display: inline-block;
                     cursor: pointer;
-                    .iconfont {
+                    .iconfont, .ivu-icon {
                         color: rgba(122, 160, 212, 0.5);
                         line-height: 48px;
                         font-size: 20px;

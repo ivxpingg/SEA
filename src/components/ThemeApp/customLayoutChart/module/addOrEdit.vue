@@ -161,6 +161,7 @@
                     url: '/ocean/theme/microanalysis/list',
                     methods: 'get'
                 }).then(function (response) {
+
                     if (response.status === 1) {
                         that.themeData = response.result;
                     }

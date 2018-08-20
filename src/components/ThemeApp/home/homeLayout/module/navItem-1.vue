@@ -126,7 +126,7 @@
             <div class="roll-info-content">
                 <Marquee
                         font="12px"
-                        :speed='15'
+                        :speed='20'
                         :content="appointmentContent">
                 </Marquee>
 
@@ -772,7 +772,11 @@
 
                 this.appointmentContent = '';
                 this.dataInfo.appointment.orderofinfolist.forEach(function (val) {
-                    that.appointmentContent += ' 正在预约 : ' + val.infoofname + '。。。  ';
+                    that.appointmentContent += ' 正在预约 : ' + val.infoofname + '<span style="display: inline-block; width: 50px;"></span>';
+                    that.appointmentContent += ' 正在预约 : ' + val.infoofname + '<span style="display: inline-block; width: 50px;"></span>';
+                    that.appointmentContent += ' 正在预约 : ' + val.infoofname + '<span style="display: inline-block; width: 50px;"></span>';
+                    that.appointmentContent += ' 正在预约 : ' + val.infoofname + '<span style="display: inline-block; width: 50px;"></span>';
+                    that.appointmentContent += ' 正在预约 : ' + val.infoofname + '<span style="display: inline-block; width: 50px;"></span>';
                 });
             }
         }

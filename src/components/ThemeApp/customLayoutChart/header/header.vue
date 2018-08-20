@@ -3,14 +3,30 @@
         <div class="header-inner">
             <div class="title">海洋产业定制分析</div>
             <router-link class="m-btn" active-class="m-active" to="/ThemeApp/appHome">导航界面</router-link>
+            <!--<router-link class="m-btn-home" active-class="m-active" :to="homeUrl"><Icon type="home"></Icon>返回首页</router-link>-->
+            <a :href="homeUrl" class="m-btn-home">
+                <Icon type="home"></Icon>返回首页
+            </a>
+
         </div>
     </div>
 </template>
 
 <script>
+    import Config from '../../../../libs/appConfig/config';
     export default {
         data() {
             return {};
+        },
+        computed: {
+            homeUrl() {
+                if (this.$store.state.type === '3') {
+                   return Config[Config.env].homeSeaBaseUrl_manage + '/OCEANAM/nav/index';
+                }
+                else {
+                    return Config[Config.env].homeSeaBaseUrl_person + '/OCEAN/login_default';
+                }
+            }
         }
     }
 </script>
@@ -51,13 +67,29 @@
                 position: absolute;
                 padding: 0 50px;
                 top: 25px;
-                right: 110px;
+                right: 290px;
                 height: 30px;
                 font-size: 14px;
                 line-height: 30px;
                 color: rgba(255,255,255, 0.8);
                 letter-spacing: 4px;
                 /*transition: background-color .2s linear;*/
+                background: linear-gradient(to left, transparent 0% , rgba(255,255,255, 0.33) 50% , transparent 100%);
+                &:hover {
+                    color: rgba(255,255,255, 1);
+                    background: linear-gradient(to left, transparent 0% , rgba(255,255,255, 0.44) 50% , transparent 100%);
+                }
+            }
+            .m-btn-home {
+                position: absolute;
+                padding: 0 50px;
+                top: 25px;
+                right: 110px;
+                height: 30px;
+                font-size: 14px;
+                line-height: 30px;
+                color: rgba(255,255,255, 0.8);
+                letter-spacing: 4px;
                 background: linear-gradient(to left, transparent 0% , rgba(255,255,255, 0.33) 50% , transparent 100%);
                 &:hover {
                     color: rgba(255,255,255, 1);

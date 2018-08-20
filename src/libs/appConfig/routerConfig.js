@@ -32,7 +32,6 @@ const routerConfig = function () {
         // console.dir('router');
         Title(to.meta.title);
         iView.LoadingBar.start();
-        next();
 
         // 目前没有拦截配置
         if (to.query.token !== undefined) {

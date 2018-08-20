@@ -17,18 +17,18 @@
                         <div class="item item2">
                             <div class="title">平台用户数量</div>
                             <div class="bar"></div>
-                            <div class="value">{{dataInfo.achievementData['平台用户总数']}}人</div>
+                            <div class="value">{{dataInfo.infoofallnumber['平台用户总数']}}人</div>
                         </div>
                         <div class="item item3">
                             <div class="title">平台交易金额</div>
                             <div class="bar"></div>
-                            <div class="value">{{dataInfo.achievementData['交易总额']}}元</div>
+                            <div class="value">{{dataInfo.infoofallnumber['交易总额']}}元</div>
                         </div>
                         <div class="item item4">
                             <div class="bar"></div>
                             <div class="value">
                                 <div>科研成果</div>
-                                <div>{{dataInfo.achievementData['发布成果总数']}}项</div>
+                                <div>{{dataInfo.infoofallnumber['发布成果总数']}}项</div>
                             </div>
                         </div>
                     </div>
@@ -46,10 +46,10 @@
 
                     <div class="swiper-slide">
                         <div class="item1-info">
-                            <div class="title title1">科研需求{{dataInfo.achievementNum['科研需求总数']}}例</div>
-                            <div class="title title2">难题发布{{dataInfo.achievementNum['难题发布总数']}}个</div>
-                            <div class="title title3">技术方案评审{{dataInfo.achievementNum['技术方案评审总次数']}}项</div>
-                            <div class="title title4">可视化洽谈{{dataInfo.achievementNum['可视化洽谈总次数']}}次</div>
+                            <div class="title title1">科研需求{{dataInfo.allinfosecond['科研需求总数']}}例</div>
+                            <div class="title title2">难题发布{{dataInfo.allinfosecond['难题发布总数']}}个</div>
+                            <div class="title title3">技术方案评审{{dataInfo.allinfosecond['技术方案评审总次数']}}项</div>
+                            <div class="title title4">可视化洽谈{{dataInfo.allinfosecond['可视化洽谈总次数']}}次</div>
                             <div class="title title-name">平台服务{{platform_services_sum}}起</div>
                         </div>
                     </div>
@@ -64,10 +64,10 @@
 
                     <div class="swiper-slide">
                         <div class="item2-info">
-                            <div class="title title1">用户数量{{dataInfo.achievementData['普通用户总数']}}人</div>
-                            <div class="title title2">专家{{dataInfo.achievementData['专家用户总数']}}人</div>
-                            <div class="title title3">科研机构{{dataInfo.achievementData['企事业用户总数']}}家</div>
-                            <div class="title title-name">平台用户数量{{dataInfo.achievementData['平台用户总数']}}人</div>
+                            <div class="title title1">用户数量{{dataInfo.infoofallnumber['普通用户总数']}}人</div>
+                            <div class="title title2">专家{{dataInfo.infoofallnumber['专家用户总数']}}人</div>
+                            <div class="title title3">科研机构{{dataInfo.infoofallnumber['企事业用户总数']}}家</div>
+                            <div class="title title-name">平台用户数量{{dataInfo.infoofallnumber['平台用户总数']}}人</div>
                         </div>
                     </div>
 
@@ -82,7 +82,7 @@
                 <Marquee
                         font="12px"
                         :speed='35'
-                        content="FF正在预约。。。FF正在预约。。。FF正在预约。。。FF正在预约。。。FF正在预约。。。FF正在预约。。。FF正在预约。。。FF正在预约。。。FF正在预约。。。FF正在预约。。。">
+                        :content="marqueeContent">
                 </Marquee>
 
             </div>
@@ -101,8 +101,8 @@
             // 平台服务总数
             platform_services_sum() {
                 var sum = 0;
-                for(var key in this.dataInfo.achievementNum) {
-                    sum += this.dataInfo.achievementNum[key];
+                for(var key in this.dataInfo.allinfosecond) {
+                    sum += this.dataInfo.allinfosecond[key];
                 }
                 return sum;
             }
@@ -139,9 +139,10 @@
                         smooth: true
                     }]
                 },
+                marqueeContent: '',
 
                 dataInfo: {
-                    "achievementData": {
+                    "infoofallnumber": {
                         "企事业用户总数": 35,
                         "发布成果总数": 11, // 科技成果
                         "普通用户总数": 33,
@@ -149,7 +150,7 @@
                         "交易总额": 0,
                         "专家用户总数": 0
                     },
-                    "newAchievement": [{
+                    "tradingofinfo": [{
                         "resultId": 15,
                         "resultName": "南日岛风电区全潜式可升降刚性网箱系统",
                         "pay": [{
@@ -174,7 +175,7 @@
                         }],
                         "rdealPayStatus": "2"
                     }],
-                    "achievementNum": {
+                    "allinfosecond": {
                         "科研需求总数": 49,
                         "技术方案评审总次数": 42,
                         "难题发布总数": 35,
@@ -216,12 +217,33 @@
                     url: '/ocean/panoramic/themeDataShow/achievementShare'
                 }).then(function (response) {
                     if (response.status === 1) {
-                        that.$set(that.dataInfo, 'achievementData', response.result.achievementData);
-                        that.$set(that.dataInfo, 'achievementNum', response.result.achievementData);
+                        that.$set(that.dataInfo, 'infoofallnumber', response.result.infoofallnumber);
+                        that.$set(that.dataInfo, 'allinfosecond', response.result.allinfosecond);
+                        that.$set(that.dataInfo, 'tradingofinfo', response.result.tradingofinfo);
+                        that.set_marqueeContent();
                     }
                 }).catch(function (e) {
 
                 })
+            },
+
+            // 设置预约滚动内容
+            set_marqueeContent(){
+                var that = this;
+                var text = '';
+                that.marqueeContent = '';
+                if (Array.isArray(this.dataInfo.tradingofinfo)) {
+                    this.dataInfo.tradingofinfo.forEach(function (val) {
+                        text = '';
+                        switch (val.rdealPayStatus) {
+                            case '0': text = '等待完成'; break;
+                            case '1': text = '待支付'; break;
+                            case '2': text = '已支付'; break;
+                            case '3': text = '已评价'; break;
+                        }
+                        that.marqueeContent += val.resultName + '(' +  + ')' + '<span style="display: inline-block; width: 50px;"></span>';
+                    })
+                }
             }
         }
     }

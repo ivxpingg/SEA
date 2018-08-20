@@ -8,10 +8,9 @@
 </template>
 
 <script>
-    import vHeader from '../../components/ThemeApp/Layout/header/header';
+    // import vHeader from '../../components/ThemeApp/Layout/header/header';
     export default {
-        name: "ThemeApp",
-        components: {vHeader}
+        name: "ThemeApp"
     }
 </script>
 
