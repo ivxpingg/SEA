@@ -42,11 +42,11 @@
                         <div class="s-chart-panel-3">
                             <div class="chart chart-1-1" ref="chart1_1"></div>
                             <div class="chart-value-1-1">
-                                <span>平台交易额</span>
+                                <span>平台交易数</span>
                                 <br/>
-                                <span class="value">183</span>
+                                <span class="value">{{dataInfo.orderCount.alldealdown}}</span>
                                 <br/>
-                                <span>万</span>
+                                <span>次</span>
                             </div>
                         </div>
                     </div>
@@ -104,9 +104,11 @@
                             <div class="swiper-wrapper">
                                 <div class="swiper-slide" v-for="item in tableData">
                                     <div class="table-row">
-                                        <div class="table-col">{{item.siiHinesename || ''}}</div>
+                                        <!--<div class="table-col">{{item.siiHinesename || ''}}</div>-->
+                                        <div class="table-col">{{item.name || ''}}</div>
                                         <div class="table-col">{{item.value1}}</div>
-                                        <div class="table-col">{{item.siiServicetime}}</div>
+                                        <!--<div class="table-col">{{item.siiServicetime}}</div>-->
+                                        <div class="table-col">{{item.value2 || ''}}</div>
                                         <div class="table-col">{{item.value3}}</div>
                                         <div class="table-col">{{item.value4}}</div>
                                     </div>
@@ -126,7 +128,7 @@
             <div class="roll-info-content">
                 <Marquee
                         font="12px"
-                        :speed='20'
+                        :speed='speed'
                         :content="appointmentContent">
                 </Marquee>
 
@@ -211,7 +213,7 @@
                 optionChart1: {
                     color: ['#ff7664', '#ffd2cf'],
                     title: {
-                        text: '平台交易额',
+                        text: '平台交易数',
                         textStyle: {
                             color: '#ff7664'
                         }
@@ -318,12 +320,12 @@
                         label: {
                             normal: {
                                 show: true,
-                                formatter: "{b}\n{c}万"
+                                formatter: "{b}\n{c}次"
                                 // position: 'center'
                             },
                             emphasis: {
                                 show: true,
-                                formatter: "{b}\n{c}万",
+                                formatter: "{b}\n{c}次",
                                 textStyle: {
                                     fontSize: '12'
                                 }
@@ -335,8 +337,8 @@
                             }
                         },
                         data: [
-                            {value:49, name:'仪器共享交易额'},
-                            {value:134, name:'服务项目交易额'}
+                            {value:49, name:'仪器交易数'},
+                            {value:134, name:'服务交易数'}
                         ]
                     }]
                 },
@@ -629,7 +631,8 @@
                     }
                 },
 
-                appointmentContent: ''
+                appointmentContent: '',
+                speed: 10
             };
         },
         components: {Marquee},
@@ -744,7 +747,12 @@
                 });
                 this.chart5_1.setOption(this.optionChart5_1);
 
-                // 共享仪器2
+                // 大型仪器项目订单数量
+                this.optionChart1_1.series[0].data = [
+                    {value: this.dataInfo.orderCount.alldealdownofinfo, name: '仪器交易数'},
+                    {value: this.dataInfo.orderCount.alldealdownofservice, name: '服务交易数'}
+                ];
+                this.chart1_1.setOption(this.optionChart1_1);
 
                 // 平台用户数量
                 this.optionChart2_1.series[0].data = [
@@ -766,16 +774,14 @@
 
                 // 表格
 
-                this.tableData = this.dataInfo.share.sharelist || [];
+                // this.tableData = this.dataInfo.share.sharelist || [];
 
                 // 正在预约
 
                 this.appointmentContent = '';
+
+                this.speed = this.dataInfo.appointment.orderofinfolist.length * this.speed;
                 this.dataInfo.appointment.orderofinfolist.forEach(function (val) {
-                    that.appointmentContent += ' 正在预约 : ' + val.infoofname + '<span style="display: inline-block; width: 50px;"></span>';
-                    that.appointmentContent += ' 正在预约 : ' + val.infoofname + '<span style="display: inline-block; width: 50px;"></span>';
-                    that.appointmentContent += ' 正在预约 : ' + val.infoofname + '<span style="display: inline-block; width: 50px;"></span>';
-                    that.appointmentContent += ' 正在预约 : ' + val.infoofname + '<span style="display: inline-block; width: 50px;"></span>';
                     that.appointmentContent += ' 正在预约 : ' + val.infoofname + '<span style="display: inline-block; width: 50px;"></span>';
                 });
             }

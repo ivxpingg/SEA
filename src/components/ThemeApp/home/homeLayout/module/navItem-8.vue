@@ -8,7 +8,7 @@
 
             <div class="time-panel">
                 <div class="title">平台共享时长</div>
-                <div class="value">9000h</div>
+                <div class="value">{{dataInfo.share.shaertime}}h</div>
             </div>
             <div class="blue-line"></div>
             <div class="table-box">
@@ -26,9 +26,11 @@
                                 <div class="swiper-wrapper">
                                     <div class="swiper-slide" v-for="item in tableData">
                                         <div class="table-row">
-                                            <div class="table-col">{{item.name}}</div>
+                                            <!--<div class="table-col">{{item.siiHinesename || ''}}</div>-->
+                                            <div class="table-col">{{item.name || ''}}</div>
                                             <div class="table-col">{{item.value1}}</div>
-                                            <div class="table-col">{{item.value2}}</div>
+                                            <!--<div class="table-col">{{item.siiServicetime}}</div>-->
+                                            <div class="table-col">{{item.value2 || ''}}</div>
                                             <div class="table-col">{{item.value3}}</div>
                                             <div class="table-col">{{item.value4}}</div>
                                         </div>
@@ -46,8 +48,8 @@
                 <div class="roll-info-content">
                     <Marquee
                             font="12px"
-                            :speed='35'
-                            content="FF正在预约。。。FF正在预约。。。FF正在预约。。。FF正在预约。。。FF正在预约。。。FF正在预约。。。FF正在预约。。。FF正在预约。。。FF正在预约。。。FF正在预约。。。">
+                            :speed='speed'
+                            :content="appointmentContent">
                     </Marquee>
 
                 </div>
@@ -115,12 +117,128 @@
                     value2: '200h',
                     value3: '运行中',
                     value4: '90%'
-                }]
+                }],
+
+                dataInfo: {
+                    // 平台用户数量
+                    "userCount": {
+                        "alluserofcon": 11,    // 消费用户总数
+                        "allusernumber": 17,   // 平台用户数
+                        "alluseroforg": 6      // 机构用户总数
+                    },
+                    // 共享仪器
+                    "share": {
+                        "sharelist": [{
+                            "siiId": 29,                   // 仪器Id
+                            "siiHinesename": "医疗救助",   // 仪器名称
+                            "siiServicetime": 10,         // 仪器使用时长
+                            "ssoSosid": 3,                // 仪器订单Id
+                            "ssoCreatetime": "Aug 11, 2018 4:39:32 PM",  //仪器订单创建时间
+                            "ssoProjectname": "检测项目6"   // 仪器检测项目
+                        }],
+                        "shaertime": 272
+                    },
+                    // 大型仪器服务的预约排行项目（共排行前5条）数据。
+                    // (平台服务项目)
+                    "service": {
+                        "allservicenumber": 9,
+                        "servicelist": [{
+                            "serviceId": 36,           // 服务项目Id
+                            "serviceName": "测试发布",  // 服务项目名
+                            "sCount": 5,               // 该服务被预约的总和
+                            "ssimagelist": [{
+                                "serviceId": 36
+                            }]
+                        }, {
+                            "serviceId": 34,
+                            "serviceName": "bvcfdg",
+                            "sCount": 3,
+                            "ssimagelist": [{
+                                "serviceId": 34
+                            }]
+                        }, {
+                            "serviceId": 35,
+                            "serviceName": "ererv",
+                            "sCount": 1,
+                            "ssimagelist": [{
+                                "serviceId": 35
+                            }]
+                        }]
+                    },
+                    // 大型仪器项目订单统计
+                    "orderCount": {
+                        "alldealdownofinfo": 3,      // 仪器交易数
+                        "alldealdownofservice": 6,  // 服务交易数
+                        "alldealdown": 9           // 系统产生的总交易数
+                    },
+                    // 预约的共享仪器（正在预约）
+                    "appointment": {
+                        // 最新的正在被预约的仪器集合，共3条数据
+                        "orderofinfolist": [{
+                            "soid": 155,                 // 仪器预约Id
+                            "infoofname": "科研植被考察", //仪器名称
+                            "Sample": []
+                        }]
+                    },
+                    // 共享仪器
+                    "rankCount": {
+                        "orderinfolist":
+                            [{
+                                "bId": 1,
+                                "bName": "分析仪器",    // 仪器名称
+                                "sCount": "45",        // 所属分类的仪器个数
+                                "oCount": "8"          // 仪器预约总数
+                            }, {
+                                "bId": 129,
+                                "bName": "物理性能测试仪器",
+                                "sCount": "4",
+                                "oCount": "3"
+                            }, {
+                                "bId": 441,
+                                "bName": "工艺实验设备",
+                                "sCount": "1",
+                                "oCount": "0"
+                            }, {
+                                "bId": 362,
+                                "bName": "电子测量仪器",
+                                "sCount": "0",
+                                "oCount": "0"
+                            }, {
+                                "bId": 395,
+                                "bName": "海洋仪器",
+                                "sCount": "0",
+                                "oCount": "0"
+                            }, {
+                                "bId": 172,
+                                "bName": "计量仪器",
+                                "sCount": "0",
+                                "oCount": "0"
+                            }, {
+                                "bId": 486,
+                                "bName": "其他仪器",
+                                "sCount": "0",
+                                "oCount": "0"
+                            }],
+                        "allnumber": 11      // 共享仪器总预约数
+                    },
+                    // 共享仪器2
+                    "statistics": {
+                        "allinfototal": 202286,     // 平台仪器价值
+                        "allusernumber": 17,        // 平台用户数
+                        "allservicenumber": 13,     // 平台服务项目
+                        "allinstrnumber": 64,       // 共享仪器总数
+                        "alldealdown": 9            // 平台交易总数
+                    }
+                },
+
+                appointmentContent: '',
+                speed: 10
             };
         },
         components: {Marquee},
         mounted() {
             this.initSwiper();
+            this.getData();
         },
         methods: {
             initSwiper() {
@@ -132,6 +250,40 @@
                     autoplay: true,
                     delay: 0,
                     disableOnInteraction: false
+                });
+            },
+
+            getData() {
+                var that = this;
+
+                that.$http({
+                    method: 'get',
+                    url: '/ocean/panoramic/themeDataShow/instrumentShare'
+                }).then(function (response) {
+                    if (response.status === 1) {
+                        that.$set(that, 'dataInfo', response.result);
+                        that.resetEchartsOption();
+                    }
+                }).catch(function (e) {
+
+                })
+            },
+
+            // 重置
+            resetEchartsOption() {
+                var that = this;
+
+                // 表格
+
+                // this.tableData = this.dataInfo.share.sharelist || [];
+
+                // 正在预约
+
+                this.appointmentContent = '';
+
+                this.speed = this.dataInfo.appointment.orderofinfolist.length * this.speed;
+                this.dataInfo.appointment.orderofinfolist.forEach(function (val) {
+                    that.appointmentContent += ' 正在预约 : ' + val.infoofname + '<span style="display: inline-block; width: 50px;"></span>';
                 });
             }
         }

@@ -2,7 +2,7 @@
     <div class="header-container">
         <div class="header-inner">
             <div class="btn-panel">
-                <div class="btn-b btn-layout" v-if="!isAdmin" @click="onClick_backHome" title="返回首页">
+                <div class="btn-b btn-layout" @click="onClick_backHome" title="返回首页">
                     <Icon type="home"></Icon>
                 </div>
                 <div class="btn-b btn-layout" v-if="isAdmin" @click="onSwitchLayout" title="切换布局">

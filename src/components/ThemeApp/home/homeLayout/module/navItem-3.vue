@@ -81,7 +81,7 @@
             <div class="roll-info-content">
                 <Marquee
                         font="12px"
-                        :speed='35'
+                        :speed='speed'
                         :content="marqueeContent">
                 </Marquee>
 
@@ -140,6 +140,7 @@
                     }]
                 },
                 marqueeContent: '',
+                speed: 10,
 
                 dataInfo: {
                     "infoofallnumber": {
@@ -232,6 +233,7 @@
                 var that = this;
                 var text = '';
                 that.marqueeContent = '';
+                that.speed = that.speed * this.dataInfo.tradingofinfo.length;
                 if (Array.isArray(this.dataInfo.tradingofinfo)) {
                     this.dataInfo.tradingofinfo.forEach(function (val) {
                         text = '';
