@@ -239,6 +239,7 @@
                     }).then(function(response) {
                         if(response.status === 1) {
                             // that.setEchart(response.result);
+                            that.chartData = response.result || [];
                             that.setChartData();
                         }
                     }).catch(function (e) {
@@ -247,88 +248,95 @@
                 }
             },
             getChartDataTest() {
-
-                switch (this.chartInfo.picType) {
-                    case 'line':
-                    case 'bar':
-                        this.chartData = {
-                            SQL1: [{
-                                time: '2018',
-                                '个人': 100,
-                                '高校机构': 200,
-                                '企业单位': 102
-                            }, {
-                                time: '2019',
-                                '个人': 100,
-                                '高校机构': 200,
-                                '企业单位': 102
-                            }, {
-                                time: '2020',
-                                '个人': 90,
-                                '高校机构': 150,
-                                '企业单位': 88
-                            }]
-                        };
-                        break;
-                    case 'pie' :
-                        this.chartData = {
-                            SQL1: [{
-                                name: '用户',
-                                '高校机构': '111',
-                                '企业单位': '111',
-                                '个人': '111',
-                            }]
-                        };
-                        break;
-                    case 'radar':
-
-                        this.chartData = {
-                            SQL1: [{
-                                name: '共享仪器',
-                                '平均预热开机时长': 60,
-                                '使用时长': 100,
-                                '共享时长': 100,
-                                '使用率': 90,
-                                '维护次数': 10,
-                                '待测项目': 9
-                            }]
-                        };
-;
-                        break;
-                    case 'scatter': break;
-                    case 'wordCloud':
-                        this.chartData = {
-                            SQL1: [{
-                                name: '服务',
-                                value: 62
-                            },{
-                                name: '海洋平台',
-                                value: 92
-                            },{
-                                name: '科研仪器',
-                                value: 34
-                            },{
-                                name: '科技成果',
-                                value: 53
-                            },{
-                                name: '科普',
-                                value: 28
-                            },{
-                                name: '品质',
-                                value: 71
-                            },{
-                                name: '专家',
-                                value: 20
-                            },{
-                                name: '行业数据',
-                                value: 124
-                            },{
-                                name: '云服务',
-                                value: 48
-                            }]
-                        };
-                        break;
+                let filter = ['海产品价格走势图', '海产品消费分布饼图', '柱形图', '折线图', '饼图', '雷达图', '测试添加修改', '字符云', '横向柱形图', '科研仪器共享统计'];
+                if (filter.indexOf(this.chartInfo.name) === -1) {
+                    this.getChartData();
                 }
+                else {
+                    switch (this.chartInfo.picType) {
+                        case 'line':
+                        case 'bar':
+                            this.chartData = {
+                                SQL1: [{
+                                    time: '2018',
+                                    '个人': 100,
+                                    '高校机构': 200,
+                                    '企业单位': 102
+                                }, {
+                                    time: '2019',
+                                    '个人': 100,
+                                    '高校机构': 200,
+                                    '企业单位': 102
+                                }, {
+                                    time: '2020',
+                                    '个人': 90,
+                                    '高校机构': 150,
+                                    '企业单位': 88
+                                }]
+                            };
+                            break;
+                        case 'pie' :
+                            this.chartData = {
+                                SQL1: [{
+                                    name: '用户',
+                                    '高校机构': '111',
+                                    '企业单位': '111',
+                                    '个人': '111',
+                                }]
+                            };
+                            break;
+                        case 'radar':
+
+                            this.chartData = {
+                                SQL1: [{
+                                    name: '共享仪器',
+                                    '平均预热开机时长': 60,
+                                    '使用时长': 100,
+                                    '共享时长': 100,
+                                    '使用率': 90,
+                                    '维护次数': 10,
+                                    '待测项目': 9
+                                }]
+                            };
+                            ;
+                            break;
+                        case 'scatter': break;
+                        case 'wordCloud':
+                            this.chartData = {
+                                SQL1: [{
+                                    name: '服务',
+                                    value: 62
+                                },{
+                                    name: '海洋平台',
+                                    value: 92
+                                },{
+                                    name: '科研仪器',
+                                    value: 34
+                                },{
+                                    name: '科技成果',
+                                    value: 53
+                                },{
+                                    name: '科普',
+                                    value: 28
+                                },{
+                                    name: '品质',
+                                    value: 71
+                                },{
+                                    name: '专家',
+                                    value: 20
+                                },{
+                                    name: '行业数据',
+                                    value: 124
+                                },{
+                                    name: '云服务',
+                                    value: 48
+                                }]
+                            };
+                            break;
+                    }
+                }
+
+
 
                 this.setChartData();
             },
