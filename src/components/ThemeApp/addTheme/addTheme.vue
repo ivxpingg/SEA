@@ -103,7 +103,7 @@
                 :title="formData.name">
             <vEchart
                      v-if="modal_preview"
-                     id="000"
+                     :id="formData.id"
                      :isPreview= "true"
                      :isEdit= "false"
                      :previewData="formData"
